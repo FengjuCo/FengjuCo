@@ -17,7 +17,9 @@
         
         .hero-pattern {
             background-color: #f8fafc;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230ea5e9' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            /* Subtle grid pattern for game feel */
+            background-image: linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
         .fade-in-up {
@@ -38,6 +40,81 @@
             backdrop-filter: blur(10px);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
+
+        /* Game Specific Styles */
+        #game-container {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            background: #0f172a; /* Dark background for space/purification theme */
+        }
+        
+        canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* UI Overlays for Game */
+        .game-ui-layer {
+            position: absolute;
+            inset: 0;
+            z-index: 20; /* Above text if game is active */
+            pointer-events: none; /* Let clicks pass through initially */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .game-active .hero-content {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .game-active #navbar {
+            transform: translateY(-100%); /* Hide navbar during game */
+        }
+
+        .hud-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            padding: 10px;
+            color: white;
+            font-size: 12px;
+            pointer-events: none;
+            backdrop-filter: blur(4px);
+        }
+
+        .hud-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .hud-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        
+        /* Flashing warning text */
+        .warning-text {
+            animation: flashRed 1s infinite alternate;
+        }
+        
+        @keyframes flashRed {
+            from { opacity: 1; color: #ef4444; text-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+            to { opacity: 0.7; color: #b91c1c; text-shadow: none; }
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-slate-800">
@@ -47,7 +124,8 @@
             <div class="flex justify-between items-center h-20">
                 <div class="flex-shrink-0 flex items-center gap-3">
                     <a href="index.html" class="flex items-center gap-3">
-                        <img class="h-12 w-auto object-contain" src="豐鉅儀器LOGO.png" alt="豐鉅儀器 Logo" onerror="this.style.display='none'; document.getElementById('text-logo').classList.remove('hidden')">
+                        <!-- Updated LOGO here -->
+                        <img class="h-12 w-auto object-contain" src="image_cc67ec.png" alt="豐鉅儀器 Logo" onerror="this.src='豐鉅儀器LOGO.png'; this.onerror=function(){this.style.display='none'; document.getElementById('text-logo').classList.remove('hidden');}">
                         <span id="text-logo" class="hidden text-2xl font-bold text-sky-700 tracking-wider">FENG JU</span>
                         <span class="hidden md:block text-2xl font-bold text-slate-700 ml-2">豐鉅儀器有限公司</span>
                     </a>
@@ -77,15 +155,47 @@
         </div>
     </nav>
 
-    <section id="home" class="relative pt-20 flex items-center min-h-[90vh] hero-pattern overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="6.jpg" alt="Medical Background" class="w-full h-full object-cover opacity-10" onerror="this.src='https://images.unsplash.com/photo-1516549655169-df83a0674f66?auto=format&fit=crop&q=80'">
-            <div class="absolute inset-0 bg-gradient-to-r from-white via-white/90 to-transparent"></div>
-        </div>
+    <!-- Hero Section Modified for Game -->
+    <section id="home" class="relative pt-20 flex items-center justify-center min-h-[90vh] hero-pattern overflow-hidden">
         
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+        <!-- Game Container (Replaces Background Image) -->
+        <div id="game-container">
+            <canvas id="gameCanvas"></canvas>
+            
+            <!-- Game HUD (Hidden initially) -->
+            <div id="game-hud" class="hud-panel hidden">
+                <div class="font-bold mb-2 border-b border-gray-600 pb-1 text-sky-300">污染源識別</div>
+                <div class="hud-item"><span class="hud-icon bg-green-500 shadow-[0_0_5px_#22c55e]"></span> 病毒 (1分/小)</div>
+                <div class="hud-item"><span class="hud-icon bg-orange-500 shadow-[0_0_5px_#f97316]"></span> 細菌 (3分/中)</div>
+                <div class="hud-item"><span class="hud-icon bg-purple-500 shadow-[0_0_5px_#a855f7]"></span> 孢子 (4分/大)</div>
+                <div class="hud-item"><span class="hud-icon bg-gray-200 shadow-[0_0_5px_#e5e7eb]"></span> PM2.5 (5分/特大)</div>
+                <div class="mt-2 text-xl font-mono text-yellow-400">SCORE: <span id="score-display">0</span></div>
+            </div>
+
+            <!-- Game Over Screen -->
+            <div id="game-over-screen" class="absolute inset-0 z-50 bg-slate-900/90 flex flex-col items-center justify-center hidden text-center p-4">
+                <h2 class="text-4xl md:text-6xl font-bold text-red-500 mb-4 animate-bounce">GAME OVER</h2>
+                <p class="text-2xl text-white mb-2">最終分數: <span id="final-score" class="text-yellow-400"></span></p>
+                <div class="bg-slate-800 p-8 rounded-2xl border border-sky-500 shadow-[0_0_30px_rgba(14,165,233,0.3)] max-w-2xl mt-6 relative z-50">
+                    <p class="text-xl md:text-3xl text-sky-300 font-bold mb-6 leading-relaxed">
+                        "我們有更有效的<span class="text-white">PHIT技術</span>，<br>可以主動消除污染"
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="https://www.fengju.com.tw/EcohealPHIT.html" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-lg relative z-50 pointer-events-auto cursor-pointer">
+                            <i class="fas fa-leaf mr-2"></i> 了解 EcoHeal 技術
+                        </a>
+                        <button onclick="resetGame()" class="px-8 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-full font-bold text-lg transition-all relative z-50 pointer-events-auto cursor-pointer">
+                            再試一次
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Original Hero Content (Will be hidden when game starts) -->
+        <div id="hero-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full hero-content transition-all duration-500">
             <div class="grid md:grid-cols-2 gap-12 items-center">
-                <div class="space-y-8 fade-in-up">
+                <div class="space-y-8 fade-in-up bg-white/80 p-6 md:p-0 md:bg-transparent rounded-2xl backdrop-blur-sm md:backdrop-blur-none">
                     <div class="inline-flex items-center px-4 py-2 rounded-full bg-sky-100 text-sky-800 font-medium text-sm">
                         <span class="w-2 h-2 rounded-full bg-sky-600 mr-2"></span>
                         專業醫療器材代理首選
@@ -97,32 +207,26 @@
                     <p class="text-lg text-slate-600 max-w-lg leading-relaxed">
                         豐鉅儀器提供開刀房、供應中心及長照領域的全方位解決方案。從精密手術器械到環境淨化，我們致力於提升醫療品質與安全。
                     </p>
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#products" class="inline-flex justify-center items-center px-8 py-3 rounded-lg bg-sky-600 text-white font-semibold hover:bg-sky-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
-                            探索產品
-                            <i class="fas fa-arrow-right ml-2"></i>
-                        </a>
-                        <a href="#contact" class="inline-flex justify-center items-center px-8 py-3 rounded-lg border-2 border-sky-600 text-sky-600 font-semibold hover:bg-sky-50 transition-all">
-                            聯絡諮詢
-                        </a>
-                    </div>
-                </div>
-                <div class="relative hidden md:block fade-in-up" style="animation-delay: 0.2s;">
-                    <div class="relative group">
-                        <div class="absolute -top-4 -left-4 w-72 h-72 bg-sky-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse"></div>
-                        <div class="absolute -bottom-8 -right-4 w-72 h-72 bg-blue-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-pulse" style="animation-delay: 1s;"></div>
-                        <img src="1.jpg" alt="Featured Product" class="relative rounded-2xl shadow-2xl border-4 border-white transform hover:scale-105 transition-transform duration-500 w-full object-cover h-96 bg-gray-200">
-                        
-                        <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-lg flex items-center gap-4 animate-bounce" style="animation-duration: 3s;">
-                            <div class="bg-green-100 p-3 rounded-full text-green-600">
-                                <i class="fas fa-leaf text-xl"></i>
-                            </div>
-                            <div>
-                                <p class="text-sm text-slate-500">環境淨化</p>
-                                <p class="font-bold text-slate-800">EcoHeal 光合電子樹</p>
-                            </div>
+                    <div class="flex flex-col items-center sm:items-start gap-2">
+                        <div class="flex flex-col sm:flex-row gap-4 items-center w-full">
+                            <button onclick="startGame()" class="w-full sm:w-auto inline-flex justify-center items-center px-8 py-4 rounded-lg bg-red-600 text-white font-bold text-lg hover:bg-red-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                                <i class="fas fa-crosshairs mr-2"></i>
+                                點擊開始 淨化空氣吧
+                            </button>
+                            <a href="#products" class="w-full sm:w-auto inline-flex justify-center items-center px-8 py-4 rounded-lg border-2 border-sky-600 text-sky-600 font-semibold hover:bg-sky-50 transition-all">
+                                探索產品
+                            </a>
+                        </div>
+                        <!-- Flashing Warning Text -->
+                        <div class="warning-text text-lg font-bold mt-2">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>尚未啟動EcoHeal 防護網
                         </div>
                     </div>
+                </div>
+                
+                <!-- 3D Visualization Placeholder or Illustration -->
+                <div class="relative hidden md:block fade-in-up" style="animation-delay: 0.2s;">
+                    <!-- Keeps the visual balance -->
                 </div>
             </div>
         </div>
@@ -171,10 +275,10 @@
                     </p>
                 </div>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
                 <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col">
                     <div class="h-64 overflow-hidden relative flex-shrink-0">
-                        <img src="2.jpg" alt="Sainsmed 產品" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200">
+                        <img src="2.jpg" alt="Sainsmed 產品" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.style.backgroundColor='#e2e8f0'">
                         <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-md">Sainsmed</div>
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
@@ -189,7 +293,7 @@
 
                 <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col">
                     <div class="h-64 overflow-hidden relative flex-shrink-0">
-                        <img src="6.jpg" alt="KLS MARTIN 手術器械" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200">
+                        <img src="6.jpg" alt="KLS MARTIN 手術器械" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.style.backgroundColor='#e2e8f0'">
                         <div class="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-md">KLS MARTIN</div>
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
@@ -204,7 +308,7 @@
 
                 <div id="products" class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col">
                     <div class="h-64 overflow-hidden relative flex-shrink-0">
-                        <img src="11.jpg" alt="MJMT 製氧機" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.src='11.jpg'">
+                        <img src="11.jpg" alt="MJMT 製氧機" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.style.backgroundColor='#e2e8f0'">
                         <div class="absolute top-4 left-4 bg-cyan-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-md">呼吸照護</div>
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
@@ -227,7 +331,7 @@
 
                 <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col">
                     <div class="h-64 overflow-hidden relative flex-shrink-0">
-                        <img src="28.png" alt="EcoHeal 光合電子樹" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.src='1.jpg'">
+                        <img src="28.png" alt="EcoHeal 光合電子樹" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.style.backgroundColor='#e2e8f0'">
                         <div class="absolute top-4 left-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-md">環境淨化</div>
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
@@ -239,7 +343,7 @@
                             <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 零耗材、免濾網</li>
                         </ul>
                         <div class="mt-auto pt-4 border-t border-slate-100">
-                            <a href="EcohealPHIT.html" class="inline-flex items-center justify-center w-full px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg transition-colors text-sm font-semibold group-hover:shadow-sm">
+                            <a href="https://www.fengju.com.tw/EcohealPHIT.html" class="inline-flex items-center justify-center w-full px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg transition-colors text-sm font-semibold group-hover:shadow-sm">
                                 <i class="fas fa-leaf mr-2"></i>
                                 了解 EcoHeal 詳細介紹
                                 <i class="fas fa-external-link-alt ml-2 text-xs opacity-70"></i>
@@ -265,17 +369,22 @@
                     有任何關於醫療設備、耗材或大健康產品的需求嗎？歡迎隨時與我們聯繫，我們將有專人為您服務。
                 </p>
                 
-                <div class="flex flex-col md:flex-row justify-center gap-8">
-                    <a href="https://www.facebook.com/fengju.com.tw/" target="_blank" class="bg-slate-800 p-8 rounded-2xl hover:bg-slate-700 transition-all group flex-1 max-w-sm mx-auto w-full shadow-lg border border-slate-700">
-                        <div class="bg-sky-600 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform shadow-md">
-                            <i class="fab fa-facebook-f text-white text-2xl"></i>
+                <div class="flex flex-col md:flex-row justify-center gap-8 items-stretch">
+                    <!-- Facebook Feed Embed -->
+                    <div class="bg-white rounded-2xl flex-1 max-w-sm mx-auto w-full shadow-lg border border-slate-700 overflow-hidden flex flex-col">
+                        <div class="bg-[#1877F2] p-4 flex items-center gap-3">
+                            <i class="fab fa-facebook-square text-white text-2xl"></i>
+                            <span class="text-white font-bold">Facebook 粉絲專頁</span>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-3">Facebook 粉絲專頁</h3>
-                        <span class="text-sky-400 group-hover:text-sky-300 mb-3 block text-lg font-medium">facebook.com/fengju.com.tw</span>
-                        <p class="text-slate-400 text-sm">關注我們以獲得最新產品資訊與優惠</p>
-                    </a>
+                        <div class="flex-grow bg-white flex justify-center items-start pt-2">
+                             <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffengju.com.tw%2F&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="100%" height="450" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                        </div>
+                        <a href="https://www.facebook.com/fengju.com.tw/" target="_blank" class="block w-full text-center py-3 bg-slate-50 text-[#1877F2] font-semibold hover:bg-slate-100 transition-colors border-t">
+                            前往粉絲專頁 <i class="fas fa-external-link-alt ml-1 text-sm"></i>
+                        </a>
+                    </div>
                     
-                    <div class="bg-slate-800 p-8 rounded-2xl flex-1 max-w-sm mx-auto w-full shadow-lg border border-slate-700 flex flex-col items-center">
+                    <div class="bg-slate-800 p-8 rounded-2xl flex-1 max-w-sm mx-auto w-full shadow-lg border border-slate-700 flex flex-col items-center justify-center">
                         <div class="bg-sky-600 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
                             <i class="fas fa-headset text-white text-2xl"></i>
                         </div>
@@ -291,6 +400,10 @@
                                 <i class="fas fa-envelope text-sky-500 group-hover:scale-110 transition-transform"></i>
                                 <span class="text-lg font-medium tracking-wide">info@fengju.com.tw</span>
                             </a>
+                            <div class="mt-8 pt-6 border-t border-slate-700 w-full text-center">
+                                <p class="text-slate-400 text-sm mb-2">服務時間</p>
+                                <p class="text-white">週一至週五 09:00 - 18:00</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -328,7 +441,7 @@
     </footer>
 
     <script>
-        // Navbar scroll effect
+        // --- UI Interactions ---
         window.addEventListener('scroll', function() {
             const navbar = document.getElementById('navbar');
             if (window.scrollY > 20) {
@@ -338,13 +451,409 @@
             }
         });
 
-        // Mobile menu toggle
         const btn = document.getElementById('mobile-menu-btn');
         const menu = document.getElementById('mobile-menu');
 
         btn.addEventListener('click', () => {
             menu.classList.toggle('hidden');
         });
+
+        // --- GAME LOGIC ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const hud = document.getElementById('game-hud');
+        const scoreDisplay = document.getElementById('score-display');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const finalScore = document.getElementById('final-score');
+        const heroSection = document.getElementById('home');
+        
+        let gameState = 'IDLE'; // IDLE, PLAYING, GAMEOVER
+        let score = 0;
+        let frameCount = 0;
+        let difficultyMultiplier = 1;
+        let animationId;
+
+        // Player
+        const player = {
+            x: 0,
+            y: 0,
+            width: 40,
+            height: 40,
+            color: '#38bdf8', // Sky 400
+            speed: 5
+        };
+
+        let bullets = [];
+        let enemies = [];
+        let particles = []; // For explosions
+
+        // Responsive Canvas
+        function resizeCanvas() {
+            // Keep the canvas covering the hero section
+            const container = document.getElementById('game-container');
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
+            
+            // Re-center player if resizing
+            if(gameState === 'IDLE') {
+                player.x = canvas.width / 2;
+                player.y = canvas.height - 100;
+            }
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Mouse Controls
+        canvas.addEventListener('mousemove', (e) => {
+            if (gameState === 'PLAYING') {
+                const rect = canvas.getBoundingClientRect();
+                player.x = e.clientX - rect.left;
+                player.y = e.clientY - rect.top;
+            }
+        });
+        
+        // Touch Controls
+        canvas.addEventListener('touchmove', (e) => {
+             if (gameState === 'PLAYING') {
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                player.x = e.touches[0].clientX - rect.left;
+                player.y = e.touches[0].clientY - rect.top;
+            }
+        }, {passive: false});
+
+        function startGame() {
+            gameState = 'PLAYING';
+            heroSection.classList.add('game-active');
+            hud.classList.remove('hidden');
+            gameOverScreen.classList.add('hidden');
+            
+            // Reset Game variables
+            score = 0;
+            scoreDisplay.innerText = '0';
+            difficultyMultiplier = 1;
+            enemies = [];
+            bullets = [];
+            particles = [];
+            
+            player.x = canvas.width / 2;
+            player.y = canvas.height - 100;
+
+            animate();
+        }
+
+        function resetGame() {
+            gameOverScreen.classList.add('hidden');
+            startGame();
+        }
+
+        class Bullet {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 3;
+                this.speed = 10;
+                this.color = '#ffff00';
+            }
+            update() {
+                this.y -= this.speed;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        class Enemy {
+            constructor(type) {
+                this.x = Math.random() * (canvas.width - 40) + 20;
+                this.y = -50; // Start above screen
+                this.speed = Math.random() * 2 + 1 + difficultyMultiplier;
+                this.type = type;
+                
+                // Define types - BIGGER = HIGHER SCORE
+                // Virus (1pt, 1hp, Green) - Smallest
+                // Bacteria (3pt, 3hp, Orange) - Medium
+                // Mold (4pt, 4hp, Purple) - Large
+                // PM2.5 (5pt, 5hp, Grey) - Massive
+                
+                if (type === 'virus') {
+                    this.hp = 1;
+                    this.score = 1;
+                    this.radius = 15; // Small
+                    this.color = '#22c55e'; // Green 500
+                } else if (type === 'bacteria') {
+                    this.hp = 3;
+                    this.score = 3;
+                    this.radius = 25; // Medium
+                    this.color = '#f97316'; // Orange 500
+                } else if (type === 'mold') {
+                    this.hp = 4;
+                    this.score = 4;
+                    this.radius = 35; // Large
+                    this.color = '#a855f7'; // Purple 500
+                } else if (type === 'pm25') {
+                    this.hp = 5;
+                    this.score = 5;
+                    this.radius = 45; // Huge
+                    this.color = '#e5e7eb'; // Gray 200
+                }
+            }
+
+            update() {
+                this.y += this.speed;
+                // Add some wobble
+                this.x += Math.sin(this.y / 30) * 1;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                
+                if (this.type === 'virus') {
+                    // Small Spiky circle
+                    for (let i = 0; i < 8; i++) {
+                        let angle = (i / 8) * Math.PI * 2;
+                        let r = this.radius + 5;
+                        ctx.lineTo(this.x + Math.cos(angle) * r, this.y + Math.sin(angle) * r);
+                        angle += Math.PI / 8;
+                        ctx.lineTo(this.x + Math.cos(angle) * this.radius, this.y + Math.sin(angle) * this.radius);
+                    }
+                } else if (this.type === 'bacteria') {
+                    // Medium Capsule shape
+                    ctx.ellipse(this.x, this.y, this.radius, this.radius * 0.6, 0, 0, Math.PI * 2);
+                } else if (this.type === 'mold') {
+                    // Large Lumpy circle
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    // Add distinct dark spots
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                    ctx.beginPath();
+                    ctx.fillStyle = '#7e22ce'; // Darker purple spots
+                    ctx.arc(this.x - 10, this.y - 10, 8, 0, Math.PI * 2);
+                    ctx.arc(this.x + 15, this.y + 5, 6, 0, Math.PI * 2);
+                    ctx.arc(this.x - 5, this.y + 15, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                    return; // Custom fill done
+                } else if (this.type === 'pm25') {
+                    // Massive Smog Cloud (Overlapping circles)
+                    ctx.fillStyle = 'rgba(200, 200, 200, 0.8)';
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.arc(this.x - 20, this.y - 10, this.radius * 0.7, 0, Math.PI * 2);
+                    ctx.arc(this.x + 20, this.y + 10, this.radius * 0.7, 0, Math.PI * 2);
+                    ctx.arc(this.x + 10, this.y - 20, this.radius * 0.6, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Label text inside because it's so big
+                    ctx.fillStyle = 'black';
+                    ctx.font = 'bold 14px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText("PM2.5", this.x, this.y - 5);
+                }
+                
+                if (this.type !== 'pm25') ctx.fill();
+                
+                // Show HP if > 1
+                if (this.hp > 1) {
+                    ctx.fillStyle = 'black';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(this.hp, this.x, this.y);
+                }
+            }
+        }
+
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 5;
+                this.vy = (Math.random() - 0.5) * 5;
+                this.life = 1.0;
+                this.color = color;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life -= 0.05;
+            }
+            draw() {
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        function spawnEnemy() {
+            // Spawn rate based on difficulty
+            if (frameCount % Math.max(20, 60 - Math.floor(difficultyMultiplier * 5)) === 0) {
+                const rand = Math.random();
+                let type = 'virus';
+                
+                // Allow ANY type to spawn at start, but weighted probabilities
+                // 60% Virus, 20% Bacteria, 15% Mold, 5% PM2.5
+                if (rand < 0.6) {
+                    type = 'virus';
+                } else if (rand < 0.8) {
+                    type = 'bacteria';
+                } else if (rand < 0.95) {
+                    type = 'mold';
+                } else {
+                    type = 'pm25';
+                }
+                
+                enemies.push(new Enemy(type));
+            }
+        }
+
+        function checkCollisions() {
+            // Bullet vs Enemy
+            bullets.forEach((bullet, bIndex) => {
+                enemies.forEach((enemy, eIndex) => {
+                    const dist = Math.hypot(bullet.x - enemy.x, bullet.y - enemy.y);
+                    // Use actual enemy radius for collision
+                    if (dist < enemy.radius + bullet.radius) {
+                        // Hit
+                        enemy.hp--;
+                        bullets.splice(bIndex, 1);
+                        
+                        // Create sparks
+                        for(let i=0; i<3; i++) particles.push(new Particle(bullet.x, bullet.y, '#ffff00'));
+
+                        if (enemy.hp <= 0) {
+                            score += enemy.score;
+                            scoreDisplay.innerText = score;
+                            // Explosion
+                            for(let i=0; i<8; i++) particles.push(new Particle(enemy.x, enemy.y, enemy.color));
+                            enemies.splice(eIndex, 1);
+                        }
+                        return;
+                    }
+                });
+            });
+
+            // Enemy vs Player (Game Over)
+            enemies.forEach(enemy => {
+                const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+                if (dist < enemy.radius + 20) { // Player rough radius 20
+                    endGame();
+                }
+                
+                // Enemy past screen
+                if (enemy.y > canvas.height + 50) {
+                    endGame(); // Let's make it strict - don't let pollution pass!
+                }
+            });
+        }
+
+        function endGame() {
+            gameState = 'GAMEOVER';
+            cancelAnimationFrame(animationId);
+            finalScore.innerText = score;
+            hud.classList.add('hidden');
+            gameOverScreen.classList.remove('hidden');
+            // FIX: Do NOT remove game-active here. This keeps the hero content hidden/non-interactive
+            // so the game over screen is clearly visible and clickable.
+            // heroSection.classList.remove('game-active'); 
+        }
+
+        function animate() {
+            if (gameState !== 'PLAYING') return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            frameCount++;
+            
+            // Increase difficulty
+            if (frameCount % 600 === 0) difficultyMultiplier += 0.5;
+
+            // Player Draw (Triangle Ship)
+            ctx.fillStyle = player.color;
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#0ea5e9';
+            ctx.beginPath();
+            ctx.moveTo(player.x, player.y - 20);
+            ctx.lineTo(player.x - 15, player.y + 15);
+            ctx.lineTo(player.x, player.y + 10);
+            ctx.lineTo(player.x + 15, player.y + 15);
+            ctx.closePath();
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Engine Flame
+            ctx.fillStyle = '#f59e0b';
+            ctx.beginPath();
+            ctx.moveTo(player.x - 5, player.y + 15);
+            ctx.lineTo(player.x, player.y + 25 + Math.random()*10);
+            ctx.lineTo(player.x + 5, player.y + 15);
+            ctx.fill();
+
+            // Auto Fire
+            if (frameCount % 10 === 0) {
+                bullets.push(new Bullet(player.x, player.y - 20));
+            }
+
+            // Updates
+            bullets.forEach((b, index) => {
+                b.update();
+                b.draw();
+                if (b.y < 0) bullets.splice(index, 1);
+            });
+
+            spawnEnemy();
+            
+            enemies.forEach((e, index) => {
+                e.update();
+                e.draw();
+                // Remove if far off screen (should be handled by Game Over logic mostly)
+            });
+
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                if (p.life <= 0) particles.splice(index, 1);
+            });
+
+            checkCollisions();
+
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // Starfield Background Effect (Always running lightly)
+        let stars = [];
+        for(let i=0; i<100; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2,
+                speed: Math.random() * 0.5 + 0.1
+            });
+        }
+
+        function drawBackground() {
+            if (gameState === 'PLAYING') return; // animate handle clears
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            stars.forEach(star => {
+                star.y += star.speed;
+                if (star.y > canvas.height) star.y = 0;
+                ctx.globalAlpha = Math.random() * 0.5 + 0.3;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI*2);
+                ctx.fill();
+            });
+            requestAnimationFrame(drawBackground);
+        }
+        
+        // Start background loop immediately
+        drawBackground();
+
     </script>
 </body>
 </html>
