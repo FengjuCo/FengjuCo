@@ -83,6 +83,132 @@
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
+
+        /* --- PHIT Animation CSS (New) --- */
+        .phit-anim-box {
+            background: radial-gradient(circle at center top, #1e293b, #0f172a);
+            position: relative;
+            overflow: hidden;
+            border-radius: 1rem;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+            height: 320px; /* Slightly taller for better arrow travel */
+            margin-bottom: 3rem;
+            border: 1px solid #334155;
+        }
+
+        /* UV Lamp */
+        .uv-lamp-glow {
+            position: absolute;
+            top: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 160px;
+            height: 12px;
+            background: #e0e7ff;
+            border-radius: 6px;
+            box-shadow: 
+                0 0 15px #a78bfa, 
+                0 0 30px #8b5cf6, 
+                0 0 50px #7c3aed;
+            z-index: 10;
+            animation: lamp-flicker 4s infinite alternate;
+        }
+
+        /* Purple Downward Arrows (Beam) */
+        .uv-arrow {
+            position: absolute;
+            top: 60px; /* Start below lamp */
+            left: 50%;
+            transform: translateX(-50%);
+            color: #a78bfa; /* Light Purple */
+            font-size: 24px;
+            opacity: 0;
+            z-index: 9;
+            text-shadow: 0 0 10px #8b5cf6;
+        }
+
+        /* Animation for arrows dropping */
+        .beam-arrow-1 { animation: arrow-drop 1.2s infinite; animation-delay: 0s; left: 45%; font-size: 20px;}
+        .beam-arrow-2 { animation: arrow-drop 1.2s infinite; animation-delay: 0.4s; left: 50%; font-size: 28px; color: #c4b5fd;}
+        .beam-arrow-3 { animation: arrow-drop 1.2s infinite; animation-delay: 0.2s; left: 55%; font-size: 20px;}
+        
+        @keyframes arrow-drop {
+            0% { top: 60px; opacity: 1; transform: translateX(-50%) scale(0.8); }
+            70% { opacity: 0.8; }
+            100% { top: 180px; opacity: 0; transform: translateX(-50%) scale(1); }
+        }
+
+        /* Metal Plate */
+        .metal-plate {
+            position: absolute;
+            top: 200px;
+            left: 50%;
+            transform: translateX(-50%) perspective(400px) rotateX(60deg);
+            width: 220px;
+            height: 140px;
+            background: linear-gradient(135deg, #cbd5e1 0%, #f1f5f9 50%, #94a3b8 100%);
+            border: 1px solid #64748b;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3); /* Purple glow on impact */
+            z-index: 5;
+            border-radius: 6px;
+        }
+
+        /* Particles (Purification Factors) - Stronger Diffusion */
+        .particle {
+            position: absolute;
+            top: 210px; /* Start at plate */
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle, #fff 20%, #34d399 100%); /* Emerald/White glow */
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 12;
+            box-shadow: 0 0 12px #34d399;
+            pointer-events: none;
+        }
+
+        /* More Particles with Wider Spread */
+        .p1 { animation: float-out-strong 2.5s infinite linear; animation-delay: 0s; --tx: -80px; }
+        .p2 { animation: float-out-strong 2.8s infinite linear; animation-delay: 0.2s; --tx: 80px; }
+        .p3 { animation: float-out-strong 2.2s infinite linear; animation-delay: 0.5s; --tx: -120px; }
+        .p4 { animation: float-out-strong 3.0s infinite linear; animation-delay: 0.1s; --tx: 120px; }
+        .p5 { animation: float-out-strong 2.6s infinite linear; animation-delay: 0.8s; --tx: -40px; }
+        .p6 { animation: float-out-strong 2.4s infinite linear; animation-delay: 0.4s; --tx: 40px; }
+        
+        /* New added particles */
+        .p7 { animation: float-out-strong 2.1s infinite linear; animation-delay: 1.0s; --tx: -150px; }
+        .p8 { animation: float-out-strong 2.9s infinite linear; animation-delay: 0.6s; --tx: 150px; }
+        .p9 { animation: float-out-strong 2.3s infinite linear; animation-delay: 1.2s; --tx: -20px; }
+        .p10 { animation: float-out-strong 2.7s infinite linear; animation-delay: 1.5s; --tx: 20px; }
+        .p11 { animation: float-out-strong 2.0s infinite linear; animation-delay: 0.3s; --tx: -100px; }
+        .p12 { animation: float-out-strong 3.1s infinite linear; animation-delay: 0.9s; --tx: 100px; }
+        .p13 { animation: float-out-strong 2.5s infinite linear; animation-delay: 1.8s; --tx: -60px; }
+        .p14 { animation: float-out-strong 2.2s infinite linear; animation-delay: 1.4s; --tx: 60px; }
+        .p15 { animation: float-out-strong 2.8s infinite linear; animation-delay: 0.7s; --tx: 0px; }
+
+        /* Animation Keyframes */
+        @keyframes lamp-flicker {
+            0%, 100% { opacity: 1; box-shadow: 0 0 20px #a78bfa, 0 0 40px #8b5cf6; }
+            50% { opacity: 0.9; box-shadow: 0 0 15px #a78bfa, 0 0 25px #8b5cf6; }
+        }
+
+        @keyframes float-out-strong {
+            0% {
+                transform: translate(-50%, 0) scale(0.2);
+                opacity: 0;
+                top: 210px;
+            }
+            10% {
+                opacity: 1;
+                transform: translate(calc(-50% + var(--tx) * 0.2), -20px) scale(0.8);
+            }
+            100% {
+                /* Much wider X spread, Higher Y rise */
+                transform: translate(calc(-50% + var(--tx) * 2), -200px) scale(1.8);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-stone-50 text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-900">
@@ -235,9 +361,50 @@
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="max-w-3xl mx-auto text-center mb-12">
                     <h2 class="text-3xl font-bold text-slate-900 mb-4">PHIT 光合離子化技術</h2>
-                    <p class="text-slate-600">
+                    <p class="text-slate-600 mb-8">
                         仿生自然界雷雨過後的淨化機制。利用寬頻譜紫外線與金屬靶材，催化空氣中的氧氣與水氣，產生主動式的「淨化軍隊」。
                     </p>
+                    
+                    <!-- NEW CSS ANIMATION DEMO -->
+                    <div class="phit-anim-box w-full max-w-2xl mx-auto">
+                        <!-- Scene Elements -->
+                        <div class="uv-lamp-glow"></div>
+                        
+                        <!-- Purple Arrows (Beam) -->
+                        <div class="uv-arrow beam-arrow-1"><i class="fa-solid fa-arrow-down"></i></div>
+                        <div class="uv-arrow beam-arrow-2"><i class="fa-solid fa-arrow-down"></i></div>
+                        <div class="uv-arrow beam-arrow-3"><i class="fa-solid fa-arrow-down"></i></div>
+
+                        <div class="metal-plate"></div>
+                        
+                        <!-- Particles generating and floating up (Increased Quantity) -->
+                        <div class="particle p1"></div>
+                        <div class="particle p2"></div>
+                        <div class="particle p3"></div>
+                        <div class="particle p4"></div>
+                        <div class="particle p5"></div>
+                        <div class="particle p6"></div>
+                        <div class="particle p7"></div>
+                        <div class="particle p8"></div>
+                        <div class="particle p9"></div>
+                        <div class="particle p10"></div>
+                        <div class="particle p11"></div>
+                        <div class="particle p12"></div>
+                        <div class="particle p13"></div>
+                        <div class="particle p14"></div>
+                        <div class="particle p15"></div>
+
+                        <!-- Labels -->
+                        <div class="absolute top-4 right-4 text-xs text-purple-300 font-mono border border-purple-500/50 rounded px-2 py-1 bg-black/30">
+                            UV 光源激發
+                        </div>
+                        <div class="absolute bottom-4 left-4 text-xs text-slate-300 font-mono border border-slate-500/50 rounded px-2 py-1 bg-black/30">
+                            金屬靶材 (TiO2等)
+                        </div>
+                        <div class="absolute top-1/2 right-4 text-xs text-emerald-300 font-mono font-bold animate-pulse">
+                            <i class="fa-solid fa-arrow-up mr-1"></i>產生淨化因子 (強效擴散)
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Interactive Process Flow -->
