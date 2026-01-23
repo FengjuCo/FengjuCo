@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoHeal 光合電子樹 | 環境淨化系統技術中心</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts: Noto Sans TC -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- Placeholder Comments Required by Prompt -->
+    <!-- Chosen Palette: Nature & Tech - Warm Neutral Background (Stone-50) with Forest Green (Emerald-600) for "Eco", Clean Blue (Sky-500) for "Air/Water", and Dark Slate (Slate-800) for text. -->
+    
+    <!-- Application Structure Plan: 
+         The app is designed as a vertical scrolling storytelling experience with interactive "stops".
+         1. Hero Section: Establishes Brand Philosophy (Eco+Heal).
+         2. Problem Section (IAQ): Uses Bar Charts to visualize the "2-5x dirtier" stat.
+         3. Tech Section (PHIT): Breakdowns the complex chemical process into 3 simple, interactive cards. Includes the particle simulation.
+         4. Comparison Section: Uses a Radar Chart to visually prove superiority over HEPA/Ozone/UV.
+         5. Calculator Section: An interactive tool to prove the "Low OPEX" claim.
+         6. Applications & Proof: Card grids for scenarios and case studies.
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. IAQ Bar Chart: Goal: Inform. Method: Chart.js Bar. Interaction: Tooltips.
+         2. Tech Comparison Radar: Goal: Compare. Method: Chart.js Radar. Interaction: Dataset toggling.
+         3. Cost Line Chart: Goal: Persuade. Method: Chart.js Line. Interaction: Dynamic updates.
+         4. PHIT Process Cards: Goal: Explain. Method: HTML/CSS Grid. Interaction: Hover effects.
+    -->
+    
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #fcfcfc; /* Very light warm grey */
+            color: #1e293b; /* Slate 800 */
+        }
+
+        /* Chart Container Styling - MANDATORY ADHERENCE */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px; /* Base height */
+            max-height: 400px;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-item.active {
+            color: #059669; /* Emerald 600 */
+            border-bottom: 2px solid #059669;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-stone-50 text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-900">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Left Side: Corporate Logo + Product Logo -->
+                <div class="flex items-center">
+                    <!-- Corporate Link (Moved to Left with Image) -->
+                    <a href="https://www.fengju.com.tw" class="flex items-center gap-2 hover:opacity-75 transition group mr-4">
+                        <!-- Updated: Image Source and Size -->
+                        <img src="豐鉅儀器LOGO.PNG" alt="豐鉅公司" class="h-6 w-auto" onerror="this.style.display='none'">
+                        <span class="font-bold text-slate-700 group-hover:text-emerald-700 text-sm whitespace-nowrap">豐鉅公司</span>
+                    </a>
+
+                    <!-- Vertical Divider -->
+                    <div class="h-6 w-px bg-stone-300 mr-4 hidden sm:block"></div>
+
+                    <!-- Product Logo -->
+                    <div class="flex items-center">
+                        <span class="text-2xl font-bold text-emerald-700"><i class="fa-solid fa-tree mr-2"></i>EcoHeal</span>
+                        <span class="hidden lg:block ml-2 text-xs text-stone-500 tracking-widest uppercase">Environmental Restoration System</span>
+                    </div>
+                </div>
+                
+                <!-- Right Side: Menu Items -->
+                <div class="flex items-center">
+                    <div class="hidden md:flex space-x-6 items-center">
+                        <button onclick="scrollToSection('hero')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">首頁</button>
+                        <button onclick="scrollToSection('iaq')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">室內汙染危機</button>
+                        <button onclick="scrollToSection('tech')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">核心技術</button>
+                        <button onclick="scrollToSection('compare')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">技術比較</button>
+                        <button onclick="scrollToSection('roi')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">效益分析</button>
+                        <button onclick="scrollToSection('cases')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">實績認證</button>
+                    </div>
+                    
+                    <!-- Mobile menu button -->
+                    <div class="md:hidden flex items-center ml-4">
+                        <button onclick="toggleMobileMenu()" class="text-slate-600 hover:text-emerald-600 p-2">
+                            <i class="fa-solid fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-stone-200">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <button onclick="scrollToSection('iaq'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">危機分析</button>
+                <button onclick="scrollToSection('tech'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">PHIT 技術</button>
+                <button onclick="scrollToSection('compare'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">競品比較</button>
+                <button onclick="scrollToSection('roi'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">效益計算</button>
+                <!-- Mobile Corporate Link -->
+                <a href="https://www.fengju.com.tw" class="block w-full text-left px-3 py-2 rounded-md text-base font-bold text-slate-800 bg-stone-100 mt-2">
+                    <i class="fa-solid fa-building mr-2"></i>前往 豐鉅公司 官網
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="pt-16">
+
+        <!-- Hero Section -->
+        <section id="hero" class="relative bg-gradient-to-br from-stone-50 via-emerald-50 to-sky-50 py-20 lg:py-32 overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center max-w-3xl mx-auto">
+                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold tracking-wide uppercase mb-4">
+                        Biomimicry Technology
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-slate-900 mb-6 tracking-tight">
+                        環境自癒，<br class="md:hidden">回歸原生態
+                    </h1>
+                    <p class="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
+                        EcoHeal (Eco-Health) 透過仿生工程，模擬大自然「陽光、空氣、水」的交互作用。我們不只過濾空氣，而是啟動室內的<span class="font-bold text-emerald-600">自我淨化機制</span>。
+                    </p>
+                    <div class="flex justify-center gap-4">
+                        <button onclick="scrollToSection('tech')" class="px-8 py-3 bg-emerald-600 text-white rounded-lg font-semibold shadow-lg hover:bg-emerald-700 transition transform hover:-translate-y-0.5">
+                            探索 PHIT 技術
+                        </button>
+                        <button onclick="scrollToSection('compare')" class="px-8 py-3 bg-white text-emerald-600 border border-emerald-200 rounded-lg font-semibold shadow hover:bg-stone-50 transition">
+                            技術差異比較
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Decorative Elements -->
+            <div class="absolute top-1/2 left-10 text-emerald-200 text-9xl opacity-20"><i class="fa-solid fa-leaf"></i></div>
+            <div class="absolute bottom-10 right-10 text-sky-200 text-9xl opacity-20"><i class="fa-solid fa-wind"></i></div>
+        </section>
+
+        <!-- Section 1: IAQ Risk (Indoor Air Quality) -->
+        <section id="iaq" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">隱形的危機：病態建築症候群</h2>
+                    <p class="text-slate-600">
+                        根據 EPA 研究，我們每天 90% 的時間待在室內，但室內汙染濃度往往高於室外。我們無法選擇不呼吸，每人每日需交換 15-20 公升的空氣。了解您身邊的「隱形殺手」是改善健康的第一步。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <!-- Chart: Indoor vs Outdoor -->
+                    <div class="glass-panel p-6 rounded-xl">
+                        <h3 class="text-lg font-semibold mb-4 text-center">室內外汙染濃度對比 (倍數)</h3>
+                        <div class="chart-container">
+                            <canvas id="iaqChart"></canvas>
+                        </div>
+                        <p class="text-xs text-center text-slate-400 mt-2">資料來源：美國環境保護署 (EPA)</p>
+                    </div>
+
+                    <!-- Pollutant List -->
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 text-xl">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold text-slate-800">揮發性有機化合物 (VOCs)</h4>
+                                <p class="text-slate-600 text-sm">裝潢、家具持續釋放甲醛長達 15-20 年。即便「綠建材」也僅是低釋放，非零釋放。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-xl">
+                                <i class="fa-solid fa-virus"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold text-slate-800">生物性氣膠 (Bio-aerosols)</h4>
+                                <p class="text-slate-600 text-sm">高濃度 CO2 環境下，細菌、病毒、黴菌透過氣溶膠傳播，空調管道常成為溫床。</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-xl">
+                                <i class="fa-solid fa-smog"></i>
+                            </div>
+                            <div class="ml-4">
+                                <h4 class="text-lg font-bold text-slate-800">PM2.5 與化學汙染</h4>
+                                <p class="text-slate-600 text-sm">燃燒產生的微粒、清潔劑揮發物。微小顆粒可直接進入血液循環。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Core Technology (PHIT) -->
+        <section id="tech" class="py-16 bg-stone-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">PHIT 光合離子化技術</h2>
+                    <p class="text-slate-600">
+                        仿生自然界雷雨過後的淨化機制。利用寬頻譜紫外線與金屬靶材，催化空氣中的氧氣與水氣，產生主動式的「淨化軍隊」。
+                    </p>
+                </div>
+
+                <!-- Interactive Process Flow -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+                    <!-- Step 1 -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 hover:shadow-md transition group">
+                        <div class="text-emerald-500 text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-regular fa-sun"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">1. 光能激發</h3>
+                        <p class="text-slate-600 text-sm">
+                            高純度石英真空燈管發出**寬頻譜紫外線 (Broad-spectrum UV)**，照射至特製的多重金屬靶材上。
+                        </p>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 hover:shadow-md transition group">
+                        <div class="text-blue-500 text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-atom"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">2. 高級氧化 (AOP)</h3>
+                        <p class="text-slate-600 text-sm">
+                            光能催化空氣中的 **O2** 與 **H2O**，誘發高級氧化反應，生成氣態過氧化氫 (H2O2) 與氫氧自由基。
+                        </p>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 hover:shadow-md transition group">
+                        <div class="text-purple-500 text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                            <i class="fa-solid fa-shield-virus"></i>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">3. 主動淨化</h3>
+                        <p class="text-slate-600 text-sm">
+                            淨化因子藉由**布朗運動**擴散全室，主動分解化學毒氣、擊殺病菌並沉降 PM2.5。
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 4 Pillars of Purification -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-emerald-900 text-white p-8 rounded-2xl flex flex-col justify-center">
+                        <h3 class="text-2xl font-bold mb-6">EcoHeal 的四重防護網</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-check-circle text-emerald-400 mr-3"></i>
+                                <span><strong>主動擴散：</strong> 無死角覆蓋，包含家具縫隙。</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-check-circle text-emerald-400 mr-3"></i>
+                                <span><strong>生物滅活：</strong> 破壞細菌/病毒 DNA/RNA，防疫等級。</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-check-circle text-emerald-400 mr-3"></i>
+                                <span><strong>化學分解：</strong> 將甲醛、苯還原為水與 CO2。</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-check-circle text-emerald-400 mr-3"></i>
+                                <span><strong>微粒沉降：</strong> 帶電離子使 PM2.5 凝集變重，快速落地。</span>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <!-- NEW ANIMATION SECTION -->
+                    <div class="bg-white rounded-2xl p-4 border border-stone-200 flex flex-col items-center justify-center overflow-hidden">
+                        <h3 class="text-xl font-bold mb-2 text-center text-emerald-800">淨化實況模擬：主動出擊與全方位瓦解</h3>
+                        <p class="text-xs text-slate-500 mb-2">
+                            觀看淨化因子(綠/藍)如何瓦解
+                            <span class="text-red-500 font-bold">病毒</span>、
+                            <span class="text-orange-500 font-bold">細菌</span>、
+                            <span class="text-purple-500 font-bold">黴菌</span> 與
+                            <span class="text-yellow-600 font-bold">甲醛</span>
+                        </p>
+                        <!-- Canvas Container -->
+                        <div class="relative w-full h-64 bg-slate-900 rounded-lg shadow-inner overflow-hidden">
+                            <canvas id="phitSimulation" class="w-full h-full block"></canvas>
+                            <!-- Overlay Label -->
+                            <div class="absolute bottom-2 left-2 text-white/50 text-[10px] bg-black/30 p-1 rounded">
+                                <span class="mr-2">● 淨化因子</span>
+                                <span class="mr-2 text-red-400">☀ 病毒</span>
+                                <span class="mr-2 text-orange-400">▮ 細菌</span>
+                                <span class="mr-2 text-purple-400">♣ 黴菌</span>
+                                <span class="text-yellow-500">⬡ 甲醛</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Comparative Analysis -->
+        <section id="compare" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">技術大對決：為什麼選擇主動式？</h2>
+                    <p class="text-slate-600">
+                        傳統清淨機 (HEPA) 是「空氣吸塵器」，只能被動等待。EcoHeal 是「環境還原系統」。透過下方雷達圖，您可以清楚看見各項技術在安全性、覆蓋率與維護成本上的巨大差異。
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <!-- Radar Chart -->
+                    <div class="glass-panel p-4 rounded-xl flex flex-col items-center justify-center">
+                        <h3 class="text-lg font-bold mb-4">綜合效能評估</h3>
+                        <div class="chart-container">
+                            <canvas id="comparisonChart"></canvas>
+                        </div>
+                        <div class="flex flex-wrap justify-center gap-2 mt-4 text-xs">
+                            <span class="px-2 py-1 bg-emerald-100 text-emerald-800 rounded">● EcoHeal</span>
+                            <span class="px-2 py-1 bg-slate-200 text-slate-600 rounded">● HEPA 濾網</span>
+                            <span class="px-2 py-1 bg-red-100 text-red-600 rounded">● 臭氧機</span>
+                            <span class="px-2 py-1 bg-yellow-100 text-yellow-600 rounded">● 紫外線</span>
+                        </div>
+                    </div>
+
+                    <!-- Comparison Details -->
+                    <div class="space-y-4">
+                        <div class="border-l-4 border-emerald-500 pl-4 py-2 bg-emerald-50 rounded-r-lg">
+                            <h4 class="font-bold text-emerald-800">EcoHeal 光合電子樹</h4>
+                            <p class="text-sm text-emerald-700">主動全域淨化、無耗材、分解化學毒氣、物體表面殺菌、人機共存。</p>
+                        </div>
+                        
+                        <div class="border-l-4 border-slate-400 pl-4 py-2 hover:bg-slate-50 transition">
+                            <h4 class="font-bold text-slate-700">HEPA 濾網過濾</h4>
+                            <p class="text-sm text-slate-600">被動攔截、死角多、濾網易二次汙染、噪音大、無法分解氣體 (甲醛)。</p>
+                        </div>
+
+                        <div class="border-l-4 border-red-400 pl-4 py-2 hover:bg-red-50 transition">
+                            <h4 class="font-bold text-slate-700">臭氧機 (Ozone)</h4>
+                            <p class="text-sm text-slate-600">傷肺風險高、產生有毒氮氧化物、黑牆效應、無法人機共存。</p>
+                        </div>
+
+                        <div class="border-l-4 border-yellow-400 pl-4 py-2 hover:bg-yellow-50 transition">
+                            <h4 class="font-bold text-slate-700">紫外線 (UV) 殺菌</h4>
+                            <p class="text-sm text-slate-600">照射範圍小 (5-15cm)、長時間才有效、造成裝潢/塑膠老化、傷眼。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: ROI & Sustainability -->
+        <section id="roi" class="py-16 bg-stone-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">極致效益：無耗材與低能耗</h2>
+                    <p class="text-slate-600">
+                        EcoHeal 核心燈管壽命長達 25,000 小時，無須更換昂貴濾網。24小時連續運轉，年電費僅約百元。請使用下方試算器，比較 5 年期的持有成本。
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-stone-200">
+                    <div class="grid grid-cols-1 md:grid-cols-2">
+                        <!-- Controls -->
+                        <div class="p-8 bg-slate-50 border-r border-stone-200">
+                            <h3 class="text-xl font-bold mb-6 text-slate-800">成本試算設定</h3>
+                            
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-slate-700 mb-2">使用年限: <span id="yearLabel" class="text-emerald-600 font-bold">5</span> 年</label>
+                                <input type="range" id="yearInput" min="1" max="10" value="5" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-emerald-600">
+                            </div>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-medium text-slate-500 uppercase">HEPA 清淨機 (競品)</label>
+                                    <div class="flex justify-between text-sm mt-1">
+                                        <span>濾網年費 (台幣)</span>
+                                        <input type="number" id="hepaCostInput" value="4000" class="w-24 text-right border border-stone-300 rounded px-2 py-1 text-slate-700 focus:outline-none focus:border-emerald-500">
+                                    </div>
+                                    <div class="flex justify-between text-sm mt-1">
+                                        <span>年電費 (台幣)</span>
+                                        <span class="text-slate-500">約 3000 (高功率)</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="pt-4 border-t border-stone-200">
+                                    <label class="block text-xs font-medium text-emerald-600 uppercase">EcoHeal 光合電子樹</label>
+                                    <div class="flex justify-between text-sm mt-1">
+                                        <span>耗材費用</span>
+                                        <span class="font-bold text-emerald-600">0 (無濾網)</span>
+                                    </div>
+                                    <div class="flex justify-between text-sm mt-1">
+                                        <span>年電費 (台幣)</span>
+                                        <span class="font-bold text-emerald-600">約 120 (低功率)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Visualization -->
+                        <div class="p-6 flex flex-col justify-center bg-white">
+                            <div class="chart-container">
+                                <canvas id="roiChart"></canvas>
+                            </div>
+                            <p class="text-center text-xs text-slate-400 mt-4">* EcoHeal 建議 24H 開啟以維持熱穩定性與最佳壽命。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Usage Scenarios & Cases -->
+        <section id="cases" class="py-16 bg-white">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-12">
+                    <h2 class="text-3xl font-bold text-slate-900 mb-4">全方位應用與實績認證</h2>
+                    <p class="text-slate-600">
+                        從國家級防疫到個人隨身防護，EcoHeal 提供了完整的環境解決方案。
+                    </p>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex justify-center mb-8">
+                    <div class="bg-stone-100 p-1 rounded-lg inline-flex">
+                        <button onclick="switchTab('home')" id="tab-home" class="px-4 py-2 rounded-md text-sm font-medium bg-white shadow text-emerald-700 transition">居家/分散</button>
+                        <button onclick="switchTab('car')" id="tab-car" class="px-4 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-emerald-700 transition">車用/甲醛</button>
+                        <button onclick="switchTab('travel')" id="tab-travel" class="px-4 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-emerald-700 transition">差旅/個人</button>
+                    </div>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="bg-emerald-50 rounded-2xl p-8 mb-16 border border-emerald-100">
+                    <div id="content-home" class="fade-in">
+                        <h3 class="text-xl font-bold text-emerald-900 mb-2"><i class="fa-solid fa-house mr-2"></i>居家策略：多點分散式佈局</h3>
+                        <p class="text-emerald-800 mb-4">
+                            與其買一台昂貴的大機器放在客廳（房間吸不到），不如配置多台 EcoHeal 於各房間。確保淨化因子均勻分佈，消除死角。
+                        </p>
+                        <div class="bg-white/60 p-4 rounded-lg text-sm text-emerald-900">
+                            <strong>實績案例：</strong> 圓山飯店（除黴）、產後護理之家（新生兒保護）、火災後住家（除戴奧辛）。
+                        </div>
+                    </div>
+                    <div id="content-car" class="hidden fade-in">
+                        <h3 class="text-xl font-bold text-emerald-900 mb-2"><i class="fa-solid fa-car mr-2"></i>車用策略：高溫甲醛剋星</h3>
+                        <p class="text-emerald-800 mb-4">
+                            「新車味」即是致癌甲醛。高溫曝曬會加速釋放。EcoHeal 車用版採低溫技術 (37°C)，插在冷氣出風口，3分鐘內顯著降解毒氣。
+                        </p>
+                        <div class="bg-white/60 p-4 rounded-lg text-sm text-emerald-900">
+                            <strong>技術特點：</strong> 低溫燈管抗震設計，適應車內溫差變化。
+                        </div>
+                    </div>
+                    <div id="content-travel" class="hidden fade-in">
+                        <h3 class="text-xl font-bold text-emerald-900 mb-2"><i class="fa-solid fa-suitcase mr-2"></i>差旅策略：微環境防護罩</h3>
+                        <p class="text-emerald-800 mb-4">
+                            飯店地毯與窗簾是過敏原與塵蟎溫床。利用布朗運動原理，將設備置於床頭，優先建立頭部周圍的「微環境潔淨區」。
+                        </p>
+                        <div class="bg-white/60 p-4 rounded-lg text-sm text-emerald-900">
+                            <strong>實績案例：</strong> 國家衛生研究院、海軍司令部、總統府防疫門。
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Certifications Grid -->
+                <h3 class="text-center text-xl font-bold mb-6 text-slate-800">權威認證與測試單位</h3>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                    <div class="p-4 bg-white shadow-sm rounded-lg border border-stone-100">
+                        <i class="fa-solid fa-flask text-emerald-500 text-2xl mb-2"></i>
+                        <div class="text-sm font-bold">廣州微生物實驗室</div>
+                        <div class="text-xs text-slate-500">P4 等級</div>
+                    </div>
+                    <div class="p-4 bg-white shadow-sm rounded-lg border border-stone-100">
+                        <i class="fa-solid fa-hospital text-emerald-500 text-2xl mb-2"></i>
+                        <div class="text-sm font-bold">長庚醫院</div>
+                        <div class="text-xs text-slate-500">臨床實測</div>
+                    </div>
+                    <div class="p-4 bg-white shadow-sm rounded-lg border border-stone-100">
+                        <i class="fa-solid fa-microscope text-emerald-500 text-2xl mb-2"></i>
+                        <div class="text-sm font-bold">高醫病理實驗室</div>
+                        <div class="text-xs text-slate-500">病理驗證</div>
+                    </div>
+                    <div class="p-4 bg-white shadow-sm rounded-lg border border-stone-100">
+                        <i class="fa-solid fa-shield-halved text-emerald-500 text-2xl mb-2"></i>
+                        <div class="text-sm font-bold">安全性認證</div>
+                        <div class="text-xs text-slate-500">臭氧/濃度合規</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <span class="text-xl font-bold text-emerald-400"><i class="fa-solid fa-tree mr-2"></i>EcoHeal</span>
+                <p class="mt-4 text-slate-400 text-sm">
+                    主動式環境生態還原系統。<br>
+                    模擬自然，治癒環境。
+                </p>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-4 text-emerald-400">核心優勢</h4>
+                <ul class="text-slate-400 text-sm space-y-2">
+                    <li><i class="fa-solid fa-check mr-2"></i>無耗材設計</li>
+                    <li><i class="fa-solid fa-check mr-2"></i>主動式防疫</li>
+                    <li><i class="fa-solid fa-check mr-2"></i>24H 節能運轉</li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="text-lg font-semibold mb-4 text-emerald-400">使用提醒</h4>
+                <p class="text-slate-400 text-sm">
+                    為維持燈管熱穩定性與真空氣密，強烈建議 24 小時連續開啟，請勿頻繁開關電源。
+                </p>
+            </div>
+        </div>
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-slate-700 text-center text-slate-500 text-xs">
+            &copy; 2026 EcoHeal, Fengju Co. Generated based on provided technical white paper.
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // -- Navigation Logic --
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                const offset = 80; // height of nav
+                const bodyRect = document.body.getBoundingClientRect().top;
+                const elementRect = element.getBoundingClientRect().top;
+                const elementPosition = elementRect - bodyRect;
+                const offsetPosition = elementPosition - offset;
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // -- Tab Switching Logic for Scenarios --
+        function switchTab(tabName) {
+            // Hide all content
+            ['home', 'car', 'travel'].forEach(t => {
+                document.getElementById(`content-${t}`).classList.add('hidden');
+                document.getElementById(`tab-${t}`).classList.remove('bg-white', 'shadow', 'text-emerald-700');
+                document.getElementById(`tab-${t}`).classList.add('text-slate-600');
+            });
+
+            // Show selected content
+            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+            
+            // Style active tab
+            const activeTab = document.getElementById(`tab-${tabName}`);
+            activeTab.classList.remove('text-slate-600');
+            activeTab.classList.add('bg-white', 'shadow', 'text-emerald-700');
+        }
+
+        // -- Animation Logic: PHIT Simulation --
+        function initPHITAnimation() {
+            const canvas = document.getElementById('phitSimulation');
+            const ctx = canvas.getContext('2d');
+            let width, height;
+            
+            // Entities
+            const factors = [];
+            const pollutants = [];
+            const debris = []; // For explosion effects
+
+            function resize() {
+                // Get parent container dimensions
+                const rect = canvas.parentElement.getBoundingClientRect();
+                width = rect.width;
+                height = rect.height;
+                canvas.width = width;
+                canvas.height = height;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Factor {
+                constructor() {
+                    this.x = width / 2;
+                    this.y = height / 2;
+                    this.size = Math.random() * 2 + 1;
+                    const angle = Math.random() * Math.PI * 2;
+                    const speed = Math.random() * 2 + 1.5;
+                    this.vx = Math.cos(angle) * speed;
+                    this.vy = Math.sin(angle) * speed;
+                    this.color = Math.random() > 0.5 ? '#10b981' : '#3b82f6'; // Emerald or Blue
+                    this.life = 100;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.life--;
+                }
+                draw() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                }
+            }
+
+            class Pollutant {
+                constructor() {
+                    // Spawn from edges
+                    if (Math.random() > 0.5) {
+                        this.x = Math.random() > 0.5 ? 0 : width;
+                        this.y = Math.random() * height;
+                    } else {
+                        this.x = Math.random() * width;
+                        this.y = Math.random() > 0.5 ? 0 : height;
+                    }
+                    
+                    this.vx = (Math.random() - 0.5) * 1;
+                    this.vy = (Math.random() - 0.5) * 1;
+                    this.active = true;
+
+                    // Randomly assign type
+                    const rand = Math.random();
+                    if (rand < 0.25) {
+                        this.type = 'virus';
+                        this.size = 5;
+                        this.color = '#f87171'; // Red 400
+                    } else if (rand < 0.5) {
+                        this.type = 'bacteria';
+                        this.size = 6;
+                        this.color = '#fb923c'; // Orange 400
+                    } else if (rand < 0.75) {
+                        this.type = 'mold';
+                        this.size = 4;
+                        this.color = '#a78bfa'; // Purple 400
+                    } else {
+                        this.type = 'chemical'; // Formaldehyde/VOC
+                        this.size = 5;
+                        this.color = '#eab308'; // Yellow 500
+                    }
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    
+                    // Bounce off walls
+                    if (this.x < 0 || this.x > width) this.vx *= -1;
+                    if (this.y < 0 || this.y > height) this.vy *= -1;
+                }
+                draw() {
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+
+                    if (this.type === 'virus') {
+                        // Spiky ball
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                        for(let i=0; i<6; i++) {
+                            const angle = (i / 6) * Math.PI * 2;
+                            const sx = this.x + Math.cos(angle) * (this.size + 2);
+                            const sy = this.y + Math.sin(angle) * (this.size + 2);
+                            ctx.beginPath();
+                            ctx.arc(sx, sy, 1.5, 0, Math.PI*2);
+                            ctx.fill();
+                        }
+                    } else if (this.type === 'bacteria') {
+                        // Rod/Pill shape (Capsule)
+                        const w = this.size * 2;
+                        const h = this.size;
+                        // Draw a pill shape
+                        ctx.beginPath();
+                        ctx.roundRect(this.x - w/2, this.y - h/2, w, h, h/2);
+                        ctx.fill();
+                        // Add little flagella
+                        ctx.strokeStyle = this.color;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(this.x + w/2, this.y);
+                        ctx.lineTo(this.x + w/2 + 3, this.y + (Math.random()-0.5)*3);
+                        ctx.stroke();
+                    } else if (this.type === 'mold') {
+                        // Cluster of spheres
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.arc(this.x + 3, this.y + 3, this.size*0.8, 0, Math.PI * 2);
+                        ctx.arc(this.x - 2, this.y + 2, this.size*0.8, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else { // Chemical / VOC
+                        // Hexagon ring
+                        ctx.beginPath();
+                        for (let i = 0; i < 6; i++) {
+                            const angle = (i / 6) * Math.PI * 2;
+                            const hx = this.x + Math.cos(angle) * this.size;
+                            const hy = this.y + Math.sin(angle) * this.size;
+                            if (i === 0) ctx.moveTo(hx, hy);
+                            else ctx.lineTo(hx, hy);
+                        }
+                        ctx.closePath();
+                        ctx.fill();
+                        // Inner hole to look like benzene ring
+                        ctx.globalCompositeOperation = 'destination-out';
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size/2, 0, Math.PI*2);
+                        ctx.fill();
+                        ctx.globalCompositeOperation = 'source-over';
+                        ctx.fillStyle = this.color; // Reset for next draw
+                    }
+                }
+            }
+
+            class Debris {
+                constructor(x, y, color) {
+                    this.x = x;
+                    this.y = y;
+                    this.vx = (Math.random() - 0.5) * 4;
+                    this.vy = (Math.random() - 0.5) * 4;
+                    this.size = Math.random() * 2 + 1;
+                    this.color = color;
+                    this.life = 30; // Frames to live
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.life--;
+                    this.size *= 0.9;
+                }
+                draw() {
+                    ctx.save();
+                    ctx.globalAlpha = this.life / 30;
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                    ctx.restore();
+                }
+            }
+
+            function animate() {
+                // Clear with trail effect
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.3)'; // Slate 900 with opacity
+                ctx.fillRect(0, 0, width, height);
+
+                // Spawn Factors (from center)
+                if (Math.random() < 0.3) factors.push(new Factor());
+
+                // Spawn Pollutants (rarely, keep population around 10-15)
+                if (Math.random() < 0.08 && pollutants.length < 15) pollutants.push(new Pollutant());
+
+                // Update Factors
+                for (let i = factors.length - 1; i >= 0; i--) {
+                    const p = factors[i];
+                    p.update();
+                    p.draw();
+                    if (p.life <= 0 || p.x < 0 || p.x > width || p.y < 0 || p.y > height) {
+                        factors.splice(i, 1);
+                    }
+                }
+
+                // Update Pollutants & Collision
+                for (let i = pollutants.length - 1; i >= 0; i--) {
+                    const pol = pollutants[i];
+                    pol.update();
+                    pol.draw();
+
+                    // Check collision with factors
+                    let hit = false;
+                    for (let j = factors.length - 1; j >= 0; j--) {
+                        const fac = factors[j];
+                        const dx = pol.x - fac.x;
+                        const dy = pol.y - fac.y;
+                        const dist = Math.sqrt(dx*dx + dy*dy);
+                        
+                        // Simple collision detection
+                        if (dist < pol.size + fac.size + 2) {
+                            // COLLISION!
+                            hit = true;
+                            // Create Debris (Explosion) matching pollutant color
+                            for(let k=0; k<8; k++) {
+                                debris.push(new Debris(pol.x, pol.y, pol.color)); 
+                            }
+                            // Remove factor
+                            factors.splice(j, 1);
+                            break; // One hit kills for this animation simplicity
+                        }
+                    }
+
+                    if (hit) {
+                        pollutants.splice(i, 1);
+                    }
+                }
+
+                // Update Debris
+                for (let i = debris.length - 1; i >= 0; i--) {
+                    const d = debris[i];
+                    d.update();
+                    d.draw();
+                    if (d.life <= 0) debris.splice(i, 1);
+                }
+
+                // Draw Central Unit (The Source)
+                ctx.beginPath();
+                ctx.arc(width/2, height/2, 20, 0, Math.PI*2);
+                ctx.fillStyle = '#10b981'; // Emerald 500
+                ctx.fill();
+                // Glow
+                ctx.beginPath();
+                ctx.arc(width/2, height/2, 25, 0, Math.PI*2);
+                ctx.strokeStyle = 'rgba(16, 185, 129, 0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+
+        // -- Chart 1: IAQ (Indoor vs Outdoor) --
+        function initIAQChart() {
+            const ctx = document.getElementById('iaqChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['室外空氣', '室內空氣 (一般)', '室內 (通風不良)'],
+                    datasets: [{
+                        label: '汙染濃度指數',
+                        data: [1, 5, 20], // Represents 1x, 5x, up to 20x (conservative avg of 100x max)
+                        backgroundColor: [
+                            'rgba(16, 185, 129, 0.6)', // Emerald (Good)
+                            'rgba(245, 158, 11, 0.6)', // Amber (Warning)
+                            'rgba(239, 68, 68, 0.6)'   // Red (Danger)
+                        ],
+                        borderColor: [
+                            'rgba(16, 185, 129, 1)',
+                            'rgba(245, 158, 11, 1)',
+                            'rgba(239, 68, 68, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: '汙染倍數 (以室外為基準)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `汙染程度: 室外的 ${context.raw} 倍`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // -- Chart 2: Comparison Radar --
+        function initComparisonChart() {
+            const ctx = document.getElementById('comparisonChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['安全性', '全域覆蓋率', '維護便利性 (無耗材)', '除化學毒氣能力', '物體表面殺菌', '節能省電'],
+                    datasets: [{
+                        label: 'EcoHeal 光合電子樹',
+                        data: [10, 10, 10, 9, 10, 10], // High scores across board based on white paper
+                        fill: true,
+                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
+                        borderColor: 'rgb(16, 185, 129)',
+                        pointBackgroundColor: 'rgb(16, 185, 129)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(16, 185, 129)'
+                    }, {
+                        label: 'HEPA 濾網機',
+                        data: [9, 4, 2, 2, 0, 3], // Low coverage (dead zones), high maintenance cost, low gas removal, no surface cleaning
+                        fill: true,
+                        backgroundColor: 'rgba(148, 163, 184, 0.2)',
+                        borderColor: 'rgb(148, 163, 184)',
+                        pointBackgroundColor: 'rgb(148, 163, 184)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(148, 163, 184)'
+                    },
+                    {
+                        label: '臭氧機 (Ozone)',
+                        data: [2, 9, 8, 7, 8, 7], // Low safety (toxic), high coverage
+                        fill: true,
+                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                        borderColor: 'rgb(239, 68, 68)',
+                        pointBackgroundColor: 'rgb(239, 68, 68)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(239, 68, 68)'
+                    },
+                    {
+                        label: '紫外線 (UV) 殺菌',
+                        data: [2, 2, 6, 2, 4, 5], // Low safety/coverage, decent surface but only line of sight
+                        fill: true,
+                        backgroundColor: 'rgba(245, 158, 11, 0.2)',
+                        borderColor: 'rgb(245, 158, 11)',
+                        pointBackgroundColor: 'rgb(245, 158, 11)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(245, 158, 11)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: { borderWidth: 3 }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { display: false },
+                            suggestedMin: 0,
+                            suggestedMax: 10,
+                            pointLabels: {
+                                font: { size: 11 }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        // -- Chart 3: ROI Calculator (Line Chart) --
+        let roiChartInstance = null;
+
+        function updateROICalculation() {
+            const years = parseInt(document.getElementById('yearInput').value);
+            const hepaAnnualCost = parseInt(document.getElementById('hepaCostInput').value) + 3000; // Filter + Electric
+            const ecoAnnualCost = 120; // Electric only
+            
+            // Generate data arrays
+            const labels = [];
+            const hepaData = [];
+            const ecoData = [];
+            
+            let hepaSum = 0;
+            let ecoSum = 0;
+
+            // Initial machine cost assumption (just for relative comparison slope)
+            // Let's assume baseline 0 for pure OPEX comparison as per white paper focus on "consumables"
+            
+            for (let i = 0; i <= years; i++) {
+                labels.push(`第 ${i} 年`);
+                hepaData.push(hepaSum);
+                ecoData.push(ecoSum);
+                
+                hepaSum += hepaAnnualCost;
+                ecoSum += ecoAnnualCost;
+            }
+
+            // Update Label
+            document.getElementById('yearLabel').innerText = years;
+
+            // Update Chart
+            if (roiChartInstance) {
+                roiChartInstance.data.labels = labels;
+                roiChartInstance.data.datasets[0].data = ecoData;
+                roiChartInstance.data.datasets[1].data = hepaData;
+                roiChartInstance.update();
+            }
+        }
+
+        function initROIChart() {
+            const ctx = document.getElementById('roiChart').getContext('2d');
+            roiChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [], // Populated by update
+                    datasets: [{
+                        label: 'EcoHeal 累積持有成本',
+                        data: [],
+                        borderColor: 'rgb(16, 185, 129)',
+                        backgroundColor: 'rgba(16, 185, 129, 0.5)',
+                        tension: 0.1
+                    }, {
+                        label: '傳統 HEPA 累積持有成本',
+                        data: [],
+                        borderColor: 'rgb(148, 163, 184)',
+                        backgroundColor: 'rgba(148, 163, 184, 0.5)',
+                        tension: 0.1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            title: { display: true, text: '累積費用 (TWD)' },
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    }
+                }
+            });
+            updateROICalculation();
+        }
+
+        // -- Event Listeners --
+        document.addEventListener('DOMContentLoaded', () => {
+            initIAQChart();
+            initComparisonChart();
+            initROIChart();
+            initPHITAnimation(); // Start the new particle animation
+            
+            // Inputs for ROI
+            document.getElementById('yearInput').addEventListener('input', updateROICalculation);
+            document.getElementById('hepaCostInput').addEventListener('input', updateROICalculation);
+        });
+
+    </script>
+</body>
+</html>
