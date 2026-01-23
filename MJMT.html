@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MJMT X51/X52 專業製氧機 | 豐鉅儀器</title>
+    <meta name="description" content="MJMT專業製氧機系列，提供X51經典旋鈕款與X52智能觸控款。具備霧化功能、靜音設計與穩定高濃度供氧，滿足不同居家照護需求。">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+        }
+        
+        /* 表格樣式 */
+        .spec-table tr:nth-child(even) {
+            background-color: #f8fafc;
+        }
+
+        /* 過濾動畫樣式 */
+        .filter-container {
+            position: relative;
+            height: 400px;
+            background: #0f172a;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px;
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.8);
+            border: 1px solid #334155;
+        }
+
+        /* 濾網基礎樣式 */
+        .filter-layer {
+            width: 32px;
+            height: 85%;
+            background: rgba(30, 41, 59, 0.8);
+            border: 2px solid #334155;
+            border-top: 6px solid #1e293b;
+            border-bottom: 6px solid #1e293b;
+            border-radius: 4px;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 0 0 transparent;
+            transition: all 0.3s ease;
+            
+            /* 預設變數 */
+            --neon-color: #22d3ee;
+            --neon-bg: rgba(207, 250, 254, 0.9);
+        }
+        
+        /* 霓虹燈動畫 - 依序亮起 (使用 CSS 變數) */
+        .neon-anim {
+            animation: neonPulse 4s infinite;
+        }
+
+        @keyframes neonPulse {
+            0% {
+                border-color: #334155;
+                box-shadow: 0 0 0 transparent;
+                background: rgba(30, 41, 59, 0.8);
+            }
+            5% { /* 點亮瞬間 */
+                border-color: var(--neon-color); 
+                box-shadow: 0 0 15px var(--neon-color), 0 0 30px var(--neon-color);
+                background: var(--neon-bg);
+            }
+            20% { /* 慢慢熄滅 */
+                border-color: #334155;
+                box-shadow: 0 0 0 transparent;
+                background: rgba(30, 41, 59, 0.8);
+            }
+            100% {
+                border-color: #334155;
+                box-shadow: 0 0 0 transparent;
+                background: rgba(30, 41, 59, 0.8);
+            }
+        }
+
+        /* 設定每一層的延遲時間 */
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.5s; }
+        .delay-3 { animation-delay: 0.8s; }
+        .delay-4 { animation-delay: 1.4s; }
+        .delay-5 { animation-delay: 1.7s; }
+        .delay-6 { animation-delay: 2.0s; }
+        .delay-7 { animation-delay: 2.3s; }
+        .delay-8 { animation-delay: 3.0s; }
+        .delay-9 { animation-delay: 3.3s; }
+        .delay-10 { animation-delay: 3.6s; }
+
+
+        /* 紋理樣式 */
+        .type-mesh::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(#475569 1px, transparent 1px),
+                linear-gradient(90deg, #475569 1px, transparent 1px);
+            background-size: 4px 4px;
+            opacity: 0.5;
+        }
+
+        .type-pleated::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 1px,
+                #64748b 2px,
+                #64748b 3px
+            );
+            opacity: 0.3;
+        }
+
+        .type-beads { width: 50px !important; }
+        .type-beads::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, #3b82f6 20%, transparent 20%);
+            background-size: 6px 6px;
+            opacity: 0.4;
+        }
+
+        .type-gate::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 5px,
+                #475569 5px,
+                #475569 8px
+            );
+            opacity: 0.5;
+        }
+
+        /* 粒子動畫 - 顏色變化 */
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            left: 0;
+            opacity: 0;
+            z-index: 5;
+            animation: flow 4s linear infinite;
+        }
+
+        @keyframes flow {
+            0% {
+                left: 10px;
+                opacity: 0;
+                background-color: #111827; /* 灰黑 (髒空氣) */
+                box-shadow: 0 0 2px #000;
+                transform: translateY(var(--start-y)) scale(1.5);
+            }
+            10% {
+                opacity: 0.8;
+                background-color: #374151; /* 深灰 */
+            }
+            40% {
+                background-color: #ffffff; /* 變白 (淨化中) */
+                box-shadow: 0 0 5px #fff;
+                transform: translateY(calc(var(--start-y) * 0.5));
+            }
+            60% {
+                background-color: #e0f2fe; /* 微微藍白 */
+            }
+            90% {
+                opacity: 1;
+                background-color: #00f3ff; /* 亮螢光藍 (純氧) */
+                box-shadow: 0 0 10px #00f3ff, 0 0 20px #00f3ff;
+            }
+            100% {
+                left: 98%;
+                opacity: 0;
+                transform: translateY(var(--end-y)) scale(1);
+            }
+        }
+
+        .p1 { animation-delay: 0s; --start-y: -40px; --end-y: 20px; }
+        .p2 { animation-delay: 0.6s; --start-y: 60px; --end-y: -10px; }
+        .p3 { animation-delay: 1.2s; --start-y: -80px; --end-y: 30px; }
+        .p4 { animation-delay: 1.8s; --start-y: 20px; --end-y: -40px; }
+        .p5 { animation-delay: 2.4s; --start-y: 80px; --end-y: 0px; }
+        .p6 { animation-delay: 3.0s; --start-y: -20px; --end-y: 50px; }
+        
+        /* 標籤文字發光動畫 */
+        .layer-label {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 12px;
+            color: #64748b;
+            white-space: nowrap;
+            font-weight: 500;
+            pointer-events: none;
+        }
+
+        .label-anim {
+            animation: textGlow 4s infinite;
+        }
+
+        @keyframes textGlow {
+             0%, 100% { color: #64748b; text-shadow: none; font-weight: 500; }
+             5% { color: var(--neon-color); text-shadow: 0 0 8px var(--neon-color); font-weight: bold; }
+             20% { color: #64748b; text-shadow: none; font-weight: 500; }
+        }
+        
+        .label-bottom { bottom: -30px; }
+        .label-bottom::before {
+            content: ''; position: absolute; top: -8px; left: 50%; transform: translateX(-50%);
+            width: 1px; height: 8px; background: #334155;
+        }
+
+        .label-top { top: -30px; }
+        .label-top::after {
+            content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%);
+            width: 1px; height: 8px; background: #334155;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            margin: 0 8px;
+        }
+        
+        .filter-group-title {
+            position: absolute;
+            bottom: -70px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #94a3b8;
+            background: rgba(15, 23, 42, 0.9);
+            padding: 4px 12px;
+            border-radius: 20px;
+            border: 1px solid #334155;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        .filter-group:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            width: 12px;
+            height: 2px;
+            background: #334155;
+            z-index: 0;
+        }
+
+    </style>
+</head>
+<body class="bg-white text-slate-800">
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed w-full z-50 bg-white/95 backdrop-blur-sm shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <a href="index.html" class="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                        <img class="h-10 w-auto object-contain" src="豐鉅儀器LOGO.png" alt="豐鉅儀器 Logo" onerror="this.style.display='none'; document.getElementById('text-logo').classList.remove('hidden')">
+                        <span id="text-logo" class="hidden text-xl font-bold text-sky-700 tracking-wider">FENG JU</span>
+                        <span class="hidden md:block text-xl font-bold text-slate-700 ml-2">豐鉅儀器</span>
+                    </a>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="index.html#home" class="text-slate-600 hover:text-sky-600 font-medium transition-colors">回首頁</a>
+                    <a href="index.html#products" class="text-slate-600 hover:text-sky-600 font-medium transition-colors">其他產品</a>
+                    <a href="#contact" class="px-5 py-2.5 rounded-full bg-cyan-600 text-white font-medium hover:bg-cyan-700 transition-all shadow-md">聯絡諮詢</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <a href="index.html" class="text-slate-600 hover:text-sky-600 mr-4">
+                        <i class="fas fa-home text-xl"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Product Hero Section -->
+    <section class="pt-32 pb-16 hero-bg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col items-start mb-6">
+                <a href="index.html" class="text-sm text-slate-500 hover:text-sky-600 mb-2">
+                    <i class="fas fa-chevron-left mr-1"></i> 返回產品列表
+                </a>
+                <div class="flex items-center gap-2 text-sm text-sky-600 font-semibold uppercase tracking-wide">
+                    <span class="w-8 h-[2px] bg-sky-600"></span>
+                    MJMT Oxygen Concentrator Series
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <!-- Text Content -->
+                <div class="space-y-6">
+                    <h1 class="text-4xl md:text-5xl font-bold text-slate-900 leading-tight">
+                        MJMT 專業醫療級<br>
+                        <span class="text-cyan-600">製氧機系列</span>
+                    </h1>
+                    <p class="text-lg text-slate-600 leading-relaxed">
+                        針對不同使用習慣，提供 **X51 經典旋鈕款** 與 **X52 智能觸控款** 兩種選擇。全系列皆具備穩定的氧氣輸出與霧化功能，操作簡便，安靜舒適，是居家照護的理想夥伴。
+                    </p>
+                    
+                    <div class="flex flex-wrap gap-4 pt-4">
+                        <div class="bg-white px-4 py-3 rounded-lg shadow-sm border border-slate-100 flex items-center gap-3">
+                            <div class="bg-blue-100 p-2 rounded-full text-blue-600"><i class="fas fa-percent"></i></div>
+                            <div>
+                                <div class="text-xs text-slate-500">氧氣濃度</div>
+                                <div class="font-bold text-slate-800">93% ± 3%</div>
+                            </div>
+                        </div>
+                        <div class="bg-white px-4 py-3 rounded-lg shadow-sm border border-slate-100 flex items-center gap-3">
+                            <div class="bg-purple-100 p-2 rounded-full text-purple-600"><i class="fas fa-spray-can"></i></div>
+                            <div>
+                                <div class="text-xs text-slate-500">附加功能</div>
+                                <div class="font-bold text-slate-800">獨立霧化口</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-6">
+                        <a href="#filtration" class="inline-flex justify-center items-center px-8 py-3 rounded-lg bg-cyan-600 text-white font-semibold hover:bg-cyan-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                            探索核心技術
+                            <i class="fas fa-arrow-down ml-2"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Product Image -->
+                <div class="relative">
+                    <div class="absolute inset-0 bg-white/40 rounded-full blur-3xl transform translate-x-10 translate-y-10"></div>
+                    <img src="MJMT2.jpg" alt="MJMT 專業醫療級製氧機系列" class="relative z-10 w-full rounded-2xl shadow-2xl border-4 border-white transform hover:scale-[1.02] transition-transform duration-500" onerror="this.src='https://via.placeholder.com/600x400?text=MJMT+Series'">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NEW Filtration System Section -->
+    <section id="filtration" class="py-20 bg-slate-900 text-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <div class="inline-block px-4 py-1 rounded-full bg-cyan-900/50 border border-cyan-500 text-cyan-400 text-sm font-bold mb-4">
+                    MJMT 獨家技術
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4">
+                    10層深層過濾升級
+                </h2>
+                <p class="text-slate-400 max-w-2xl mx-auto">
+                    不僅僅是製氧，更追求純淨。從進氣到輸出，歷經十道嚴格關卡，有效過濾灰塵、細菌與雜質，保護精密分子篩，更守護您的呼吸健康。
+                </p>
+            </div>
+
+            <!-- Animation Diagram -->
+            <div class="max-w-6xl mx-auto mb-16">
+                <div class="bg-slate-800 p-1 rounded-2xl border border-slate-700 shadow-2xl">
+                    <div class="filter-container relative">
+                        <!-- Left Label -->
+                        <div class="absolute left-6 top-6 text-xs font-bold text-slate-400 z-20 flex flex-col items-center">
+                            <i class="fas fa-wind text-2xl mb-1 text-slate-500"></i>
+                            環境空氣
+                        </div>
+                        
+                        <!-- Particles -->
+                        <div class="particle p1"></div>
+                        <div class="particle p2"></div>
+                        <div class="particle p3"></div>
+                        <div class="particle p4"></div>
+                        <div class="particle p5"></div>
+                        <div class="particle p6"></div>
+
+                        <!-- Filter Layers -->
+                        
+                        <!-- Group 1: 暖色系 (Warm Colors: Red/Orange/Yellow) -->
+                        <div class="filter-group">
+                            <div class="flex gap-4 items-center h-full">
+                                <!-- Layer 1: Orange/Red -->
+                                <div class="filter-layer type-mesh neon-anim delay-1" 
+                                     style="--neon-color: #f97316; --neon-bg: rgba(255, 237, 213, 0.9);" 
+                                     title="一級過濾棉">
+                                    <span class="layer-label label-bottom label-anim delay-1" style="--neon-color: #f97316;">1.粗濾網</span>
+                                </div>
+                                <!-- Layer 2: Orange/Amber -->
+                                <div class="filter-layer type-mesh neon-anim delay-2" 
+                                     style="--neon-color: #f59e0b; --neon-bg: rgba(254, 243, 199, 0.9);"
+                                     title="二級過濾棉">
+                                    <span class="layer-label label-top label-anim delay-2" style="--neon-color: #f59e0b;">2.細濾棉</span>
+                                </div>
+                                <!-- Layer 3: Yellow -->
+                                <div class="filter-layer type-gate neon-anim delay-3" 
+                                     style="--neon-color: #eab308; --neon-bg: rgba(254, 249, 195, 0.9);"
+                                     title="進氣消音">
+                                    <span class="layer-label label-bottom label-anim delay-3" style="--neon-color: #eab308;">3.進氣消音</span>
+                                </div>
+                            </div>
+                            <div class="filter-group-title">初級淨化</div>
+                        </div>
+
+                        <!-- Group 2: 綠到藍 (Green to Blue) -->
+                        <div class="filter-group">
+                            <div class="flex gap-4 items-center h-full">
+                                <!-- Layer 4: Green -->
+                                <div class="filter-layer type-pleated neon-anim delay-4" 
+                                     style="--neon-color: #22c55e; --neon-bg: rgba(220, 252, 231, 0.9);"
+                                     title="HEPA濾芯">
+                                    <span class="layer-label label-top label-anim delay-4" style="--neon-color: #22c55e;">4.HEPA</span>
+                                </div>
+                                <!-- Layer 5: Emerald/Teal -->
+                                <div class="filter-layer type-pleated neon-anim delay-5" 
+                                     style="--neon-color: #10b981; --neon-bg: rgba(209, 250, 229, 0.9);"
+                                     title="細菌過濾">
+                                    <span class="layer-label label-bottom label-anim delay-5" style="--neon-color: #10b981;">5.細菌過濾</span>
+                                </div>
+                                <!-- Layer 6: Cyan -->
+                                <div class="filter-layer type-mesh neon-anim delay-6" 
+                                     style="--neon-color: #06b6d4; --neon-bg: rgba(207, 250, 254, 0.9);"
+                                     title="分子篩前置">
+                                    <span class="layer-label label-top label-anim delay-6" style="--neon-color: #06b6d4;">6.篩前過濾</span>
+                                </div>
+                                <!-- Layer 7: Sky Blue -->
+                                <div class="filter-layer type-beads neon-anim delay-7" 
+                                     style="--neon-color: #0ea5e9; --neon-bg: rgba(224, 242, 254, 0.9);"
+                                     title="分子篩吸附">
+                                    <span class="layer-label label-bottom label-anim delay-7" style="--neon-color: #0ea5e9;">7.分子篩吸附</span>
+                                </div>
+                            </div>
+                            <div class="filter-group-title">核心過濾</div>
+                        </div>
+
+                        <!-- Group 3: 亮藍到白 (Bright Blue to White) -->
+                        <div class="filter-group">
+                            <div class="flex gap-4 items-center h-full">
+                                <!-- Layer 8: Blue -->
+                                <div class="filter-layer type-gate neon-anim delay-8" 
+                                     style="--neon-color: #3b82f6; --neon-bg: rgba(219, 234, 254, 0.9);"
+                                     title="儲氣過濾">
+                                    <span class="layer-label label-top label-anim delay-8" style="--neon-color: #3b82f6;">8.儲氣過濾</span>
+                                </div>
+                                <!-- Layer 9: Light Blue/Whiteish -->
+                                <div class="filter-layer type-pleated neon-anim delay-9" 
+                                     style="--neon-color: #bae6fd; --neon-bg: rgba(240, 249, 255, 0.9);"
+                                     title="出口細菌過濾">
+                                    <span class="layer-label label-bottom label-anim delay-9" style="--neon-color: #bae6fd;">9.出口除菌</span>
+                                </div>
+                                <!-- Layer 10: White -->
+                                <div class="filter-layer type-mesh neon-anim delay-10" 
+                                     style="--neon-color: #ffffff; --neon-bg: rgba(255, 255, 255, 0.9);"
+                                     title="濕潤過濾">
+                                    <span class="layer-label label-top label-anim delay-10" style="--neon-color: #ffffff;">10.濕潤過濾</span>
+                                </div>
+                            </div>
+                            <div class="filter-group-title">輸出淨化</div>
+                        </div>
+
+                        <!-- Right Label -->
+                        <div class="absolute right-6 top-6 text-xs font-bold text-cyan-400 z-20 flex flex-col items-center">
+                            <i class="fas fa-hand-holding-medical text-2xl mb-1"></i>
+                            純淨氧氣
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center text-xs text-slate-500 mt-4">* 示意圖僅供參考，實際過濾結構以產品內部構造為主。</p>
+            </div>
+
+            <!-- Benefits Grid -->
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="p-6 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-500/50 transition-colors">
+                    <div class="w-12 h-12 mx-auto bg-slate-700 rounded-full flex items-center justify-center text-cyan-400 text-xl mb-4">
+                        <i class="fas fa-shield-virus"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">阻隔細菌粉塵</h3>
+                    <p class="text-slate-400 text-sm">多重物理攔截，有效阻擋空氣中的毛髮、PM2.5 及有害細菌。</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-500/50 transition-colors">
+                    <div class="w-12 h-12 mx-auto bg-slate-700 rounded-full flex items-center justify-center text-cyan-400 text-xl mb-4">
+                        <i class="fas fa-heartbeat"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">保護核心組件</h3>
+                    <p class="text-slate-400 text-sm">防止灰塵進入壓縮機與分子篩，延長機器使用壽命，確保運作穩定。</p>
+                </div>
+                <div class="p-6 rounded-xl bg-slate-800 border border-slate-700 hover:border-cyan-500/50 transition-colors">
+                    <div class="w-12 h-12 mx-auto bg-slate-700 rounded-full flex items-center justify-center text-cyan-400 text-xl mb-4">
+                        <i class="fas fa-wind"></i>
+                    </div>
+                    <h3 class="text-lg font-bold text-white mb-2">輸出潔淨氧氣</h3>
+                    <p class="text-slate-400 text-sm">確保使用者吸入的每一口氧氣都純淨無味，減少呼吸道刺激。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Models Comparison Section -->
+    <section id="models" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl font-bold text-slate-900">雙機型選擇，滿足不同需求</h2>
+                <p class="mt-4 text-slate-500">X51 經典直觀 vs X52 智能科技</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-12">
+                <!-- X51 Model -->
+                <div class="border border-slate-200 rounded-2xl p-8 hover:shadow-xl transition-shadow relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-slate-100 text-slate-600 text-xs font-bold px-4 py-2 rounded-bl-xl">經典款</div>
+                    <div class="mb-6 mx-auto max-w-[300px] aspect-[3/4] flex justify-center overflow-hidden rounded-xl bg-white border border-slate-100 p-2">
+                         <img src="X51.jpg" alt="MJMT X51" class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <h3 class="text-2xl font-bold text-center mb-2">MJMT X51</h3>
+                    <p class="text-center text-slate-500 mb-6">直觀旋鈕操作，長輩使用零門檻</p>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-cyan-500 mt-1 mr-3"></i>
+                            <div>
+                                <span class="font-bold text-slate-800">機械式流量調節閥</span>
+                                <p class="text-sm text-slate-500">透過旋鈕浮球調整流量，物理手感明確，不易誤觸。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-cyan-500 mt-1 mr-3"></i>
+                            <div>
+                                <span class="font-bold text-slate-800">清晰 LED 狀態燈</span>
+                                <p class="text-sm text-slate-500">電源(綠)、正常(綠)、低氧(黃)、服務(紅) 四色燈號，一目了然。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-cyan-500 mt-1 mr-3"></i>
+                            <div>
+                                <span class="font-bold text-slate-800">累計時數顯示</span>
+                                <p class="text-sm text-slate-500">數位螢幕顯示機器總運轉時數，方便掌握保養週期。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- X52 Model -->
+                <div class="border border-cyan-200 bg-cyan-50/30 rounded-2xl p-8 hover:shadow-xl transition-shadow relative overflow-hidden group">
+                    <div class="absolute top-0 right-0 bg-cyan-600 text-white text-xs font-bold px-4 py-2 rounded-bl-xl">智能款</div>
+                    <div class="mb-6 mx-auto max-w-[300px] aspect-[3/4] flex justify-center overflow-hidden rounded-xl bg-white border border-slate-100 p-2 shadow-sm">
+                        <img src="X52.jpg" alt="MJMT X52" class="w-full h-full object-contain transform group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <h3 class="text-2xl font-bold text-center mb-2">MJMT X52</h3>
+                    <p class="text-center text-slate-500 mb-6">觸控大螢幕，數據監控更安心</p>
+                    
+                    <ul class="space-y-4 mb-8">
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-cyan-500 mt-1 mr-3"></i>
+                            <div>
+                                <span class="font-bold text-slate-800">數位觸控面板</span>
+                                <p class="text-sm text-slate-500">全平面觸控設計，操作靈敏，清潔容易無死角。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-cyan-500 mt-1 mr-3"></i>
+                            <div>
+                                <span class="font-bold text-slate-800">即時數據監控</span>
+                                <p class="text-sm text-slate-500">螢幕直接顯示「氧氣濃度」、「目前流量」與「定時設定」，資訊透明。</p>
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check-circle text-cyan-500 mt-1 mr-3"></i>
+                            <div>
+                                <span class="font-bold text-slate-800">定時與語音功能</span>
+                                <p class="text-sm text-slate-500">支援 30~480 分鐘定時關機設定，並具備語音操作提示。</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specifications Table -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl font-bold text-slate-900 mb-8 text-center">X51 / X52 規格比較表</h2>
+            
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-slate-100">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse spec-table min-w-[600px]">
+                        <thead>
+                            <tr class="bg-slate-800 text-white">
+                                <th class="p-4 md:p-6 w-1/4">項目</th>
+                                <th class="p-4 md:p-6 w-1/3 border-r border-slate-700">MJMT X51 (經典型)</th>
+                                <th class="p-4 md:p-6 w-1/3">MJMT X52 (智能型)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="p-4 md:p-6 font-semibold text-slate-700 border-b border-slate-100">操控介面</td>
+                                <td class="p-4 md:p-6 text-slate-600 border-b border-slate-100 border-r">流量調節旋鈕 + 實體開關</td>
+                                <td class="p-4 md:p-6 text-cyan-700 font-medium border-b border-slate-100">數位觸控面板</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 md:p-6 font-semibold text-slate-700 border-b border-slate-100">顯示資訊</td>
+                                <td class="p-4 md:p-6 text-slate-600 border-b border-slate-100 border-r">
+                                    <span class="block text-sm mb-1">● LED 狀態指示燈 (電源/正常/低氧/故障)</span>
+                                    <span class="block text-sm">● 累計運轉時數</span>
+                                </td>
+                                <td class="p-4 md:p-6 text-slate-600 border-b border-slate-100">
+                                    <span class="block text-sm mb-1">● 即時氧氣濃度數值</span>
+                                    <span class="block text-sm mb-1">● 即時流量數值</span>
+                                    <span class="block text-sm">● 定時剩餘時間 / 累計時數</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 md:p-6 font-semibold text-slate-700 border-b border-slate-100">定時功能</td>
+                                <td class="p-4 md:p-6 text-slate-400 border-b border-slate-100 border-r">無 (僅累計時數)</td>
+                                <td class="p-4 md:p-6 text-slate-600 border-b border-slate-100">可設定 30 ~ 480 分鐘自動關機</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 md:p-6 font-semibold text-slate-700 border-b border-slate-100">霧化功能</td>
+                                <td class="p-4 md:p-6 text-slate-600 border-b border-slate-100 border-r text-center" colspan="2">皆具備獨立霧化接口 (可額外選購霧化套件)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 md:p-6 font-semibold text-slate-700 border-b border-slate-100">氧氣濃度</td>
+                                <td class="p-4 md:p-6 text-slate-600 border-b border-slate-100 border-r text-center" colspan="2">93% ± 3% (高效分子篩)</td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 md:p-6 font-semibold text-slate-700 border-b border-slate-100">清潔保養</td>
+                                <td class="p-4 md:p-6 text-slate-600 border-b border-slate-100 border-r text-center" colspan="2">
+                                    <div class="text-sm text-left">
+                                        1. 外部進氣過濾棉：每月清洗 2 次 (清水洗淨晾乾)<br>
+                                        2. 內部進氣過濾器：約 3000 小時或一年更換 (不可水洗)
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="p-4 md:p-6 font-semibold text-slate-700">適用情境</td>
+                                <td class="p-4 md:p-6 text-slate-600 border-r">喜愛簡單操作、不需複雜設定的長輩</td>
+                                <td class="p-4 md:p-6 text-slate-600">需要精確監控數值、定時關機功能的用戶</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <p class="text-xs text-slate-400 mt-4 text-center">* 規格如有變更，恕不另行通知。使用前請詳細閱讀產品說明書。X52使用前請務必移除底部束帶。</p>
+        </div>
+    </section>
+
+    <!-- Contact CTA -->
+    <section id="contact" class="py-16 bg-slate-900 text-white text-center">
+        <div class="max-w-3xl mx-auto px-4">
+            <h2 class="text-3xl font-bold mb-4">不確定哪一款適合您？</h2>
+            <p class="text-slate-300 mb-8">歡迎來電諮詢，我們將根據您的實際需求推薦最合適的機型。</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="tel:0227765900" class="inline-flex items-center justify-center px-8 py-3 rounded-lg bg-sky-600 hover:bg-sky-700 transition-colors font-bold">
+                    <i class="fas fa-phone-alt mr-2"></i> 02-2776-5900
+                </a>
+                <a href="mailto:info@fengju.com.tw" class="inline-flex items-center justify-center px-8 py-3 rounded-lg border border-slate-600 hover:bg-slate-800 transition-colors font-medium">
+                    <i class="fas fa-envelope mr-2"></i> Email 詢價
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simple Footer -->
+    <footer class="bg-slate-900 text-slate-500 py-8 border-t border-slate-800 text-center text-sm">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>&copy; 2026 豐鉅儀器 Fengju Instruments. All rights reserved.</p>
+        </div>
+    </footer>
+
+</body>
+</html>
