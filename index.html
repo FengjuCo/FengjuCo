@@ -78,32 +78,38 @@
             transform: translateY(-100%); /* Hide navbar during game */
         }
 
+        /* Revised HUD Panel Styles */
         .hud-panel {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(15, 23, 42, 0.8);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            border-radius: 8px;
-            padding: 10px;
+            top: 20px; 
+            left: 20px; /* Moved to left side to avoid overlap on mobile right edge */
+            z-index: 100; /* High z-index to prevent clipping */
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            border-radius: 12px;
+            padding: 12px;
             color: white;
-            font-size: 12px;
+            font-size: 13px;
             pointer-events: none;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            max-width: 90vw; /* Ensure it doesn't overflow screen width */
         }
 
         .hud-item {
             display: flex;
             align-items: center;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            white-space: nowrap; /* Prevent text wrapping awkwardly */
         }
 
         .hud-icon {
             width: 16px;
             height: 16px;
-            margin-right: 8px;
+            margin-right: 10px;
             border-radius: 50%;
             display: inline-block;
+            flex-shrink: 0;
         }
         
         /* Flashing warning text */
@@ -163,14 +169,21 @@
         <div id="game-container">
             <canvas id="gameCanvas"></canvas>
             
-            <!-- Game HUD (Hidden initially) -->
+            <!-- Game HUD (Updated styling for visibility) -->
             <div id="game-hud" class="hud-panel hidden">
-                <div class="font-bold mb-2 border-b border-gray-600 pb-1 text-sky-300">污染源識別</div>
+                <div class="font-bold mb-2 border-b border-gray-500 pb-2 text-sky-300 tracking-wider">
+                    <i class="fas fa-radar text-xs mr-1"></i> 污染源識別
+                </div>
                 <div class="hud-item"><span class="hud-icon bg-green-500 shadow-[0_0_5px_#22c55e]"></span> 病毒 (1分/小)</div>
                 <div class="hud-item"><span class="hud-icon bg-orange-500 shadow-[0_0_5px_#f97316]"></span> 細菌 (3分/中)</div>
                 <div class="hud-item"><span class="hud-icon bg-purple-500 shadow-[0_0_5px_#a855f7]"></span> 孢子 (4分/大)</div>
                 <div class="hud-item"><span class="hud-icon bg-gray-200 shadow-[0_0_5px_#e5e7eb]"></span> PM2.5 (5分/特大)</div>
-                <div class="mt-2 text-xl font-mono text-yellow-400">SCORE: <span id="score-display">0</span></div>
+                <div class="mt-3 pt-2 border-t border-gray-600 text-lg font-mono text-yellow-400 font-bold">
+                    SCORE: <span id="score-display">0</span>
+                </div>
+                <div class="mt-1 text-xs text-red-400 animate-pulse">
+                    <i class="fas fa-exclamation-circle"></i> 撞牆將導致墜毀!
+                </div>
             </div>
 
             <!-- Game Over Screen -->
@@ -332,7 +345,7 @@
 
                 <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col">
                     <div class="h-64 overflow-hidden relative flex-shrink-0">
-                        <img src="1.jpg" alt="EcoHeal 光合電子樹" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.style.backgroundColor='#e2e8f0'">
+                        <img src="28.png" alt="EcoHeal 光合電子樹" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.style.backgroundColor='#e2e8f0'">
                         <div class="absolute top-4 left-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-md">環境淨化</div>
                     </div>
                     <div class="p-6 flex flex-col flex-grow">
@@ -794,6 +807,15 @@
             ctx.lineTo(player.x + 5, player.y + 15);
             ctx.fill();
 
+            // Check Wall Collision
+            const wallMargin = 20;
+            if (player.x < wallMargin || player.x > canvas.width - wallMargin || player.y < wallMargin || player.y > canvas.height - wallMargin) {
+                // Crash!
+                for(let i=0; i<30; i++) particles.push(new Particle(player.x, player.y, '#ef4444'));
+                endGame();
+                return; // Stop processing this frame
+            }
+
             // Auto Fire
             if (frameCount % 10 === 0) {
                 bullets.push(new Bullet(player.x, player.y - 20));
@@ -858,4 +880,3 @@
     </script>
 </body>
 </html>
-
