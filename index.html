@@ -410,7 +410,8 @@
                         <h3 class="text-xl font-bold text-slate-800 mb-6 text-center flex items-center justify-center gap-2">
                             <i class="fas fa-paper-plane text-sky-600"></i> 聯絡豐鉅
                         </h3>
-                        <form action="https://formspree.io/f/mqeegbeg" method="POST" enctype="multipart/form-data" class="flex flex-col flex-grow">
+                        <!-- Formspree Free Version (Text Only) -->
+                        <form action="https://formspree.io/f/mqeegbeg" method="POST" class="flex flex-col flex-grow">
                             <div class="mb-4">
                                 <label for="name" class="block text-sm font-medium text-slate-700 mb-1">您的稱呼 / 公司名稱</label>
                                 <input type="text" id="name" name="name" required 
@@ -429,27 +430,33 @@
                                     class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all">
                             </div>
 
-                            <div class="mb-4">
-                                <label class="block text-sm font-medium text-slate-700 mb-1">上傳附件 (選填)</label>
-                                <div id="drop-zone" class="w-full border-2 border-dashed border-slate-300 rounded-lg p-6 flex flex-col items-center justify-center cursor-pointer hover:border-sky-500 hover:bg-sky-50 transition-colors bg-slate-50 relative group">
-                                    <input type="file" name="upload" id="file-upload" class="hidden" accept="image/png, image/jpeg, application/pdf">
-                                    <i class="fas fa-cloud-upload-alt text-3xl text-slate-400 group-hover:text-sky-500 mb-2 transition-colors"></i>
-                                    <p class="text-sm text-slate-600 font-medium text-center" id="file-label">點擊或拖曳檔案至此</p>
-                                    <p class="text-xs text-slate-400 mt-1">支援 JPG, PNG, PDF (Max: 2MB)</p>
-                                </div>
-                            </div>
-
                             <div class="mb-6 flex-grow">
                                 <label for="message" class="block text-sm font-medium text-slate-700 mb-1">需求或留言</label>
-                                <textarea id="message" name="message" rows="3" required 
+                                <textarea id="message" name="message" rows="4" required placeholder="請在此填寫您的需求..."
                                     class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all resize-none"></textarea>
                             </div>
 
                             <button type="submit" 
-                                class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-lg transition-colors shadow-md mt-auto">
-                                <i class="fas fa-envelope mr-2"></i> 送出詢問
+                                class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-lg transition-colors shadow-md mb-6">
+                                <i class="fas fa-paper-plane mr-2"></i> 送出詢問
                             </button>
                         </form>
+
+                        <!-- Attachment Alternative Block -->
+                        <div class="relative border-t border-slate-200 pt-6">
+                            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-2 text-xs text-slate-400">
+                                或
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm text-slate-600 mb-3 font-medium">需要傳送照片或附件檔案？</p>
+                                <a href="mailto:info@fengju.com.tw?subject=【豐鉅儀器】產品詢問(含附件)&body=您好，我想詢問關於..." 
+                                   class="block w-full border-2 border-dashed border-sky-300 bg-sky-50 hover:bg-sky-100 hover:border-sky-500 text-sky-700 rounded-lg p-4 transition-all group text-center cursor-pointer no-underline">
+                                    <i class="fas fa-cloud-upload-alt text-2xl mb-1 group-hover:scale-110 transition-transform"></i>
+                                    <div class="font-bold">點此開啟 Email 傳送附件</div>
+                                    <div class="text-xs text-sky-500 mt-1">支援各種格式檔案與圖片</div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                     
                     <!-- Direct Contact -->
@@ -526,84 +533,6 @@
         btn.addEventListener('click', () => {
             menu.classList.toggle('hidden');
         });
-
-        // --- FILE UPLOAD LOGIC ---
-        const dropZone = document.getElementById('drop-zone');
-        const fileInput = document.getElementById('file-upload');
-        const fileLabel = document.getElementById('file-label');
-        const MAX_SIZE = 2 * 1024 * 1024; // 2MB
-
-        // Click to upload
-        dropZone.addEventListener('click', () => fileInput.click());
-        
-        // Prevent bubbling for input click
-        fileInput.addEventListener('click', (e) => e.stopPropagation());
-
-        // Drag and Drop events
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, preventDefaults, false);
-        });
-
-        function preventDefaults(e) {
-            e.preventDefault();
-            e.stopPropagation();
-        }
-
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, highlight, false);
-        });
-
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, unhighlight, false);
-        });
-
-        function highlight(e) {
-            dropZone.classList.add('border-sky-500', 'bg-sky-100');
-        }
-
-        function unhighlight(e) {
-            dropZone.classList.remove('border-sky-500', 'bg-sky-100');
-        }
-
-        dropZone.addEventListener('drop', handleDrop, false);
-
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            handleFiles(files);
-        }
-
-        fileInput.addEventListener('change', function() {
-            handleFiles(this.files);
-        });
-
-        function handleFiles(files) {
-            if (files.length > 0) {
-                const file = files[0];
-                if (file.size > MAX_SIZE) {
-                    alert('檔案大小超過 2MB，請選擇較小的檔案。');
-                    fileInput.value = ''; // Clear input
-                    updateLabel();
-                    return;
-                }
-                
-                // If coming from drag/drop, we need to sync with input
-                if (fileInput.files !== files) {
-                     const dataTransfer = new DataTransfer();
-                     dataTransfer.items.add(file);
-                     fileInput.files = dataTransfer.files;
-                }
-                updateLabel(file.name);
-            }
-        }
-
-        function updateLabel(name) {
-            if (name) {
-                fileLabel.innerHTML = `<span class="text-sky-600 font-bold"><i class="fas fa-check mr-1"></i>已選擇: ${name}</span>`;
-            } else {
-                fileLabel.innerText = '點擊或拖曳檔案至此';
-            }
-        }
 
         // --- GAME LOGIC ---
         const canvas = document.getElementById('gameCanvas');
