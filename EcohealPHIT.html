@@ -17,27 +17,11 @@
     <!-- Google Fonts: Noto Sans TC -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    <!-- Placeholder Comments Required by Prompt -->
-    <!-- Chosen Palette: Nature & Tech - Warm Neutral Background (Stone-50) with Forest Green (Emerald-600) for "Eco", Clean Blue (Sky-500) for "Air/Water", and Dark Slate (Slate-800) for text. -->
-    
     <!-- Application Structure Plan: 
-         The app is designed as a vertical scrolling storytelling experience with interactive "stops".
-         1. Hero Section: Establishes Brand Philosophy (Eco+Heal).
-         2. Problem Section (IAQ): Uses Bar Charts to visualize the "2-5x dirtier" stat.
-         3. Tech Section (PHIT): Breakdowns the complex chemical process into 3 simple, interactive cards. Includes the particle simulation.
-         4. Comparison Section: Uses a Radar Chart to visually prove superiority over HEPA/Ozone/UV.
-         5. Calculator Section: An interactive tool to prove the "Low OPEX" claim.
-         6. Applications & Proof: Card grids for scenarios and case studies.
+         Updated "History of PHIT" section:
+         1. Pollutants now originate from the astronaut and slowly disperse/fade out.
+         2. Increased quantity of all particle types.
     -->
-
-    <!-- Visualization & Content Choices:
-         1. IAQ Bar Chart: Goal: Inform. Method: Chart.js Bar. Interaction: Tooltips.
-         2. Tech Comparison Radar: Goal: Compare. Method: Chart.js Radar. Interaction: Dataset toggling.
-         3. Cost Line Chart: Goal: Persuade. Method: Chart.js Line. Interaction: Dynamic updates.
-         4. PHIT Process Cards: Goal: Explain. Method: HTML/CSS Grid. Interaction: Hover effects.
-    -->
-    
-    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
 
     <style>
         body {
@@ -175,8 +159,6 @@
         .p4 { animation: float-out-strong 3.0s infinite linear; animation-delay: 0.1s; --tx: 120px; }
         .p5 { animation: float-out-strong 2.6s infinite linear; animation-delay: 0.8s; --tx: -40px; }
         .p6 { animation: float-out-strong 2.4s infinite linear; animation-delay: 0.4s; --tx: 40px; }
-        
-        /* New added particles */
         .p7 { animation: float-out-strong 2.1s infinite linear; animation-delay: 1.0s; --tx: -150px; }
         .p8 { animation: float-out-strong 2.9s infinite linear; animation-delay: 0.6s; --tx: 150px; }
         .p9 { animation: float-out-strong 2.3s infinite linear; animation-delay: 1.2s; --tx: -20px; }
@@ -187,7 +169,6 @@
         .p14 { animation: float-out-strong 2.2s infinite linear; animation-delay: 1.4s; --tx: 60px; }
         .p15 { animation: float-out-strong 2.8s infinite linear; animation-delay: 0.7s; --tx: 0px; }
 
-        /* Animation Keyframes */
         @keyframes lamp-flicker {
             0%, 100% { opacity: 1; box-shadow: 0 0 20px #a78bfa, 0 0 40px #8b5cf6; }
             50% { opacity: 0.9; box-shadow: 0 0 15px #a78bfa, 0 0 25px #8b5cf6; }
@@ -204,11 +185,294 @@
                 transform: translate(calc(-50% + var(--tx) * 0.2), -20px) scale(0.8);
             }
             100% {
-                /* Much wider X spread, Higher Y rise */
                 transform: translate(calc(-50% + var(--tx) * 2), -200px) scale(1.8);
                 opacity: 0;
             }
         }
+
+        /* ----------------------------------------------------------- */
+        /* SPACE STATION CSS ART (IMPROVED) */
+        /* ----------------------------------------------------------- */
+        .space-container {
+            width: 100%;
+            height: 400px;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            border-radius: 1rem;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #334155;
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.8);
+        }
+
+        /* Window to Space */
+        .space-window {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 150px;
+            height: 150px;
+            background: #000;
+            border-radius: 50%;
+            border: 8px solid #475569;
+            box-shadow: inset 0 0 20px #000;
+            overflow: hidden;
+            z-index: 1; /* Behind astronaut */
+        }
+        
+        /* Twinkling Stars in Window */
+        .window-stars {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(1px 1px at 10px 10px, white, transparent),
+                radial-gradient(1.5px 1.5px at 30px 40px, white, transparent),
+                radial-gradient(1px 1px at 60px 20px, white, transparent),
+                radial-gradient(2px 2px at 90px 80px, white, transparent),
+                radial-gradient(1px 1px at 120px 50px, white, transparent),
+                radial-gradient(1.5px 1.5px at 140px 110px, white, transparent),
+                radial-gradient(1px 1px at 40px 120px, white, transparent);
+            opacity: 0.8;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.5; transform: scale(0.95); }
+            100% { opacity: 1; transform: scale(1.05); }
+        }
+
+        /* Background texture of cabin (Subtle) */
+        .stars-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 50px 50px, rgba(255,255,255,0.1), transparent),
+                radial-gradient(1px 1px at 300px 150px, rgba(255,255,255,0.05), transparent);
+            z-index: 0;
+        }
+
+        /* Astronaut CSS Art */
+        .astronaut {
+            position: absolute;
+            top: 50%;
+            left: 40%;
+            width: 100px;
+            height: 140px;
+            transform: translate(-50%, -50%);
+            animation: astro-float 6s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        .astro-head {
+            width: 50px;
+            height: 50px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 25px;
+            box-shadow: inset -2px -2px 5px rgba(0,0,0,0.1);
+        }
+        .astro-visor {
+            width: 36px;
+            height: 28px;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            border-radius: 15px 15px 10px 10px;
+            position: absolute;
+            top: 10px;
+            left: 7px;
+            border: 2px solid #cbd5e1;
+        }
+        .astro-body {
+            width: 60px;
+            height: 70px;
+            background: #e2e8f0;
+            border-radius: 20px;
+            position: absolute;
+            top: 45px;
+            left: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .astro-chest-panel {
+            width: 30px;
+            height: 20px;
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        .astro-backpack {
+            position: absolute;
+            width: 70px;
+            height: 60px;
+            background: #cbd5e1;
+            border-radius: 10px;
+            top: 50px;
+            left: 15px;
+            z-index: -1;
+        }
+        .astro-arm-l {
+            width: 15px;
+            height: 40px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            position: absolute;
+            top: 50px;
+            left: 5px;
+            transform: rotate(20deg);
+        }
+        .astro-arm-r {
+            width: 15px;
+            height: 40px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            position: absolute;
+            top: 50px;
+            right: 5px;
+            transform: rotate(-20deg);
+        }
+        .astro-leg-l {
+            width: 20px;
+            height: 45px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            position: absolute;
+            top: 105px;
+            left: 25px;
+            transform: rotate(10deg);
+        }
+        .astro-leg-r {
+            width: 20px;
+            height: 45px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            position: absolute;
+            top: 105px;
+            left: 55px;
+            transform: rotate(-10deg);
+        }
+
+        /* PHIT Space Device */
+        .phit-device-space {
+            position: absolute;
+            top: 40%;
+            left: 80%; /* Moved slightly right */
+            width: 80px;
+            height: 120px;
+            background: #334155;
+            border: 2px solid #64748b;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 10px;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+            z-index: 5;
+        }
+        .phit-bulb {
+            width: 12px;
+            height: 60px;
+            background: #d1fae5;
+            border-radius: 6px;
+            box-shadow: 0 0 15px #10b981;
+            animation: bulb-pulse 2s infinite alternate;
+        }
+        
+        /* Clean Particles (Increased amount) */
+        .clean-ion {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #34d399;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #34d399;
+            opacity: 0;
+            z-index: 4;
+        }
+        
+        /* Ion Flow Logic: Move Left and Disperse */
+        .ion-1 { top: 45%; left: 81%; animation: ion-flow 3.0s infinite linear; }
+        .ion-2 { top: 48%; left: 81%; animation: ion-flow 3.5s infinite linear; animation-delay: 0.5s; }
+        .ion-3 { top: 52%; left: 81%; animation: ion-flow 2.8s infinite linear; animation-delay: 1.0s; }
+        .ion-4 { top: 46%; left: 81%; animation: ion-flow 4.0s infinite linear; animation-delay: 1.5s; }
+        .ion-5 { top: 50%; left: 81%; animation: ion-flow 3.2s infinite linear; animation-delay: 0.2s; }
+        .ion-6 { top: 43%; left: 81%; animation: ion-flow 3.8s infinite linear; animation-delay: 1.8s; }
+        .ion-7 { top: 55%; left: 81%; animation: ion-flow 2.5s infinite linear; animation-delay: 0.8s; }
+        .ion-8 { top: 47%; left: 81%; animation: ion-flow 3.6s infinite linear; animation-delay: 1.2s; }
+        .ion-9 { top: 51%; left: 81%; animation: ion-flow 3.3s infinite linear; animation-delay: 0.3s; }
+        .ion-10 { top: 44%; left: 81%; animation: ion-flow 3.9s infinite linear; animation-delay: 1.1s; }
+        .ion-11 { top: 56%; left: 81%; animation: ion-flow 2.7s infinite linear; animation-delay: 0.7s; }
+        .ion-12 { top: 49%; left: 81%; animation: ion-flow 3.1s infinite linear; animation-delay: 1.9s; }
+        
+        @keyframes ion-flow {
+            0% { transform: translateX(0) scale(0.5); opacity: 0; }
+            10% { opacity: 1; }
+            100% { transform: translateX(-400px) translateY(calc(sin(var(--i, 1) * 100deg) * 60px)) scale(1.2); opacity: 0; }
+        }
+
+        /* Pollutants (Virus, Bacteria, Odor) */
+        .pollutant {
+            position: absolute;
+            opacity: 0;
+            z-index: 6;
+            animation: disperse-fade 5s infinite;
+        }
+
+        /* Styles for specific pollutants */
+        .pol-virus {
+            width: 12px; height: 12px;
+            background: #ef4444; /* Red */
+            border-radius: 50%;
+            box-shadow: 0 0 5px #f87171;
+        }
+        .pol-virus::after {
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            border: 1px dashed #fee2e2; border-radius: 50%; animation: spin 4s linear infinite;
+        }
+
+        .pol-bact {
+            width: 14px; height: 8px;
+            background: #f97316; /* Orange */
+            border-radius: 4px;
+        }
+
+        .pol-odor {
+            width: 16px; height: 16px;
+            background: radial-gradient(circle, #a3e635, transparent); /* Lime Green Gas */
+            border-radius: 50%;
+            filter: blur(2px);
+        }
+
+        /* Initial Position: Near Astronaut Center (Left: 40%, Top: 50%) */
+        /* Animation: Disperse outwards and fade */
+        .pol-1 { top: 48%; left: 40%; --tx: 80px; --ty: -30px; animation-delay: 0s; }
+        .pol-2 { top: 52%; left: 42%; --tx: 90px; --ty: 20px; animation-delay: 1.5s; }
+        .pol-3 { top: 45%; left: 38%; --tx: 60px; --ty: -50px; animation-delay: 0.5s; }
+        .pol-4 { top: 55%; left: 40%; --tx: 70px; --ty: 40px; animation-delay: 2.0s; }
+        .pol-5 { top: 50%; left: 43%; --tx: 100px; --ty: 0px; animation-delay: 1.0s; }
+        .pol-6 { top: 47%; left: 39%; --tx: 50px; --ty: -60px; animation-delay: 2.5s; }
+        .pol-7 { top: 53%; left: 41%; --tx: 85px; --ty: 30px; animation-delay: 0.8s; }
+        .pol-8 { top: 49%; left: 42%; --tx: 95px; --ty: -10px; animation-delay: 1.8s; }
+        .pol-9 { top: 46%; left: 38%; --tx: 55px; --ty: -40px; animation-delay: 3.0s; }
+        .pol-10 { top: 54%; left: 40%; --tx: 75px; --ty: 50px; animation-delay: 1.2s; }
+
+        @keyframes disperse-fade {
+            0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
+            10% { opacity: 1; transform: translate(0, 0) scale(1); }
+            80% { opacity: 0.8; }
+            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.5); }
+        }
+
+        @keyframes astro-float {
+            0%, 100% { transform: translate(-50%, -50%) rotate(5deg); }
+            50% { transform: translate(-50%, -60%) rotate(-5deg); }
+        }
+
+        @keyframes bulb-pulse {
+            from { box-shadow: 0 0 10px #10b981; opacity: 0.8; }
+            to { box-shadow: 0 0 25px #10b981; opacity: 1; }
+        }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body class="bg-stone-50 text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-900">
@@ -365,7 +629,7 @@
                         仿生自然界雷雨過後的淨化機制。利用寬頻譜紫外線與金屬靶材，催化空氣中的氧氣與水氣，產生主動式的「淨化軍隊」。
                     </p>
                     
-                    <!-- NEW CSS ANIMATION DEMO -->
+                    <!-- PHIT Tech Animation -->
                     <div class="phit-anim-box w-full max-w-2xl mx-auto">
                         <!-- Scene Elements -->
                         <div class="uv-lamp-glow"></div>
@@ -442,7 +706,7 @@
                 </div>
 
                 <!-- 4 Pillars of Purification -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
                     <div class="bg-emerald-900 text-white p-8 rounded-2xl flex flex-col justify-center">
                         <h3 class="text-2xl font-bold mb-6">EcoHeal 的四重防護網</h3>
                         <ul class="space-y-4">
@@ -489,6 +753,85 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- ADDED SECTION: History of PHIT -->
+                <div class="mt-16 border-t border-stone-200 pt-12">
+                    <div class="max-w-4xl mx-auto">
+                        <div class="text-center mb-8">
+                            <span class="text-emerald-600 font-bold tracking-wider text-sm uppercase">Origins of Technology</span>
+                            <h2 class="text-3xl font-bold text-slate-900 mt-2 mb-4">PHIT 光合離子化歷史</h2>
+                            <p class="text-slate-600 max-w-2xl mx-auto">
+                                這種先進的空氣淨化技術，最早被應用在 <strong class="text-slate-800">太空站 (Space Station)</strong> 的維生系統中。
+                                在完全密閉的太空艙內，為了讓太空人能夠呼吸到無菌且潔淨的空氣，科學家研發了此技術。
+                                後來更發現其對於<strong class="text-emerald-600">延長食材保存期限</strong>以及<strong class="text-emerald-600">流行病防疫</strong>有著卓越的效果。
+                            </p>
+                        </div>
+
+                        <!-- CSS Space Scene Animation -->
+                        <div class="space-container">
+                            <!-- Background Stars (Faint cabin texture) -->
+                            <div class="stars-bg"></div>
+                            
+                            <!-- Window View with Twinkling Stars -->
+                            <div class="space-window">
+                                <div class="window-stars"></div>
+                            </div>
+
+                            <!-- PHIT Device on the wall -->
+                            <div class="phit-device-space">
+                                <div class="phit-bulb"></div>
+                            </div>
+
+                            <!-- Particles emitting (Purification Ions) - Increased amount -->
+                            <div class="clean-ion ion-1" style="--i:1"></div>
+                            <div class="clean-ion ion-2" style="--i:2"></div>
+                            <div class="clean-ion ion-3" style="--i:3"></div>
+                            <div class="clean-ion ion-4" style="--i:4"></div>
+                            <div class="clean-ion ion-5" style="--i:5"></div>
+                            <div class="clean-ion ion-6" style="--i:6"></div>
+                            <div class="clean-ion ion-7" style="--i:7"></div>
+                            <div class="clean-ion ion-8" style="--i:8"></div>
+                            <div class="clean-ion ion-9" style="--i:9"></div>
+                            <div class="clean-ion ion-10" style="--i:10"></div>
+                            <div class="clean-ion ion-11" style="--i:11"></div>
+                            <div class="clean-ion ion-12" style="--i:12"></div>
+
+                            <!-- Pollutants (Virus, Bacteria, Odor) that dissolve -->
+                            <!-- Start near astronaut and disperse -->
+                            <div class="pollutant pol-virus pol-1"></div>
+                            <div class="pollutant pol-bact pol-2"></div>
+                            <div class="pollutant pol-odor pol-3"></div>
+                            <div class="pollutant pol-virus pol-4"></div>
+                            <div class="pollutant pol-bact pol-5"></div>
+                            <div class="pollutant pol-odor pol-6"></div>
+                            <div class="pollutant pol-virus pol-7"></div>
+                            <div class="pollutant pol-bact pol-8"></div>
+                            <div class="pollutant pol-odor pol-9"></div>
+                            <div class="pollutant pol-virus pol-10"></div>
+
+                            <!-- Floating Astronaut -->
+                            <div class="astronaut">
+                                <div class="astro-backpack"></div>
+                                <div class="astro-leg-l"></div>
+                                <div class="astro-leg-r"></div>
+                                <div class="astro-arm-l"></div>
+                                <div class="astro-arm-r"></div>
+                                <div class="astro-body">
+                                    <div class="astro-chest-panel"></div>
+                                </div>
+                                <div class="astro-head">
+                                    <div class="astro-visor"></div>
+                                </div>
+                            </div>
+
+                            <!-- Overlay Text -->
+                            <div class="absolute bottom-4 right-4 text-white/70 text-xs font-mono">
+                                <i class="fa-solid fa-satellite mr-2"></i>NASA Tech Application
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
@@ -1227,4 +1570,3 @@
     </script>
 </body>
 </html>
-
