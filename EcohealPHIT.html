@@ -19,7 +19,8 @@
 
     <!-- Application Structure Plan: 
          Updated "Ozone vs PHIT" Animation Section to 24H simulation.
-         Increased Ozone density and slowed down PHIT movement.
+         Added "Contact Us" Section.
+         Updated Footer.
     -->
 
     <style>
@@ -1153,35 +1154,144 @@
             </div>
         </section>
 
+        <!-- NEW CONTACT SECTION -->
+        <section id="contact" class="relative py-16 bg-slate-900">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h2 class="text-3xl font-bold mb-6 text-white">聯絡我們</h2>
+                    <p class="text-slate-300 mb-12 text-lg">
+                        有任何關於醫療設備、耗材或大健康產品的需求嗎？歡迎隨時與我們聯繫，我們將有專人為您服務。
+                    </p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                        
+                        <!-- Facebook Feed Embed -->
+                        <div class="bg-white rounded-2xl w-full shadow-lg border border-slate-700 overflow-hidden flex flex-col">
+                            <div class="bg-[#1877F2] p-4 flex items-center gap-3">
+                                <i class="fa-brands fa-facebook-square text-white text-2xl"></i>
+                                <span class="text-white font-bold">Facebook 粉絲專頁</span>
+                            </div>
+                            <div class="flex-grow bg-white flex justify-center items-start pt-2">
+                                <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffengju.com.tw%2F&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="100%" height="450" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                            </div>
+                            <a href="https://www.facebook.com/fengju.com.tw/" target="_blank" class="block w-full text-center py-3 bg-slate-50 text-[#1877F2] font-semibold hover:bg-slate-100 transition-colors border-t">
+                                前往粉絲專頁 <i class="fas fa-external-link-alt ml-1 text-sm"></i>
+                            </a>
+                        </div>
+
+                        <!-- Contact Form & Email Button -->
+                        <div class="bg-white rounded-2xl w-full shadow-lg border border-slate-700 overflow-hidden p-6 text-slate-800 flex flex-col h-full">
+                            <h3 class="text-xl font-bold text-slate-800 mb-6 text-center flex items-center justify-center gap-2">
+                                <i class="fas fa-paper-plane text-sky-600"></i> 聯絡豐鉅
+                            </h3>
+                            <!-- Formspree (Text Only) -->
+                            <form action="https://formspree.io/f/mqeegbeg" method="POST" class="flex flex-col flex-grow">
+                                <div class="mb-4">
+                                    <label for="name" class="block text-sm font-medium text-slate-700 mb-1">您的稱呼 / 公司名稱</label>
+                                    <input type="text" id="name" name="name" required 
+                                        class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="email" class="block text-sm font-medium text-slate-700 mb-1">聯絡 Email</label>
+                                    <input type="email" id="email" name="email" required 
+                                        class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all">
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="phone" class="block text-sm font-medium text-slate-700 mb-1">聯絡電話</label>
+                                    <input type="tel" id="phone" name="phone" 
+                                        class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all">
+                                </div>
+
+                                <div class="mb-6 flex-grow">
+                                    <label for="message" class="block text-sm font-medium text-slate-700 mb-1">需求或留言</label>
+                                    <textarea id="message" name="message" rows="4" required placeholder="請在此填寫您的需求..."
+                                        class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all resize-none"></textarea>
+                                </div>
+
+                                <button type="submit" 
+                                    class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-lg transition-colors shadow-md mb-6">
+                                    <i class="fas fa-paper-plane mr-2"></i> 送出文字訊息
+                                </button>
+                            </form>
+
+                            <div class="relative border-t border-slate-200 pt-6">
+                                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-2 text-xs text-slate-400">
+                                    或
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm text-slate-600 mb-3 font-medium">需要傳送照片或附件檔案？</p>
+                                    <a href="mailto:info@fengju.com.tw?subject=【豐鉅儀器】產品詢問(含附件)&body=您好，我想詢問關於..." 
+                                       class="block w-full border-2 border-dashed border-sky-300 bg-sky-50 hover:bg-sky-100 hover:border-sky-500 text-sky-700 rounded-lg p-4 transition-all group text-center cursor-pointer no-underline">
+                                        <div class="flex items-center justify-center gap-2 mb-1">
+                                            <i class="fas fa-envelope-open-text text-2xl group-hover:scale-110 transition-transform"></i>
+                                            <span class="font-bold text-lg">開啟郵件軟體</span>
+                                        </div>
+                                        <div class="text-sm font-medium">點此撰寫信件並夾帶檔案</div>
+                                        <div class="text-xs text-sky-500 mt-1">將自動開啟您手機/電腦的 Email App</div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Direct Contact -->
+                        <div class="bg-slate-800 p-8 rounded-2xl w-full shadow-lg border border-slate-700 flex flex-col items-center justify-center h-full">
+                            <div class="bg-sky-600 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
+                                <i class="fas fa-headset text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-white mb-6">直接聯繫我們</h3>
+                            
+                            <div class="space-y-4 w-full flex flex-col items-center">
+                                <a href="tel:0227765900" class="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-slate-700/50 py-2 px-4 rounded-lg transition-all group w-full justify-center">
+                                    <i class="fas fa-phone-alt text-sky-500 group-hover:scale-110 transition-transform"></i>
+                                    <span class="text-lg font-medium tracking-wide">02-2776-5900</span>
+                                </a>
+                                
+                                <a href="mailto:info@fengju.com.tw" class="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-slate-700/50 py-2 px-4 rounded-lg transition-all group w-full justify-center">
+                                    <i class="fas fa-envelope text-sky-500 group-hover:scale-110 transition-transform"></i>
+                                    <span class="text-lg font-medium tracking-wide">info@fengju.com.tw</span>
+                                </a>
+                                <div class="mt-8 pt-6 border-t border-slate-700 w-full text-center">
+                                    <p class="text-slate-400 text-sm mb-2">服務時間</p>
+                                    <p class="text-white">週一至週五 09:00 - 18:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-800 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-                <span class="text-xl font-bold text-emerald-400"><i class="fa-solid fa-tree mr-2"></i>EcoHeal</span>
-                <p class="mt-4 text-slate-400 text-sm">
-                    主動式環境生態還原系統。<br>
-                    模擬自然，治癒環境。
-                </p>
+    <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-center md:text-left">
+                    <span class="text-2xl font-bold text-white tracking-wider">FENG JU</span>
+                    <p class="mt-2 text-sm">專業醫療器械代理，您的安心首選。</p>
+                </div>
+                
+                <div class="flex flex-col md:flex-row gap-4 md:gap-8 text-sm">
+                    <a href="tel:0227765900" class="hover:text-white transition-colors flex items-center gap-2 justify-center md:justify-start">
+                        <i class="fas fa-phone-alt text-sky-600"></i> 02-2776-5900
+                    </a>
+                    <a href="mailto:info@fengju.com.tw" class="hover:text-white transition-colors flex items-center gap-2 justify-center md:justify-start">
+                        <i class="fas fa-envelope text-sky-600"></i> info@fengju.com.tw
+                    </a>
+                </div>
+
+                <div class="flex space-x-6">
+                    <a href="https://www.facebook.com/fengju.com.tw/" target="_blank" class="hover:text-white transition-colors">
+                        <i class="fa-brands fa-facebook-f text-xl"></i>
+                    </a>
+                </div>
             </div>
-            <div>
-                <h4 class="text-lg font-semibold mb-4 text-emerald-400">核心優勢</h4>
-                <ul class="text-slate-400 text-sm space-y-2">
-                    <li><i class="fa-solid fa-check mr-2"></i>無耗材設計</li>
-                    <li><i class="fa-solid fa-check mr-2"></i>主動式防疫</li>
-                    <li><i class="fa-solid fa-check mr-2"></i>24H 節能運轉</li>
-                </ul>
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-sm">
+                &copy; 2026 豐鉅儀器 Fengju Instruments. All rights reserved.
             </div>
-            <div>
-                <h4 class="text-lg font-semibold mb-4 text-emerald-400">使用提醒</h4>
-                <p class="text-slate-400 text-sm">
-                    為維持燈管熱穩定性與真空氣密，強烈建議 24 小時連續開啟，請勿頻繁開關電源。
-                </p>
-            </div>
-        </div>
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-slate-700 text-center text-slate-500 text-xs">
-            &copy; 2026 EcoHeal, Fengju Co. Generated based on provided technical white paper.
         </div>
     </footer>
 
