@@ -1,1265 +1,503 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- --- Facebook Open Graph Settings --- -->
-    <meta property="og:title" content="EcoHeal 光合電子樹 | 環境淨化系統技術中心" />
-    <meta property="og:description" content="環境自癒，回歸原生態。EcoHeal 透過仿生 PHIT 光合離子化技術，主動分解環境中的化學毒氣、病毒與細菌，建立 24 小時的安全防護網。" />
-    <meta property="og:image" content="16.png" />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="1200" /> 
-    <meta property="og:image:height" content="630" />
-    <meta property="og:type" content="website" />
-    <!-- ------------------------------------------ -->
-
-    <title>EcoHeal 光合電子樹 | 環境淨化系統技術中心</title>
-    
-    <!-- Tailwind CSS -->
+    <title>豐鉅儀器 | 專業醫療器械與大健康解決方案</title>
+    <meta name="description" content="豐鉅儀器提供Sainsmed吸水紙、KLS MARTIN手術器械、MJMT製氧機及EcoHeal光合電子樹等全方位醫療與長照解決方案。">
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Chart.js -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    <!-- FontAwesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- Google Fonts: Noto Sans TC -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        
         body {
             font-family: 'Noto Sans TC', sans-serif;
-            background-color: #fcfcfc; /* Very light warm grey */
-            color: #1e293b; /* Slate 800 */
+            scroll-behavior: smooth;
         }
-
-        /* Chart Container Styling */
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 400px;
-        }
-
-        @media (min-width: 768px) {
-            .chart-container {
-                height: 350px;
-            }
-        }
-
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-        }
-
-        .nav-item.active {
-            color: #059669; /* Emerald 600 */
-            border-bottom: 2px solid #059669;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.8s ease-in;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* --- PHIT Animation CSS --- */
-        .phit-anim-box {
-            background: radial-gradient(circle at center top, #1e293b, #0f172a);
-            position: relative;
-            overflow: hidden;
-            border-radius: 1rem;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-            height: 320px;
-            margin-bottom: 3rem;
-            border: 1px solid #334155;
-        }
-
-        /* UV Lamp */
-        .uv-lamp-glow {
-            position: absolute;
-            top: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 160px;
-            height: 12px;
-            background: #e0e7ff;
-            border-radius: 6px;
-            box-shadow: 
-                0 0 15px #a78bfa, 
-                0 0 30px #8b5cf6, 
-                0 0 50px #7c3aed;
-            z-index: 10;
-            animation: lamp-flicker 4s infinite alternate;
-        }
-
-        /* Purple Downward Arrows (Beam) */
-        .uv-arrow {
-            position: absolute;
-            top: 60px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #a78bfa;
-            font-size: 24px;
-            opacity: 0;
-            z-index: 9;
-            text-shadow: 0 0 10px #8b5cf6;
-        }
-
-        .beam-arrow-1 { animation: arrow-drop 1.2s infinite; animation-delay: 0s; left: 45%; font-size: 20px;}
-        .beam-arrow-2 { animation: arrow-drop 1.2s infinite; animation-delay: 0.4s; left: 50%; font-size: 28px; color: #c4b5fd;}
-        .beam-arrow-3 { animation: arrow-drop 1.2s infinite; animation-delay: 0.2s; left: 55%; font-size: 20px;}
         
-        @keyframes arrow-drop {
-            0% { top: 60px; opacity: 1; transform: translateX(-50%) scale(0.8); }
-            70% { opacity: 0.8; }
-            100% { top: 180px; opacity: 0; transform: translateX(-50%) scale(1); }
+        .hero-pattern {
+            background-color: #f8fafc;
+            /* Subtle grid pattern for game feel */
+            background-image: linear-gradient(#e5e7eb 1px, transparent 1px), linear-gradient(90deg, #e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
-        /* Metal Plate */
-        .metal-plate {
-            position: absolute;
-            top: 200px;
-            left: 50%;
-            transform: translateX(-50%) perspective(400px) rotateX(60deg);
-            width: 220px;
-            height: 140px;
-            background: linear-gradient(135deg, #cbd5e1 0%, #f1f5f9 50%, #94a3b8 100%);
-            border: 1px solid #64748b;
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
-            z-index: 5;
-            border-radius: 6px;
-        }
-
-        /* Particles (Purification Factors) */
-        .particle {
-            position: absolute;
-            top: 210px;
-            left: 50%;
-            width: 8px;
-            height: 8px;
-            background: radial-gradient(circle, #fff 20%, #34d399 100%);
-            border-radius: 50%;
+        .fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
             opacity: 0;
-            z-index: 12;
-            box-shadow: 0 0 12px #34d399;
-            pointer-events: none;
+            transform: translateY(20px);
         }
 
-        .p1 { animation: float-out-strong 2.5s infinite linear; animation-delay: 0s; --tx: -80px; }
-        .p2 { animation: float-out-strong 2.8s infinite linear; animation-delay: 0.2s; --tx: 80px; }
-        .p3 { animation: float-out-strong 2.2s infinite linear; animation-delay: 0.5s; --tx: -120px; }
-        .p4 { animation: float-out-strong 3.0s infinite linear; animation-delay: 0.1s; --tx: 120px; }
-        .p5 { animation: float-out-strong 2.6s infinite linear; animation-delay: 0.8s; --tx: -40px; }
-        .p6 { animation: float-out-strong 2.4s infinite linear; animation-delay: 0.4s; --tx: 40px; }
-        .p7 { animation: float-out-strong 2.1s infinite linear; animation-delay: 1.0s; --tx: -150px; }
-        .p8 { animation: float-out-strong 2.9s infinite linear; animation-delay: 0.6s; --tx: 150px; }
-        .p9 { animation: float-out-strong 2.3s infinite linear; animation-delay: 1.2s; --tx: -20px; }
-        .p10 { animation: float-out-strong 2.7s infinite linear; animation-delay: 1.5s; --tx: 20px; }
-        .p11 { animation: float-out-strong 2.0s infinite linear; animation-delay: 0.3s; --tx: -100px; }
-        .p12 { animation: float-out-strong 3.1s infinite linear; animation-delay: 0.9s; --tx: 100px; }
-        .p13 { animation: float-out-strong 2.5s infinite linear; animation-delay: 1.8s; --tx: -60px; }
-        .p14 { animation: float-out-strong 2.2s infinite linear; animation-delay: 1.4s; --tx: 60px; }
-        .p15 { animation: float-out-strong 2.8s infinite linear; animation-delay: 0.7s; --tx: 0px; }
-
-        @keyframes lamp-flicker {
-            0%, 100% { opacity: 1; box-shadow: 0 0 20px #a78bfa, 0 0 40px #8b5cf6; }
-            50% { opacity: 0.9; box-shadow: 0 0 15px #a78bfa, 0 0 25px #8b5cf6; }
-        }
-
-        @keyframes float-out-strong {
-            0% {
-                transform: translate(-50%, 0) scale(0.2);
-                opacity: 0;
-                top: 210px;
-            }
-            10% {
+        @keyframes fadeInUp {
+            to {
                 opacity: 1;
-                transform: translate(calc(-50% + var(--tx) * 0.2), -20px) scale(0.8);
-            }
-            100% {
-                transform: translate(calc(-50% + var(--tx) * 2), -200px) scale(1.8);
-                opacity: 0;
+                transform: translateY(0);
             }
         }
 
-        /* --- Space Station CSS --- */
-        .space-container {
-            width: 100%;
-            height: 400px;
-            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            border-radius: 1rem;
-            position: relative;
-            overflow: hidden;
-            border: 2px solid #334155;
-            box-shadow: inset 0 0 60px rgba(0,0,0,0.8);
+        .nav-scrolled {
+            background-color: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
 
-        .space-window {
+        /* Game Specific Styles */
+        #game-container {
             position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 150px;
-            height: 150px;
-            background: #000;
-            border-radius: 50%;
-            border: 8px solid #475569;
-            box-shadow: inset 0 0 20px #000;
+            inset: 0;
+            z-index: 0;
             overflow: hidden;
-            z-index: 1;
+            background: #0f172a; /* Dark background for space/purification theme */
         }
         
-        .window-stars {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                radial-gradient(1px 1px at 10px 10px, white, transparent),
-                radial-gradient(1.5px 1.5px at 30px 40px, white, transparent),
-                radial-gradient(1px 1px at 60px 20px, white, transparent),
-                radial-gradient(2px 2px at 90px 80px, white, transparent),
-                radial-gradient(1px 1px at 120px 50px, white, transparent),
-                radial-gradient(1.5px 1.5px at 140px 110px, white, transparent),
-                radial-gradient(1px 1px at 40px 120px, white, transparent);
-            opacity: 0.8;
-            animation: twinkle 3s infinite alternate;
-        }
-
-        @keyframes twinkle {
-            0% { opacity: 0.5; transform: scale(0.95); }
-            100% { opacity: 1; transform: scale(1.05); }
-        }
-
-        .stars-bg {
-            position: absolute;
+        canvas {
+            display: block;
             width: 100%;
             height: 100%;
-            background-image: 
-                radial-gradient(1px 1px at 50px 50px, rgba(255,255,255,0.1), transparent),
-                radial-gradient(1px 1px at 300px 150px, rgba(255,255,255,0.05), transparent);
-            z-index: 0;
         }
 
-        .astronaut {
+        /* UI Overlays for Game */
+        .game-ui-layer {
             position: absolute;
-            top: 50%;
-            left: 40%;
-            width: 100px;
-            height: 140px;
-            transform: translate(-50%, -50%);
-            animation: astro-float 6s ease-in-out infinite;
-            z-index: 10;
-        }
-
-        .astro-head {
-            width: 50px;
-            height: 50px;
-            background: #f1f5f9;
-            border-radius: 50%;
-            position: absolute;
-            top: 0;
-            left: 25px;
-            box-shadow: inset -2px -2px 5px rgba(0,0,0,0.1);
-        }
-        .astro-visor {
-            width: 36px;
-            height: 28px;
-            background: linear-gradient(135deg, #3b82f6, #1e40af);
-            border-radius: 15px 15px 10px 10px;
-            position: absolute;
-            top: 10px;
-            left: 7px;
-            border: 2px solid #cbd5e1;
-        }
-        .astro-body {
-            width: 60px;
-            height: 70px;
-            background: #e2e8f0;
-            border-radius: 20px;
-            position: absolute;
-            top: 45px;
-            left: 20px;
+            inset: 0;
+            z-index: 20; /* Above text if game is active */
+            pointer-events: none; /* Let clicks pass through initially */
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        .astro-chest-panel {
-            width: 30px;
-            height: 20px;
-            background: #94a3b8;
-            border-radius: 4px;
-        }
-        .astro-backpack {
-            position: absolute;
-            width: 70px;
-            height: 60px;
-            background: #cbd5e1;
-            border-radius: 10px;
-            top: 50px;
-            left: 15px;
-            z-index: -1;
-        }
-        .astro-arm-l {
-            width: 15px;
-            height: 40px;
-            background: #f1f5f9;
-            border-radius: 10px;
-            position: absolute;
-            top: 50px;
-            left: 5px;
-            transform: rotate(20deg);
-        }
-        .astro-arm-r {
-            width: 15px;
-            height: 40px;
-            background: #f1f5f9;
-            border-radius: 10px;
-            position: absolute;
-            top: 50px;
-            right: 5px;
-            transform: rotate(-20deg);
-        }
-        .astro-leg-l {
-            width: 20px;
-            height: 45px;
-            background: #f1f5f9;
-            border-radius: 10px;
-            position: absolute;
-            top: 105px;
-            left: 25px;
-            transform: rotate(10deg);
-        }
-        .astro-leg-r {
-            width: 20px;
-            height: 45px;
-            background: #f1f5f9;
-            border-radius: 10px;
-            position: absolute;
-            top: 105px;
-            left: 55px;
-            transform: rotate(-10deg);
-        }
 
-        .phit-device-space {
-            position: absolute;
-            top: 40%;
-            left: 80%;
-            width: 80px;
-            height: 120px;
-            background: #334155;
-            border: 2px solid #64748b;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding-top: 10px;
-            box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
-            z-index: 5;
-        }
-        .phit-bulb {
-            width: 12px;
-            height: 60px;
-            background: #d1fae5;
-            border-radius: 6px;
-            box-shadow: 0 0 15px #10b981;
-            animation: bulb-pulse 2s infinite alternate;
-        }
-        
-        .clean-ion {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: #34d399;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #34d399;
+        .game-active .hero-content,
+        .game-active .scroll-hint { /* Hide scroll hint when game is active */
             opacity: 0;
-            z-index: 4;
-        }
-        
-        .ion-1 { top: 45%; left: 81%; animation: ion-flow 3.0s infinite linear; }
-        .ion-2 { top: 48%; left: 81%; animation: ion-flow 3.5s infinite linear; animation-delay: 0.5s; }
-        .ion-3 { top: 52%; left: 81%; animation: ion-flow 2.8s infinite linear; animation-delay: 1.0s; }
-        .ion-4 { top: 46%; left: 81%; animation: ion-flow 4.0s infinite linear; animation-delay: 1.5s; }
-        .ion-5 { top: 50%; left: 81%; animation: ion-flow 3.2s infinite linear; animation-delay: 0.2s; }
-        .ion-6 { top: 43%; left: 81%; animation: ion-flow 3.8s infinite linear; animation-delay: 1.8s; }
-        .ion-7 { top: 55%; left: 81%; animation: ion-flow 2.5s infinite linear; animation-delay: 0.8s; }
-        .ion-8 { top: 47%; left: 81%; animation: ion-flow 3.6s infinite linear; animation-delay: 1.2s; }
-        .ion-9 { top: 51%; left: 81%; animation: ion-flow 3.3s infinite linear; animation-delay: 0.3s; }
-        .ion-10 { top: 44%; left: 81%; animation: ion-flow 3.9s infinite linear; animation-delay: 1.1s; }
-        .ion-11 { top: 56%; left: 81%; animation: ion-flow 2.7s infinite linear; animation-delay: 0.7s; }
-        .ion-12 { top: 49%; left: 81%; animation: ion-flow 3.1s infinite linear; animation-delay: 1.9s; }
-        
-        @keyframes ion-flow {
-            0% { transform: translateX(0) scale(0.5); opacity: 0; }
-            10% { opacity: 1; }
-            100% { transform: translateX(-400px) translateY(calc(sin(var(--i, 1) * 100deg) * 60px)) scale(1.2); opacity: 0; }
+            pointer-events: none;
+            transition: opacity 0.5s ease;
         }
 
-        .pollutant {
+        .game-active #navbar {
+            transform: translateY(-100%); /* Hide navbar during game */
+        }
+
+        /* Revised HUD Panel Styles */
+        .hud-panel {
             position: absolute;
-            opacity: 0;
-            z-index: 6;
-            animation: disperse-fade 5s infinite;
-        }
-
-        .pol-virus {
-            width: 12px; height: 12px;
-            background: #ef4444;
-            border-radius: 50%;
-            box-shadow: 0 0 5px #f87171;
-        }
-        .pol-virus::after {
-            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
-            border: 1px dashed #fee2e2; border-radius: 50%; animation: spin 4s linear infinite;
-        }
-
-        .pol-bact {
-            width: 14px; height: 8px;
-            background: #f97316;
-            border-radius: 4px;
-        }
-
-        .pol-odor {
-            width: 16px; height: 16px;
-            background: radial-gradient(circle, #a3e635, transparent);
-            border-radius: 50%;
-            filter: blur(2px);
-        }
-
-        .pol-1 { top: 48%; left: 40%; --tx: 80px; --ty: -30px; animation-delay: 0s; }
-        .pol-2 { top: 52%; left: 42%; --tx: 90px; --ty: 20px; animation-delay: 1.5s; }
-        .pol-3 { top: 45%; left: 38%; --tx: 60px; --ty: -50px; animation-delay: 0.5s; }
-        .pol-4 { top: 55%; left: 40%; --tx: 70px; --ty: 40px; animation-delay: 2.0s; }
-        .pol-5 { top: 50%; left: 43%; --tx: 100px; --ty: 0px; animation-delay: 1.0s; }
-        .pol-6 { top: 47%; left: 39%; --tx: 50px; --ty: -60px; animation-delay: 2.5s; }
-        .pol-7 { top: 53%; left: 41%; --tx: 85px; --ty: 30px; animation-delay: 0.8s; }
-        .pol-8 { top: 49%; left: 42%; --tx: 95px; --ty: -10px; animation-delay: 1.8s; }
-        .pol-9 { top: 46%; left: 38%; --tx: 55px; --ty: -40px; animation-delay: 3.0s; }
-        .pol-10 { top: 54%; left: 40%; --tx: 75px; --ty: 50px; animation-delay: 1.2s; }
-
-        @keyframes disperse-fade {
-            0% { opacity: 0; transform: translate(0, 0) scale(0.5); }
-            10% { opacity: 1; transform: translate(0, 0) scale(1); }
-            80% { opacity: 0.8; }
-            100% { opacity: 0; transform: translate(var(--tx), var(--ty)) scale(0.5); }
-        }
-
-        @keyframes astro-float {
-            0%, 100% { transform: translate(-50%, -50%) rotate(5deg); }
-            50% { transform: translate(-50%, -60%) rotate(-5deg); }
-        }
-
-        @keyframes bulb-pulse {
-            from { box-shadow: 0 0 10px #10b981; opacity: 0.8; }
-            to { box-shadow: 0 0 25px #10b981; opacity: 1; }
-        }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
-
-        /* --- OZONE VS PHIT Animation Styles (Modified for Alignment) --- */
-        .comparison-wrapper {
-            position: relative;
-            width: 100%;
-            height: 350px;
-            background: #fff;
+            top: 150px; /* Moved down further based on user request (was 100px) */
+            left: 20px; /* Moved to left side to avoid overlap on mobile right edge */
+            z-index: 100; /* High z-index to prevent clipping */
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.5);
             border-radius: 12px;
-            overflow: hidden;
-            display: flex;
-            border: 2px solid #e2e8f0;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            padding: 12px;
+            color: white;
+            font-size: 13px;
+            pointer-events: none;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            max-width: 90vw; /* Ensure it doesn't overflow screen width */
         }
 
-        .comp-half {
-            flex: 1;
-            position: relative;
+        .hud-item {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            /* UPDATED: Align to top */
-            justify-content: flex-start; 
-            /* UPDATED: Padding to clear timer */
-            padding-top: 70px;
-            padding-bottom: 20px;
+            margin-bottom: 6px;
+            white-space: nowrap; /* Prevent text wrapping awkwardly */
         }
 
-        .comp-left {
-            background: linear-gradient(to bottom, #fff7ed, #ffedd5);
-            border-right: 2px dashed #94a3b8;
+        .hud-icon {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            flex-shrink: 0;
         }
-
-        .comp-right {
-            background: linear-gradient(to bottom, #ecfdf5, #d1fae5);
+        
+        /* Flashing warning text */
+        .warning-text {
+            animation: flashRed 1s infinite alternate;
         }
-
-        .comp-label {
-            font-size: 1.25rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-            z-index: 10;
+        
+        @keyframes flashRed {
+            from { opacity: 1; color: #ef4444; text-shadow: 0 0 5px rgba(239, 68, 68, 0.5); }
+            to { opacity: 0.7; color: #b91c1c; text-shadow: none; }
         }
-
-        .comp-desc {
-            font-size: 0.8rem;
-            text-align: center;
-            padding: 0 1rem;
-            color: #64748b;
-            z-index: 10;
-            margin-bottom: 20px;
-            background: rgba(255,255,255,0.8);
-            border-radius: 4px;
-        }
-
-        .time-badge {
-            position: absolute;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #0f172a;
-            color: #fff;
-            padding: 6px 16px;
-            border-radius: 99px;
-            font-family: monospace;
-            font-size: 1.1rem;
-            z-index: 20;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-            border: 2px solid #fff;
-        }
-
-        .machine-icon {
-            position: absolute;
-            /* UPDATED: Move to bottom to match particle source and clear top area */
-            bottom: 20px;
-            font-size: 3rem;
-            z-index: 5;
-        }
-
-        #ozoneCanvas, #phitCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
     </style>
 </head>
-<body class="bg-stone-50 text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-900">
+<body class="bg-gray-50 text-slate-800">
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 bg-white/90 backdrop-blur-md border-b border-stone-200 shadow-sm">
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 bg-white/90 backdrop-blur-sm shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
-                <!-- Left Side: Corporate Logo + Product Logo -->
-                <div class="flex items-center">
-                    <!-- Corporate Link (Moved to Left with Image) -->
-                    <a href="https://www.fengju.com.tw" class="flex items-center gap-2 hover:opacity-75 transition group mr-4">
-                        <!-- Updated: Image Source and Size -->
-                        <img src="豐鉅儀器LOGO.PNG" alt="豐鉅公司" class="h-6 w-auto" onerror="this.style.display='none'">
-                        <span class="font-bold text-slate-700 group-hover:text-emerald-700 text-sm whitespace-nowrap">豐鉅公司</span>
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center gap-3">
+                    <!-- Updated LOGO link to official website -->
+                    <a href="https://www.fengju.com.tw" class="flex items-center gap-3">
+                        <img class="h-12 w-auto object-contain" src="豐鉅儀器LOGO.png" alt="豐鉅儀器 Logo">
+                        <span class="hidden md:block text-2xl font-bold text-slate-700 ml-2">豐鉅儀器有限公司</span>
                     </a>
-
-                    <!-- Vertical Divider -->
-                    <div class="h-6 w-px bg-stone-300 mr-4 hidden sm:block"></div>
-
-                    <!-- Product Logo -->
-                    <div class="flex items-center">
-                        <span class="text-2xl font-bold text-emerald-700"><i class="fa-solid fa-tree mr-2"></i>EcoHeal</span>
-                        <span class="hidden lg:block ml-2 text-xs text-stone-500 tracking-widest uppercase">Environmental Restoration System</span>
-                    </div>
                 </div>
-                
-                <!-- Right Side: Menu Items -->
-                <div class="flex items-center">
-                    <div class="hidden md:flex space-x-6 items-center">
-                        <button onclick="scrollToSection('hero')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">首頁</button>
-                        <button onclick="scrollToSection('iaq')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">室內汙染危機</button>
-                        <button onclick="scrollToSection('tech')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">核心技術</button>
-                        <button onclick="scrollToSection('ozone-vs-phit')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition text-red-600 font-bold">安全性對決</button>
-                        <button onclick="scrollToSection('compare')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">技術比較</button>
-                        <button onclick="scrollToSection('roi')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">效益分析</button>
-                        <button onclick="scrollToSection('cases')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">實績認證</button>
-                    </div>
-                    
-                    <!-- Mobile menu button -->
-                    <div class="md:hidden flex items-center ml-4">
-                        <button onclick="toggleMobileMenu()" class="text-slate-600 hover:text-emerald-600 p-2">
-                            <i class="fa-solid fa-bars text-xl"></i>
-                        </button>
-                    </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="text-slate-600 hover:text-sky-600 font-medium transition-colors">首頁</a>
+                    <!-- Fixed: Link "關於我們" to #solutions -->
+                    <a href="#solutions" class="text-slate-600 hover:text-sky-600 font-medium transition-colors">關於我們</a>
+                    <a href="#solutions" class="text-slate-600 hover:text-sky-600 font-medium transition-colors">解決方案</a>
+                    <a href="#products" class="text-slate-600 hover:text-sky-600 font-medium transition-colors">產品系列</a>
+                    <a href="#contact" class="px-5 py-2.5 rounded-full bg-sky-600 text-white font-medium hover:bg-sky-700 transition-all shadow-md hover:shadow-lg">聯絡我們</a>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-slate-600 hover:text-sky-600 focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
                 </div>
             </div>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-stone-200">
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t">
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-                <button onclick="scrollToSection('iaq'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">危機分析</button>
-                <button onclick="scrollToSection('tech'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">PHIT 技術</button>
-                <button onclick="scrollToSection('ozone-vs-phit'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-bold text-red-600 hover:bg-red-50">安全性對決</button>
-                <button onclick="scrollToSection('compare'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">競品比較</button>
-                <button onclick="scrollToSection('roi'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">效益計算</button>
-                <!-- Mobile Corporate Link -->
-                <a href="https://www.fengju.com.tw" class="block w-full text-left px-3 py-2 rounded-md text-base font-bold text-slate-800 bg-stone-100 mt-2">
-                    <i class="fa-solid fa-building mr-2"></i>前往 豐鉅公司 官網
-                </a>
+                <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-sky-50">首頁</a>
+                <a href="#solutions" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-sky-50">關於我們</a>
+                <a href="#solutions" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-sky-50">解決方案</a>
+                <a href="#products" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:text-sky-600 hover:bg-sky-50">產品系列</a>
+                <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-sky-600 font-bold bg-sky-50">聯絡我們</a>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content -->
-    <main class="pt-16">
+    <!-- Hero Section Modified for Game -->
+    <section id="home" class="relative pt-20 flex items-center justify-center min-h-[90vh] hero-pattern overflow-hidden">
+        
+        <!-- Game Container (Replaces Background Image) -->
+        <div id="game-container">
+            <canvas id="gameCanvas"></canvas>
+            
+            <!-- Game HUD (Updated styling for visibility) -->
+            <div id="game-hud" class="hud-panel hidden">
+                <div class="font-bold mb-2 border-b border-gray-500 pb-2 text-sky-300 tracking-wider">
+                    <i class="fas fa-radar text-xs mr-1"></i> 污染源識別
+                </div>
+                <div class="hud-item"><span class="hud-icon bg-green-500 shadow-[0_0_5px_#22c55e]"></span> 病毒 (1分/小)</div>
+                <div class="hud-item"><span class="hud-icon bg-orange-500 shadow-[0_0_5px_#f97316]"></span> 細菌 (3分/中)</div>
+                <div class="hud-item"><span class="hud-icon bg-purple-500 shadow-[0_0_5px_#a855f7]"></span> 孢子 (4分/大)</div>
+                <div class="hud-item"><span class="hud-icon bg-gray-200 shadow-[0_0_5px_#e5e7eb]"></span> PM2.5 (5分/特大)</div>
+                <div class="mt-3 pt-2 border-t border-gray-600 text-lg font-mono text-yellow-400 font-bold">
+                    SCORE: <span id="score-display">0</span>
+                </div>
+                <div class="mt-1 text-xs text-red-400 animate-pulse">
+                    <i class="fas fa-exclamation-circle"></i> 撞牆將導致墜毀!
+                </div>
+            </div>
 
-        <!-- Hero Section -->
-        <section id="hero" class="relative bg-gradient-to-br from-stone-50 via-emerald-50 to-sky-50 py-20 lg:py-32 overflow-hidden">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="text-center max-w-3xl mx-auto">
-                    <div class="inline-flex items-center px-3 py-1 rounded-full bg-emerald-100 text-emerald-800 text-xs font-semibold tracking-wide uppercase mb-4">
-                        Biomimicry Technology
+            <!-- Game Over Screen -->
+            <div id="game-over-screen" class="absolute inset-0 z-50 bg-slate-900/90 flex flex-col items-center justify-center hidden text-center p-4">
+                <h2 class="text-4xl md:text-6xl font-bold text-red-500 mb-4 animate-bounce">GAME OVER</h2>
+                <p class="text-2xl text-white mb-2">最終分數: <span id="final-score" class="text-yellow-400"></span></p>
+                <div class="bg-slate-800 p-8 rounded-2xl border border-sky-500 shadow-[0_0_30px_rgba(14,165,233,0.3)] max-w-2xl mt-6 relative z-50">
+                    <p class="text-xl md:text-3xl text-sky-300 font-bold mb-6 leading-relaxed">
+                        "我們有更有效的<span class="text-white">PHIT技術</span>，<br>可以主動消除污染"
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="https://www.fengju.com.tw/EcohealPHIT.html" class="px-8 py-3 bg-green-600 hover:bg-green-700 text-white rounded-full font-bold text-lg transition-all transform hover:scale-105 shadow-lg relative z-50 pointer-events-auto cursor-pointer">
+                            <i class="fas fa-leaf mr-2"></i> 了解 EcoHeal 技術
+                        </a>
+                        <button onclick="resetGame()" class="px-8 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-full font-bold text-lg transition-all relative z-50 pointer-events-auto cursor-pointer">
+                            再試一次
+                        </button>
                     </div>
-                    <h1 class="text-4xl md:text-6xl font-bold text-slate-900 mb-6 tracking-tight">
-                        環境自癒，<br class="md:hidden">回歸原生態
+                </div>
+            </div>
+        </div>
+
+        <!-- Original Hero Content (Will be hidden when game starts) -->
+        <div id="hero-content" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full hero-content transition-all duration-500 flex flex-col justify-center min-h-[90vh]">
+            <div class="grid md:grid-cols-2 gap-12 items-center flex-grow">
+                <div class="space-y-8 fade-in-up bg-white/80 p-6 md:p-0 md:bg-transparent rounded-2xl backdrop-blur-sm md:backdrop-blur-none">
+                    <div class="inline-flex items-center px-4 py-2 rounded-full bg-sky-100 text-sky-800 font-medium text-sm">
+                        <span class="w-2 h-2 rounded-full bg-sky-600 mr-2"></span>
+                        專業醫療器材代理首選
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-bold text-slate-800 leading-tight">
+                        專業醫療 <br>
+                        <span class="text-sky-600">呵護健康</span>
                     </h1>
-                    <p class="text-lg md:text-xl text-slate-600 mb-8 leading-relaxed">
-                        EcoHeal (Eco-Health) 透過仿生工程，模擬大自然「陽光、空氣、水」的交互作用。我們不只過濾空氣，而是啟動室內的<span class="font-bold text-emerald-600">自我淨化機制</span>。
+                    <p class="text-lg text-slate-600 max-w-lg leading-relaxed">
+                        豐鉅儀器提供開刀房、供應中心及長照領域的全方位解決方案。從精密手術器械到環境淨化，我們致力於提升醫療品質與安全。
                     </p>
-                    <div class="flex justify-center gap-4">
-                        <button onclick="scrollToSection('tech')" class="px-8 py-3 bg-emerald-600 text-white rounded-lg font-semibold shadow-lg hover:bg-emerald-700 transition transform hover:-translate-y-0.5">
-                            探索 PHIT 技術
-                        </button>
-                        <button onclick="scrollToSection('compare')" class="px-8 py-3 bg-white text-emerald-600 border border-emerald-200 rounded-lg font-semibold shadow hover:bg-stone-50 transition">
-                            技術差異比較
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <!-- Decorative Elements -->
-            <div class="absolute top-1/2 left-10 text-emerald-200 text-9xl opacity-20"><i class="fa-solid fa-leaf"></i></div>
-            <div class="absolute bottom-10 right-10 text-sky-200 text-9xl opacity-20"><i class="fa-solid fa-wind"></i></div>
-        </section>
-
-        <!-- Section 1: IAQ Risk (Indoor Air Quality) -->
-        <section id="iaq" class="py-16 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="max-w-3xl mx-auto text-center mb-12">
-                    <h2 class="text-3xl font-bold text-slate-900 mb-4">隱形的危機：病態建築症候群</h2>
-                    <p class="text-slate-600">
-                        根據 EPA 研究，我們每天 90% 的時間待在室內，但室內汙染濃度往往高於室外。我們無法選擇不呼吸，每人每日需交換 15-20 公升的空氣。了解您身邊的「隱形殺手」是改善健康的第一步。
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-                    <!-- Chart: Indoor vs Outdoor -->
-                    <div class="glass-panel p-6 rounded-xl">
-                        <h3 class="text-lg font-semibold mb-4 text-center">室內外汙染濃度對比 (倍數)</h3>
-                        <div class="chart-container">
-                            <canvas id="iaqChart"></canvas>
-                        </div>
-                        <p class="text-xs text-center text-slate-400 mt-2">資料來源：美國環境保護署 (EPA)</p>
-                    </div>
-
-                    <!-- Pollutant List -->
-                    <div class="space-y-6">
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 text-xl">
-                                <i class="fa-solid fa-triangle-exclamation"></i>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold text-slate-800">揮發性有機化合物 (VOCs)</h4>
-                                <p class="text-slate-600 text-sm">裝潢、家具持續釋放甲醛長達 15-20 年。即便「綠建材」也僅是低釋放，非零釋放。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-red-100 flex items-center justify-center text-red-600 text-xl">
-                                <i class="fa-solid fa-virus"></i>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold text-slate-800">生物性氣膠 (Bio-aerosols)</h4>
-                                <p class="text-slate-600 text-sm">高濃度 CO2 環境下，細菌、病毒、黴菌透過氣溶膠傳播，空調管道常成為溫床。</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start">
-                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 text-xl">
-                                <i class="fa-solid fa-smog"></i>
-                            </div>
-                            <div class="ml-4">
-                                <h4 class="text-lg font-bold text-slate-800">PM2.5 與化學汙染</h4>
-                                <p class="text-slate-600 text-sm">燃燒產生的微粒、清潔劑揮發物。微小顆粒可直接進入血液循環。</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 2: Core Technology (PHIT) -->
-        <section id="tech" class="py-16 bg-stone-50">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="max-w-3xl mx-auto text-center mb-12">
-                    <h2 class="text-3xl font-bold text-slate-900 mb-4">PHIT 光合離子化技術</h2>
-                    <p class="text-slate-600 mb-8">
-                        仿生自然界雷雨過後的淨化機制。利用寬頻譜紫外線與金屬靶材，催化空氣中的氧氣與水氣，產生主動式的「淨化軍隊」。
-                    </p>
-                    
-                    <!-- PHIT Tech Animation -->
-                    <div class="phit-anim-box w-full max-w-2xl mx-auto">
-                        <!-- Scene Elements -->
-                        <div class="uv-lamp-glow"></div>
-                        
-                        <!-- Purple Arrows (Beam) -->
-                        <div class="uv-arrow beam-arrow-1"><i class="fa-solid fa-arrow-down"></i></div>
-                        <div class="uv-arrow beam-arrow-2"><i class="fa-solid fa-arrow-down"></i></div>
-                        <div class="uv-arrow beam-arrow-3"><i class="fa-solid fa-arrow-down"></i></div>
-
-                        <div class="metal-plate"></div>
-                        
-                        <!-- Particles generating and floating up (Increased Quantity) -->
-                        <div class="particle p1"></div>
-                        <div class="particle p2"></div>
-                        <div class="particle p3"></div>
-                        <div class="particle p4"></div>
-                        <div class="particle p5"></div>
-                        <div class="particle p6"></div>
-                        <div class="particle p7"></div>
-                        <div class="particle p8"></div>
-                        <div class="particle p9"></div>
-                        <div class="particle p10"></div>
-                        <div class="particle p11"></div>
-                        <div class="particle p12"></div>
-                        <div class="particle p13"></div>
-                        <div class="particle p14"></div>
-                        <div class="particle p15"></div>
-
-                        <!-- Labels -->
-                        <div class="absolute top-4 right-4 text-xs text-purple-300 font-mono border border-purple-500/50 rounded px-2 py-1 bg-black/30">
-                            UV 光源激發
-                        </div>
-                        <div class="absolute bottom-4 left-4 text-xs text-slate-300 font-mono border border-slate-500/50 rounded px-2 py-1 bg-black/30">
-                            金屬靶材 (TiO2等)
-                        </div>
-                        <div class="absolute top-1/2 right-4 text-xs text-emerald-300 font-mono font-bold animate-pulse">
-                            <i class="fa-solid fa-arrow-up mr-1"></i>產生淨化因子 (強效擴散)
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Interactive Process Flow -->
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-                    <!-- Step 1 -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 hover:shadow-md transition group">
-                        <div class="text-emerald-500 text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                            <i class="fa-regular fa-sun"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">1. 光能激發</h3>
-                        <p class="text-slate-600 text-sm">
-                            高純度石英真空燈管發出**寬頻譜紫外線 (Broad-spectrum UV)**，照射至特製的多重金屬靶材上。
-                        </p>
-                    </div>
-                    <!-- Step 2 -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 hover:shadow-md transition group">
-                        <div class="text-blue-500 text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                            <i class="fa-solid fa-atom"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">2. 高級氧化 (AOP)</h3>
-                        <p class="text-slate-600 text-sm">
-                            光能催化空氣中的 **O2** 與 **H2O**，誘發高級氧化反應，生成氣態過氧化氫 (H2O2) 與氫氧自由基。
-                        </p>
-                    </div>
-                    <!-- Step 3 -->
-                    <div class="bg-white p-6 rounded-xl shadow-sm border border-stone-100 hover:shadow-md transition group">
-                        <div class="text-purple-500 text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">
-                            <i class="fa-solid fa-shield-virus"></i>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">3. 主動淨化</h3>
-                        <p class="text-slate-600 text-sm">
-                            淨化因子藉由**布朗運動**擴散全室，主動分解化學毒氣、擊殺病菌並沉降 PM2.5。
-                        </p>
-                    </div>
-                </div>
-
-                <!-- 4 Pillars of Purification -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-                    <div class="bg-emerald-900 text-white p-8 rounded-2xl flex flex-col justify-center">
-                        <h3 class="text-2xl font-bold mb-6">EcoHeal 的四重防護網</h3>
-                        <ul class="space-y-4">
-                            <li class="flex items-center">
-                                <i class="fa-solid fa-check-circle text-emerald-400 mr-3"></i>
-                                <span><strong>主動擴散：</strong> 無死角覆蓋，包含家具縫隙。</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa-solid fa-check-circle text-emerald-400 mr-3"></i>
-                                <span><strong>生物滅活：</strong> 破壞細菌/病毒 DNA/RNA，防疫等級。</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa-solid fa-check-circle text-emerald-400 mr-3"></i>
-                                <span><strong>化學分解：</strong> 將甲醛、苯還原為水與 CO2。</span>
-                            </li>
-                            <li class="flex items-center">
-                                <i class="fa-solid fa-check-circle text-emerald-400 mr-3"></i>
-                                <span><strong>微粒沉降：</strong> 帶電離子使 PM2.5 凝集變重，快速落地。</span>
-                            </li>
-                        </ul>
-                    </div>
-                    
-                    <!-- NEW ANIMATION SECTION -->
-                    <div class="bg-white rounded-2xl p-4 border border-stone-200 flex flex-col items-center justify-center overflow-hidden">
-                        <h3 class="text-xl font-bold mb-2 text-center text-emerald-800">淨化實況模擬：主動出擊與全方位瓦解</h3>
-                        <p class="text-xs text-slate-500 mb-2">
-                            觀看淨化因子(綠/藍)如何瓦解
-                            <span class="text-red-500 font-bold">病毒</span>、
-                            <span class="text-orange-500 font-bold">細菌</span>、
-                            <span class="text-purple-500 font-bold">黴菌</span> 與
-                            <span class="text-yellow-600 font-bold">甲醛</span>
-                        </p>
-                        <!-- Canvas Container -->
-                        <div class="relative w-full h-64 bg-slate-900 rounded-lg shadow-inner overflow-hidden">
-                            <canvas id="phitSimulation" class="w-full h-full block"></canvas>
-                            <!-- Overlay Label -->
-                            <div class="absolute bottom-2 left-2 text-white/50 text-[10px] bg-black/30 p-1 rounded">
-                                <span class="mr-2">● 淨化因子</span>
-                                <span class="mr-2 text-red-400">☀ 病毒</span>
-                                <span class="mr-2 text-orange-400">▮ 細菌</span>
-                                <span class="mr-2 text-purple-400">♣ 黴菌</span>
-                                <span class="text-yellow-500">⬡ 甲醛</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- ADDED SECTION: History of PHIT -->
-                <div class="mt-16 border-t border-stone-200 pt-12">
-                    <div class="max-w-4xl mx-auto">
-                        <div class="text-center mb-8">
-                            <span class="text-emerald-600 font-bold tracking-wider text-sm uppercase">Origins of Technology</span>
-                            <h2 class="text-3xl font-bold text-slate-900 mt-2 mb-4">PHIT 光合離子化歷史</h2>
-                            <p class="text-slate-600 max-w-2xl mx-auto">
-                                這種先進的空氣淨化技術，最早被應用在 <strong class="text-slate-800">太空站 (Space Station)</strong> 的系統中。
-                                在完全密閉的太空艙內，為了讓太空人能夠呼吸到潔淨的空氣，NASA科學家研發並應用了此技術。
-                                後來更發現其對於<strong class="text-emerald-600">延長食材保存期限</strong>以及<strong class="text-emerald-600">流行病防疫、空汙及廢水處理</strong>有著卓越的效果。
-                            </p>
-                        </div>
-
-                        <!-- CSS Space Scene Animation -->
-                        <div class="space-container">
-                            <!-- Background Stars (Faint cabin texture) -->
-                            <div class="stars-bg"></div>
-                            
-                            <!-- Window View with Twinkling Stars -->
-                            <div class="space-window">
-                                <div class="window-stars"></div>
-                            </div>
-
-                            <!-- PHIT Device on the wall -->
-                            <div class="phit-device-space">
-                                <div class="phit-bulb"></div>
-                            </div>
-
-                            <!-- Particles emitting (Purification Ions) - Increased amount -->
-                            <div class="clean-ion ion-1" style="--i:1"></div>
-                            <div class="clean-ion ion-2" style="--i:2"></div>
-                            <div class="clean-ion ion-3" style="--i:3"></div>
-                            <div class="clean-ion ion-4" style="--i:4"></div>
-                            <div class="clean-ion ion-5" style="--i:5"></div>
-                            <div class="clean-ion ion-6" style="--i:6"></div>
-                            <div class="clean-ion ion-7" style="--i:7"></div>
-                            <div class="clean-ion ion-8" style="--i:8"></div>
-                            <div class="clean-ion ion-9" style="--i:9"></div>
-                            <div class="clean-ion ion-10" style="--i:10"></div>
-                            <div class="clean-ion ion-11" style="--i:11"></div>
-                            <div class="clean-ion ion-12" style="--i:12"></div>
-
-                            <!-- Pollutants (Virus, Bacteria, Odor) that dissolve -->
-                            <!-- Start near astronaut and disperse -->
-                            <div class="pollutant pol-virus pol-1"></div>
-                            <div class="pollutant pol-bact pol-2"></div>
-                            <div class="pollutant pol-odor pol-3"></div>
-                            <div class="pollutant pol-virus pol-4"></div>
-                            <div class="pollutant pol-bact pol-5"></div>
-                            <div class="pollutant pol-odor pol-6"></div>
-                            <div class="pollutant pol-virus pol-7"></div>
-                            <div class="pollutant pol-bact pol-8"></div>
-                            <div class="pollutant pol-odor pol-9"></div>
-                            <div class="pollutant pol-virus pol-10"></div>
-
-                            <!-- Floating Astronaut -->
-                            <div class="astronaut">
-                                <div class="astro-backpack"></div>
-                                <div class="astro-leg-l"></div>
-                                <div class="astro-leg-r"></div>
-                                <div class="astro-arm-l"></div>
-                                <div class="astro-arm-r"></div>
-                                <div class="astro-body">
-                                    <div class="astro-chest-panel"></div>
-                                </div>
-                                <div class="astro-head">
-                                    <div class="astro-visor"></div>
-                                </div>
-                            </div>
-
-                            <!-- Overlay Text -->
-                            <div class="absolute bottom-4 right-4 text-white/70 text-xs font-mono">
-                                <i class="fa-solid fa-satellite mr-2"></i>NASA Tech Application
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Section: Ozone VS PHIT (New Requested Section) -->
-        <section id="ozone-vs-phit" class="py-16 bg-red-50/50">
-            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="max-w-3xl mx-auto text-center mb-8">
-                    <span class="text-red-600 font-bold tracking-wider text-sm uppercase">Safety Analysis</span>
-                    <h2 class="text-3xl font-bold text-slate-900 mt-2 mb-4">臭氧 VS PHIT 技術：累積性毒害 vs 動態平衡</h2>
-                    <p class="text-slate-600">
-                        為什麼傳統臭氧機必須「人機分離」且不能長時間開啟？<br>
-                        下圖展示了在密閉空間中，開啟機器 <strong>24 小時</strong> 的濃度變化模擬。
-                    </p>
-                </div>
-
-                <!-- Split Screen Animation Container -->
-                <div class="comparison-wrapper">
-                    <!-- Timer Overlay -->
-                    <div id="comp-timer" class="time-badge">00:00:00</div>
-
-                    <!-- Left: Ozone -->
-                    <div class="comp-half comp-left">
-                        <canvas id="ozoneCanvas"></canvas>
-                        <div class="machine-icon text-red-500">
-                            <i class="fa-solid fa-industry"></i>
-                        </div>
-                        <h3 class="comp-label text-red-700">傳統臭氧機 (Ozone)</h3>
-                        <p class="comp-desc">
-                            只產出不分解。隨著時間推移，臭氧分子不斷堆疊。
-                            <br><strong>結果：濃度超標，傷害肺部 (黑牆效應)</strong>
-                        </p>
-                    </div>
-
-                    <!-- Right: PHIT -->
-                    <div class="comp-half comp-right">
-                        <canvas id="phitCanvas"></canvas>
-                        <div class="machine-icon text-emerald-500">
-                            <i class="fa-solid fa-tree"></i>
-                        </div>
-                        <h3 class="comp-label text-emerald-700">PHIT 技術</h3>
-                        <p class="comp-desc">
-                            產出即反應。淨化因子擊中汙染物後還原為氧氣。
-                            <br><strong>結果：維持 0.01ppm 安全恆定，人機共存</strong>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 3: Comparative Analysis -->
-        <section id="compare" class="py-16 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="max-w-3xl mx-auto text-center mb-12">
-                    <h2 class="text-3xl font-bold text-slate-900 mb-4">技術大對決：為什麼選擇主動式？</h2>
-                    <p class="text-slate-600">
-                        傳統清淨機 (HEPA) 是「空氣吸塵器」，只能被動等待。EcoHeal 是「環境還原系統」。透過下方雷達圖，您可以清楚看見各項技術在安全性、覆蓋率與維護成本上的巨大差異。
-                    </p>
-                </div>
-
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
-                    <!-- Radar Chart -->
-                    <div class="glass-panel p-4 rounded-xl flex flex-col items-center justify-center">
-                        <h3 class="text-lg font-bold mb-4">綜合效能評估</h3>
-                        <div class="chart-container">
-                            <canvas id="comparisonChart"></canvas>
-                        </div>
-                        <div class="flex flex-wrap justify-center gap-2 mt-4 text-xs">
-                            <span class="px-2 py-1 bg-emerald-100 text-emerald-800 rounded">● EcoHeal</span>
-                            <span class="px-2 py-1 bg-slate-200 text-slate-600 rounded">● HEPA 濾網</span>
-                            <span class="px-2 py-1 bg-red-100 text-red-600 rounded">● 臭氧機</span>
-                            <span class="px-2 py-1 bg-yellow-100 text-yellow-600 rounded">● 紫外線</span>
-                        </div>
-                    </div>
-
-                    <!-- Comparison Details -->
-                    <div class="space-y-4">
-                        <div class="border-l-4 border-emerald-500 pl-4 py-2 bg-emerald-50 rounded-r-lg">
-                            <h4 class="font-bold text-emerald-800">EcoHeal 光合電子樹</h4>
-                            <p class="text-sm text-emerald-700">主動全域淨化、無耗材、分解化學毒氣、物體表面殺菌、人機共存。</p>
-                        </div>
-                        
-                        <div class="border-l-4 border-slate-400 pl-4 py-2 hover:bg-slate-50 transition">
-                            <h4 class="font-bold text-slate-700">HEPA 濾網過濾</h4>
-                            <p class="text-sm text-slate-600">被動攔截、死角多、濾網易二次汙染、噪音大、無法分解氣體 (甲醛)。</p>
-                        </div>
-
-                        <div class="border-l-4 border-red-400 pl-4 py-2 hover:bg-red-50 transition">
-                            <h4 class="font-bold text-slate-700">臭氧機 (Ozone)</h4>
-                            <p class="text-sm text-slate-600">傷肺風險高、產生有毒氮氧化物、黑牆效應、無法人機共存。</p>
-                        </div>
-
-                        <div class="border-l-4 border-yellow-400 pl-4 py-2 hover:bg-yellow-50 transition">
-                            <h4 class="font-bold text-slate-700">紫外線 (UV) 殺菌</h4>
-                            <p class="text-sm text-slate-600">照射範圍小 (5-15cm)、長時間才有效、造成裝潢/塑膠老化、傷眼。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 4: ROI & Sustainability -->
-        <section id="roi" class="py-16 bg-stone-100">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="max-w-3xl mx-auto text-center mb-12">
-                    <h2 class="text-3xl font-bold text-slate-900 mb-4">極致效益：無耗材與低能耗</h2>
-                    <p class="text-slate-600">
-                        EcoHeal 核心燈管壽命長達 25,000 小時，無須更換昂貴濾網。24小時連續運轉，年電費僅約百元。請使用下方試算器，比較 5 年期的持有成本。
-                    </p>
-                </div>
-
-                <div class="bg-white rounded-2xl shadow-lg overflow-hidden border border-stone-200">
-                    <div class="grid grid-cols-1 md:grid-cols-2">
-                        <!-- Controls -->
-                        <div class="p-8 bg-slate-50 border-r border-stone-200">
-                            <h3 class="text-xl font-bold mb-6 text-slate-800">成本試算設定</h3>
-                            
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-slate-700 mb-2">使用年限: <span id="yearLabel" class="text-emerald-600 font-bold">5</span> 年</label>
-                                <input type="range" id="yearInput" min="1" max="10" value="5" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer accent-emerald-600">
-                            </div>
-
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-medium text-slate-500 uppercase">HEPA 清淨機 (競品)</label>
-                                    <div class="flex justify-between text-sm mt-1">
-                                        <span>濾網年費 (台幣)</span>
-                                        <input type="number" id="hepaCostInput" value="4000" class="w-24 text-right border border-stone-300 rounded px-2 py-1 text-slate-700 focus:outline-none focus:border-emerald-500">
-                                    </div>
-                                    <div class="flex justify-between text-sm mt-1">
-                                        <span>年電費 (台幣)</span>
-                                        <span class="text-slate-500">約 3000 (高功率)</span>
-                                    </div>
-                                </div>
-                                
-                                <div class="pt-4 border-t border-stone-200">
-                                    <label class="block text-xs font-medium text-emerald-600 uppercase">EcoHeal 光合電子樹</label>
-                                    <div class="flex justify-between text-sm mt-1">
-                                        <span>耗材費用</span>
-                                        <span class="font-bold text-emerald-600">0 (無濾網)</span>
-                                    </div>
-                                    <div class="flex justify-between text-sm mt-1">
-                                        <span>年電費 (台幣)</span>
-                                        <span class="font-bold text-emerald-600">約 120 (低功率)</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Visualization -->
-                        <div class="p-6 flex flex-col justify-center bg-white">
-                            <div class="chart-container">
-                                <canvas id="roiChart"></canvas>
-                            </div>
-                            <p class="text-center text-xs text-slate-400 mt-4">* EcoHeal 建議 24H 開啟以維持熱穩定性與最佳壽命。</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section 5: Usage Scenarios & Cases -->
-        <section id="cases" class="py-16 bg-white">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="max-w-3xl mx-auto text-center mb-12">
-                    <h2 class="text-3xl font-bold text-slate-900 mb-4">全方位應用與實績認證</h2>
-                    <p class="text-slate-600">
-                        從國家級防疫到個人隨身防護，EcoHeal 提供了完整的環境解決方案。
-                    </p>
-                </div>
-
-                <!-- Tabs -->
-                <div class="flex justify-center mb-8">
-                    <div class="bg-stone-100 p-1 rounded-lg inline-flex">
-                        <button onclick="switchTab('home')" id="tab-home" class="px-4 py-2 rounded-md text-sm font-medium bg-white shadow text-emerald-700 transition">居家/分散</button>
-                        <button onclick="switchTab('car')" id="tab-car" class="px-4 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-emerald-700 transition">車用/甲醛</button>
-                        <button onclick="switchTab('travel')" id="tab-travel" class="px-4 py-2 rounded-md text-sm font-medium text-slate-600 hover:text-emerald-700 transition">差旅/個人</button>
-                    </div>
-                </div>
-
-                <!-- Tab Content -->
-                <div class="bg-emerald-50 rounded-2xl p-8 mb-16 border border-emerald-100">
-                    <div id="content-home" class="fade-in">
-                        <h3 class="text-xl font-bold text-emerald-900 mb-2"><i class="fa-solid fa-house mr-2"></i>居家策略：多點分散式佈局</h3>
-                        <p class="text-emerald-800 mb-4">
-                            與其買一台昂貴的大機器放在客廳（房間吸不到），不如配置多台 EcoHeal 於各房間。確保淨化因子均勻分佈，消除死角。
-                        </p>
-                        <div class="bg-white/60 p-4 rounded-lg text-sm text-emerald-900">
-                            <strong>實績案例：</strong> 國際連鎖飯店（除味/除黴）、產後護理之家（新生兒保護）、火災後住家（除戴奧辛）。
-                        </div>
-                    </div>
-                    <div id="content-car" class="hidden fade-in">
-                        <h3 class="text-xl font-bold text-emerald-900 mb-2"><i class="fa-solid fa-car mr-2"></i>車用策略：高溫甲醛剋星</h3>
-                        <p class="text-emerald-800 mb-4">
-                            「新車味」即是致癌甲醛。高溫曝曬會加速釋放。EcoHeal 車用版採低溫技術 (37°C)，插在冷氣出風口，3分鐘內顯著降解毒氣。
-                        </p>
-                        <div class="bg-white/60 p-4 rounded-lg text-sm text-emerald-900">
-                            <strong>技術特點：</strong> 低溫燈管抗震設計，適應車內溫差變化。
-                        </div>
-                    </div>
-                    <div id="content-travel" class="hidden fade-in">
-                        <h3 class="text-xl font-bold text-emerald-900 mb-2"><i class="fa-solid fa-suitcase mr-2"></i>差旅策略：微環境防護罩</h3>
-                        <p class="text-emerald-800 mb-4">
-                            飯店地毯與窗簾是過敏原與塵蟎溫床。利用布朗運動原理，將設備置於床頭，優先建立頭部周圍的「微環境潔淨區」。
-                        </p>
-                        <div class="bg-white/60 p-4 rounded-lg text-sm text-emerald-900">
-                            <strong>實績案例：</strong> 衛生研究院、國軍營區、總統府防疫門。
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Certifications Grid -->
-                <h3 class="text-center text-xl font-bold mb-6 text-slate-800">權威認證與測試單位</h3>
-                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
-                    <div class="p-4 bg-white shadow-sm rounded-lg border border-stone-100">
-                        <i class="fa-solid fa-flask text-emerald-500 text-2xl mb-2"></i>
-                        <div class="text-sm font-bold">廣州微生物實驗室</div>
-                        <div class="text-xs text-slate-500">P4 等級</div>
-                    </div>
-                    <div class="p-4 bg-white shadow-sm rounded-lg border border-stone-100">
-                        <i class="fa-solid fa-hospital text-emerald-500 text-2xl mb-2"></i>
-                        <div class="text-sm font-bold">長庚醫院</div>
-                        <div class="text-xs text-slate-500">臨床實測</div>
-                    </div>
-                    <div class="p-4 bg-white shadow-sm rounded-lg border border-stone-100">
-                        <i class="fa-solid fa-microscope text-emerald-500 text-2xl mb-2"></i>
-                        <div class="text-sm font-bold">高醫病理實驗室</div>
-                        <div class="text-xs text-slate-500">病理驗證</div>
-                    </div>
-                    <div class="p-4 bg-white shadow-sm rounded-lg border border-stone-100">
-                        <i class="fa-solid fa-shield-halved text-emerald-500 text-2xl mb-2"></i>
-                        <div class="text-sm font-bold">安全性認證</div>
-                        <div class="text-xs text-slate-500">臭氧/濃度合規</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- NEW CONTACT SECTION -->
-        <section id="contact" class="relative py-16 bg-slate-900">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-                <div class="max-w-4xl mx-auto text-center">
-                    <h2 class="text-3xl font-bold mb-6 text-white">聯絡我們</h2>
-                    <p class="text-slate-300 mb-12 text-lg">
-                        有任何關於醫療設備、耗材或大健康產品的需求嗎？歡迎隨時與我們聯繫，我們將有專人為您服務。
-                    </p>
-                    
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-                        
-                        <!-- Facebook Feed Embed -->
-                        <div class="bg-white rounded-2xl w-full shadow-lg border border-slate-700 overflow-hidden flex flex-col">
-                            <div class="bg-[#1877F2] p-4 flex items-center gap-3">
-                                <i class="fa-brands fa-facebook-square text-white text-2xl"></i>
-                                <span class="text-white font-bold">Facebook 粉絲專頁</span>
-                            </div>
-                            <div class="flex-grow bg-white flex justify-center items-start pt-2">
-                                <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffengju.com.tw%2F&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="100%" height="450" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
-                            </div>
-                            <a href="https://www.facebook.com/fengju.com.tw/" target="_blank" class="block w-full text-center py-3 bg-slate-50 text-[#1877F2] font-semibold hover:bg-slate-100 transition-colors border-t">
-                                前往粉絲專頁 <i class="fas fa-external-link-alt ml-1 text-sm"></i>
+                    <div class="flex flex-col items-center sm:items-start gap-2">
+                        <div class="flex flex-col sm:flex-row gap-4 items-center w-full">
+                            <button onclick="startGame()" class="w-full sm:w-auto inline-flex justify-center items-center px-8 py-4 rounded-lg bg-red-600 text-white font-bold text-lg hover:bg-red-700 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1">
+                                <i class="fas fa-crosshairs mr-2"></i>
+                                點擊開始 淨化空氣吧
+                            </button>
+                            <a href="#products" class="w-full sm:w-auto inline-flex justify-center items-center px-8 py-4 rounded-lg border-2 border-sky-600 text-sky-600 font-semibold hover:bg-sky-50 transition-all">
+                                探索產品
                             </a>
                         </div>
+                        <!-- Flashing Warning Text -->
+                        <div class="warning-text text-lg font-bold mt-2">
+                            <i class="fas fa-exclamation-triangle mr-2"></i>尚未啟動EcoHeal 防護網
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 3D Visualization Placeholder or Illustration -->
+                <div class="relative hidden md:block fade-in-up" style="animation-delay: 0.2s;">
+                    <!-- Keeps the visual balance -->
+                </div>
+            </div>
+            
+            <!-- Flashing Scroll Hint -->
+            <a href="#solutions" class="scroll-hint absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center justify-center text-slate-500 hover:text-sky-600 transition-colors z-20 cursor-pointer animate-pulse no-underline">
+                <span class="text-lg font-bold tracking-widest mb-1">往下滑來繼續探索</span>
+                <i class="fas fa-chevron-down text-2xl animate-bounce"></i>
+            </a>
+        </div>
+    </section>
 
-                        <!-- Contact Form & Email Button -->
-                        <div class="bg-white rounded-2xl w-full shadow-lg border border-slate-700 overflow-hidden p-6 text-slate-800 flex flex-col h-full">
-                            <h3 class="text-xl font-bold text-slate-800 mb-6 text-center flex items-center justify-center gap-2">
-                                <i class="fas fa-paper-plane text-sky-600"></i> 聯絡豐鉅
-                            </h3>
-                            <!-- Formspree (Text Only) -->
-                            <form action="https://formspree.io/f/mqeegbeg" method="POST" class="flex flex-col flex-grow">
-                                <div class="mb-4">
-                                    <label for="name" class="block text-sm font-medium text-slate-700 mb-1">您的稱呼 / 公司名稱</label>
-                                    <input type="text" id="name" name="name" required 
-                                        class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all">
-                                </div>
+    <section id="solutions" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-base text-sky-600 font-bold tracking-wide uppercase">我們的專業</h2>
+                <p class="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-slate-900 sm:text-4xl">
+                    為醫療場域打造的整合方案
+                </p>
+                <p class="mt-4 max-w-2xl text-xl text-slate-500 mx-auto">
+                    針對醫院核心區域與長期照護需求，提供符合國際標準的設備與耗材。
+                </p>
+            </div>
 
-                                <div class="mb-4">
-                                    <label for="email" class="block text-sm font-medium text-slate-700 mb-1">聯絡 Email</label>
-                                    <input type="email" id="email" name="email" required 
-                                        class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all">
-                                </div>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="bg-slate-50 rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300 border border-slate-100 group">
+                    <div class="w-14 h-14 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 mb-6 group-hover:bg-sky-600 group-hover:text-white transition-colors">
+                        <i class="fas fa-procedures text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">開刀房 (OR) 解決方案</h3>
+                    <p class="text-slate-600">
+                        引進德國 KLS MARTIN 手術器械，以精準工藝輔助醫師完成每一台精密手術，確保手術過程的安全性與效率。
+                    </p>
+                </div>
 
-                                <div class="mb-4">
-                                    <label for="phone" class="block text-sm font-medium text-slate-700 mb-1">聯絡電話</label>
-                                    <input type="tel" id="phone" name="phone" 
-                                        class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all">
-                                </div>
+                <div class="bg-slate-50 rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300 border border-slate-100 group">
+                    <div class="w-14 h-14 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 mb-6 group-hover:bg-sky-600 group-hover:text-white transition-colors">
+                        <i class="fas fa-box-open text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">供應中心 (CSSD)</h3>
+                    <p class="text-slate-600">
+                        Sainsmed 系列耗材提供最高規格的滅菌包裝與器械收納，建立無菌屏障，是感染控制的第一道防線。
+                    </p>
+                </div>
 
-                                <div class="mb-6 flex-grow">
-                                    <label for="message" class="block text-sm font-medium text-slate-700 mb-1">需求或留言</label>
-                                    <textarea id="message" name="message" rows="4" required placeholder="請在此填寫您的需求..."
-                                        class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all resize-none"></textarea>
-                                </div>
+                <div class="bg-slate-50 rounded-2xl p-8 hover:shadow-xl transition-shadow duration-300 border border-slate-100 group">
+                    <div class="w-14 h-14 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 mb-6 group-hover:bg-sky-600 group-hover:text-white transition-colors">
+                        <i class="fas fa-heartbeat text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">長照與大健康</h3>
+                    <p class="text-slate-600">
+                        從 MJMT 製氧機到 EcoHeal 空氣淨化，我們關注呼吸健康與居家照護品質，提供大健康系列產品呵護您的身體。
+                    </p>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mt-12">
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="h-64 overflow-hidden relative flex-shrink-0">
+                        <img src="2.jpg" alt="Sainsmed 產品" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.style.backgroundColor='#e2e8f0'">
+                        <div class="absolute top-4 left-4 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-md">Sainsmed</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">感染控制耗材系列</h3>
+                        <p class="text-slate-600 text-sm mb-4">吸水紙、滅菌包布、精密器械收納盒。專為CSSD設計，確保滅菌過程萬無一失。</p>
+                        <ul class="space-y-2 text-sm text-slate-500 mt-auto">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 各項耗材、保護套</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 符合國際標準</li>
+                        </ul>
+                    </div>
+                </div>
 
-                                <button type="submit" 
-                                    class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-lg transition-colors shadow-md mb-6">
-                                    <i class="fas fa-paper-plane mr-2"></i> 送出文字訊息
-                                </button>
-                            </form>
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="h-64 overflow-hidden relative flex-shrink-0">
+                        <img src="6.jpg" alt="KLS MARTIN 手術器械" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.style.backgroundColor='#e2e8f0'">
+                        <div class="absolute top-4 left-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-md">KLS MARTIN</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">德國精密手術器械</h3>
+                        <p class="text-slate-600 text-sm mb-4">世界級的手術工藝，提供外科醫師最佳的操作手感與精準度。</p>
+                        <ul class="space-y-2 text-sm text-slate-500 mt-auto">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 德國工藝</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 耐用精準</li>
+                        </ul>
+                    </div>
+                </div>
 
-                            <div class="relative border-t border-slate-200 pt-6">
-                                <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-2 text-xs text-slate-400">
-                                    或
-                                </div>
-                                <div class="text-center">
-                                    <p class="text-sm text-slate-600 mb-3 font-medium">需要傳送照片或附件檔案？</p>
-                                    <a href="mailto:info@fengju.com.tw?subject=【豐鉅儀器】產品詢問(含附件)&body=您好，我想詢問關於..." 
-                                       class="block w-full border-2 border-dashed border-sky-300 bg-sky-50 hover:bg-sky-100 hover:border-sky-500 text-sky-700 rounded-lg p-4 transition-all group text-center cursor-pointer no-underline">
-                                        <div class="flex items-center justify-center gap-2 mb-1">
-                                            <i class="fas fa-envelope-open-text text-2xl group-hover:scale-110 transition-transform"></i>
-                                            <span class="font-bold text-lg">開啟郵件軟體</span>
-                                        </div>
-                                        <div class="text-sm font-medium">點此撰寫信件並夾帶檔案</div>
-                                        <div class="text-xs text-sky-500 mt-1">將自動開啟您手機/電腦的 Email App</div>
-                                    </a>
-                                </div>
+                <div id="products" class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="h-64 overflow-hidden relative flex-shrink-0">
+                        <img src="11.jpg" alt="MJMT 製氧機" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.style.backgroundColor='#e2e8f0'">
+                        <div class="absolute top-4 left-4 bg-cyan-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-md">呼吸照護</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">MJMT 專業製氧機</h3>
+                        <p class="text-slate-600 text-sm mb-4">為居家照護與長照機構提供源源不絕的純淨氧氣。穩定、安靜、可靠，是您守護家人呼吸健康的堅實後盾。</p>
+                        <ul class="space-y-2 text-sm text-slate-500 mb-6 flex-grow">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 穩定高濃度供氧</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 操作簡易，運轉低噪</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 適合居家與機構使用</li>
+                        </ul>
+                        <div class="mt-auto pt-4 border-t border-slate-100">
+                            <a href="MJMT.html" class="inline-flex items-center justify-center w-full px-4 py-2 bg-cyan-50 text-cyan-700 hover:bg-cyan-100 rounded-lg transition-colors text-sm font-semibold group-hover:shadow-sm">
+                                <i class="fas fa-wind mr-2"></i>
+                                了解 MJMT 專業製氧機
+                                <i class="fas fa-external-link-alt ml-2 text-xs opacity-70"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group flex flex-col">
+                    <div class="h-64 overflow-hidden relative flex-shrink-0">
+                        <img src="1.jpg" alt="EcoHeal 光合電子樹" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500 bg-gray-200" onerror="this.style.backgroundColor='#e2e8f0'">
+                        <div class="absolute top-4 left-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase shadow-md">環境淨化</div>
+                    </div>
+                    <div class="p-6 flex flex-col flex-grow">
+                        <h3 class="text-xl font-bold text-slate-900 mb-2">EcoHeal 光合電子樹</h3>
+                        <p class="text-slate-600 text-sm mb-4">採用先進 PHI 光合離子化技術，模擬大自然光合作用，主動分解環境中的有害因子。</p>
+                        <ul class="space-y-2 text-sm text-slate-500 mb-6 flex-grow">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> PHI 專利光合離子化技術</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 主動分解病毒、細菌與異味</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-2"></i> 零耗材、免濾網</li>
+                        </ul>
+                        <div class="mt-auto pt-4 border-t border-slate-100">
+                            <a href="https://www.fengju.com.tw/EcohealPHIT.html" class="inline-flex items-center justify-center w-full px-4 py-2 bg-green-50 text-green-700 hover:bg-green-100 rounded-lg transition-colors text-sm font-semibold group-hover:shadow-sm">
+                                <i class="fas fa-leaf mr-2"></i>
+                                了解 EcoHeal 詳細介紹
+                                <i class="fas fa-external-link-alt ml-2 text-xs opacity-70"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-20 bg-slate-900 text-white relative">
+        <div class="absolute inset-0 overflow-hidden">
+            <svg class="absolute bottom-0 left-0 w-full text-slate-800 opacity-50" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+                <path fill="currentColor" fill-opacity="1" d="M0,128L48,144C96,160,192,192,288,186.7C384,181,480,139,576,144C672,149,768,203,864,224C960,245,1056,235,1152,208C1248,181,1344,139,1392,117.3L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-3xl font-bold mb-6">聯絡我們</h2>
+                <p class="text-slate-300 mb-12 text-lg">
+                    有任何關於醫療設備、耗材或大健康產品的需求嗎？歡迎隨時與我們聯繫，我們將有專人為您服務。
+                </p>
+                
+                <!-- 
+                   Responsive Layout Change: 
+                   Using Grid system (grid-cols-1 for mobile, lg:grid-cols-3 for desktop) 
+                   This ensures columns are stacked on mobile and equal width on large screens.
+                -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                    
+                    <!-- Facebook Feed Embed -->
+                    <div class="bg-white rounded-2xl w-full shadow-lg border border-slate-700 overflow-hidden flex flex-col">
+                        <div class="bg-[#1877F2] p-4 flex items-center gap-3">
+                            <i class="fab fa-facebook-square text-white text-2xl"></i>
+                            <span class="text-white font-bold">Facebook 粉絲專頁</span>
+                        </div>
+                        <div class="flex-grow bg-white flex justify-center items-start pt-2">
+                             <iframe src="https://www.facebook.com/plugins/page.php?href=https%3A%2F%2Fwww.facebook.com%2Ffengju.com.tw%2F&tabs=timeline&width=340&height=500&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=true&appId" width="100%" height="450" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen="true" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share"></iframe>
+                        </div>
+                        <a href="https://www.facebook.com/fengju.com.tw/" target="_blank" class="block w-full text-center py-3 bg-slate-50 text-[#1877F2] font-semibold hover:bg-slate-100 transition-colors border-t">
+                            前往粉絲專頁 <i class="fas fa-external-link-alt ml-1 text-sm"></i>
+                        </a>
+                    </div>
+
+                    <!-- Contact Form & Email Button -->
+                    <div class="bg-white rounded-2xl w-full shadow-lg border border-slate-700 overflow-hidden p-6 text-slate-800 flex flex-col h-full">
+                        <h3 class="text-xl font-bold text-slate-800 mb-6 text-center flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane text-sky-600"></i> 聯絡豐鉅
+                        </h3>
+                        <!-- Formspree (Text Only) -->
+                        <form action="https://formspree.io/f/mqeegbeg" method="POST" class="flex flex-col flex-grow">
+                            <div class="mb-4">
+                                <label for="name" class="block text-sm font-medium text-slate-700 mb-1">您的稱呼 / 公司名稱</label>
+                                <input type="text" id="name" name="name" required 
+                                    class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="email" class="block text-sm font-medium text-slate-700 mb-1">聯絡 Email</label>
+                                <input type="email" id="email" name="email" required 
+                                    class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all">
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="phone" class="block text-sm font-medium text-slate-700 mb-1">聯絡電話</label>
+                                <input type="tel" id="phone" name="phone" 
+                                    class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all">
+                            </div>
+
+                            <div class="mb-6 flex-grow">
+                                <label for="message" class="block text-sm font-medium text-slate-700 mb-1">需求或留言</label>
+                                <textarea id="message" name="message" rows="4" required placeholder="請在此填寫您的需求..."
+                                    class="w-full px-4 py-2 rounded-lg border border-slate-300 focus:border-sky-500 focus:ring-2 focus:ring-sky-200 outline-none transition-all resize-none"></textarea>
+                            </div>
+
+                            <button type="submit" 
+                                class="w-full bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-lg transition-colors shadow-md mb-6">
+                                <i class="fas fa-paper-plane mr-2"></i> 送出文字訊息
+                            </button>
+                        </form>
+
+                        <!-- 
+                           UPDATED: Email Button for Attachments 
+                           Uses 'mailto:' to open the user's default email app (phone or desktop).
+                        -->
+                        <div class="relative border-t border-slate-200 pt-6">
+                            <div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-white px-2 text-xs text-slate-400">
+                                或
+                            </div>
+                            <div class="text-center">
+                                <p class="text-sm text-slate-600 mb-3 font-medium">需要傳送照片或附件檔案？</p>
+                                <a href="mailto:info@fengju.com.tw?subject=【豐鉅儀器】產品詢問(含附件)&body=您好，我想詢問關於..." 
+                                   class="block w-full border-2 border-dashed border-sky-300 bg-sky-50 hover:bg-sky-100 hover:border-sky-500 text-sky-700 rounded-lg p-4 transition-all group text-center cursor-pointer no-underline">
+                                    <div class="flex items-center justify-center gap-2 mb-1">
+                                        <i class="fas fa-envelope-open-text text-2xl group-hover:scale-110 transition-transform"></i>
+                                        <span class="font-bold text-lg">開啟郵件軟體</span>
+                                    </div>
+                                    <div class="text-sm font-medium">點此撰寫信件並夾帶檔案</div>
+                                    <div class="text-xs text-sky-500 mt-1">將自動開啟您手機/電腦的 Email App</div>
+                                </a>
                             </div>
                         </div>
+                    </div>
+                    
+                    <!-- Direct Contact -->
+                    <div class="bg-slate-800 p-8 rounded-2xl w-full shadow-lg border border-slate-700 flex flex-col items-center justify-center h-full">
+                        <div class="bg-sky-600 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
+                            <i class="fas fa-headset text-white text-2xl"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-6">直接聯繫我們</h3>
                         
-                        <!-- Direct Contact -->
-                        <div class="bg-slate-800 p-8 rounded-2xl w-full shadow-lg border border-slate-700 flex flex-col items-center justify-center h-full">
-                            <div class="bg-sky-600 w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-6 shadow-md">
-                                <i class="fas fa-headset text-white text-2xl"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-white mb-6">直接聯繫我們</h3>
+                        <div class="space-y-4 w-full flex flex-col items-center">
+                            <a href="tel:0227765900" class="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-slate-700/50 py-2 px-4 rounded-lg transition-all group w-full justify-center">
+                                <i class="fas fa-phone-alt text-sky-500 group-hover:scale-110 transition-transform"></i>
+                                <span class="text-lg font-medium tracking-wide">02-2776-5900</span>
+                            </a>
                             
-                            <div class="space-y-4 w-full flex flex-col items-center">
-                                <a href="tel:0227765900" class="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-slate-700/50 py-2 px-4 rounded-lg transition-all group w-full justify-center">
-                                    <i class="fas fa-phone-alt text-sky-500 group-hover:scale-110 transition-transform"></i>
-                                    <span class="text-lg font-medium tracking-wide">02-2776-5900</span>
-                                </a>
-                                
-                                <a href="mailto:info@fengju.com.tw" class="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-slate-700/50 py-2 px-4 rounded-lg transition-all group w-full justify-center">
-                                    <i class="fas fa-envelope text-sky-500 group-hover:scale-110 transition-transform"></i>
-                                    <span class="text-lg font-medium tracking-wide">info@fengju.com.tw</span>
-                                </a>
-                                <div class="mt-8 pt-6 border-t border-slate-700 w-full text-center">
-                                    <p class="text-slate-400 text-sm mb-2">服務時間</p>
-                                    <p class="text-white">週一至週五 09:00 - 18:00</p>
-                                </div>
+                            <a href="mailto:info@fengju.com.tw" class="flex items-center gap-3 text-slate-300 hover:text-white hover:bg-slate-700/50 py-2 px-4 rounded-lg transition-all group w-full justify-center">
+                                <i class="fas fa-envelope text-sky-500 group-hover:scale-110 transition-transform"></i>
+                                <span class="text-lg font-medium tracking-wide">info@fengju.com.tw</span>
+                            </a>
+                            <div class="mt-8 pt-6 border-t border-slate-700 w-full text-center">
+                                <p class="text-slate-400 text-sm mb-2">服務時間</p>
+                                <p class="text-white">週一至週五 09:00 - 18:00</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-    </main>
-
-    <!-- Footer -->
     <footer class="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -1279,7 +517,7 @@
 
                 <div class="flex space-x-6">
                     <a href="https://www.facebook.com/fengju.com.tw/" target="_blank" class="hover:text-white transition-colors">
-                        <i class="fa-brands fa-facebook-f text-xl"></i>
+                        <i class="fab fa-facebook-f text-xl"></i>
                     </a>
                 </div>
             </div>
@@ -1289,678 +527,428 @@
         </div>
     </footer>
 
-    <!-- JavaScript Logic -->
     <script>
-        // -- Navigation Logic --
-        function scrollToSection(id) {
-            const element = document.getElementById(id);
-            if (element) {
-                const offset = 80; // height of nav
-                const bodyRect = document.body.getBoundingClientRect().top;
-                const elementRect = element.getBoundingClientRect().top;
-                const elementPosition = elementRect - bodyRect;
-                const offsetPosition = elementPosition - offset;
-
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: "smooth"
-                });
+        // --- UI Interactions ---
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 20) {
+                navbar.classList.add('nav-scrolled');
+            } else {
+                navbar.classList.remove('nav-scrolled');
             }
-        }
+        });
 
-        function toggleMobileMenu() {
-            const menu = document.getElementById('mobile-menu');
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+
+        btn.addEventListener('click', () => {
             menu.classList.toggle('hidden');
-        }
+        });
 
-        // -- Tab Switching Logic for Scenarios --
-        function switchTab(tabName) {
-            // Hide all content
-            ['home', 'car', 'travel'].forEach(t => {
-                document.getElementById(`content-${t}`).classList.add('hidden');
-                document.getElementById(`tab-${t}`).classList.remove('bg-white', 'shadow', 'text-emerald-700');
-                document.getElementById(`tab-${t}`).classList.add('text-slate-600');
-            });
+        // --- GAME LOGIC ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const hud = document.getElementById('game-hud');
+        const scoreDisplay = document.getElementById('score-display');
+        const gameOverScreen = document.getElementById('game-over-screen');
+        const finalScore = document.getElementById('final-score');
+        const heroSection = document.getElementById('home');
+        
+        let gameState = 'IDLE'; // IDLE, PLAYING, GAMEOVER
+        let score = 0;
+        let frameCount = 0;
+        let difficultyMultiplier = 1;
+        let animationId;
 
-            // Show selected content
-            document.getElementById(`content-${tabName}`).classList.remove('hidden');
+        // Player
+        const player = {
+            x: 0,
+            y: 0,
+            width: 40,
+            height: 40,
+            color: '#38bdf8', // Sky 400
+            speed: 5
+        };
+
+        let bullets = [];
+        let enemies = [];
+        let particles = []; // For explosions
+
+        // Responsive Canvas
+        function resizeCanvas() {
+            // Keep the canvas covering the hero section
+            const container = document.getElementById('game-container');
+            canvas.width = container.clientWidth;
+            canvas.height = container.clientHeight;
             
-            // Style active tab
-            const activeTab = document.getElementById(`tab-${tabName}`);
-            activeTab.classList.remove('text-slate-600');
-            activeTab.classList.add('bg-white', 'shadow', 'text-emerald-700');
+            // Re-center player if resizing
+            if(gameState === 'IDLE') {
+                player.x = canvas.width / 2;
+                player.y = canvas.height - 100;
+            }
         }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        // -- Animation Logic: PHIT Simulation --
-        function initPHITAnimation() {
-            const canvas = document.getElementById('phitSimulation');
-            if(!canvas) return;
-            const ctx = canvas.getContext('2d');
-            let width, height;
+        // Mouse Controls
+        canvas.addEventListener('mousemove', (e) => {
+            if (gameState === 'PLAYING') {
+                const rect = canvas.getBoundingClientRect();
+                player.x = e.clientX - rect.left;
+                player.y = e.clientY - rect.top;
+            }
+        });
+        
+        // Touch Controls
+        canvas.addEventListener('touchmove', (e) => {
+             if (gameState === 'PLAYING') {
+                e.preventDefault();
+                const rect = canvas.getBoundingClientRect();
+                player.x = e.touches[0].clientX - rect.left;
+                player.y = e.touches[0].clientY - rect.top;
+            }
+        }, {passive: false});
+
+        function startGame() {
+            gameState = 'PLAYING';
+            heroSection.classList.add('game-active');
+            hud.classList.remove('hidden');
+            gameOverScreen.classList.add('hidden');
             
-            // Entities
-            const factors = [];
-            const pollutants = [];
-            const debris = []; 
-
-            function resize() {
-                const rect = canvas.parentElement.getBoundingClientRect();
-                width = rect.width;
-                height = rect.height;
-                canvas.width = width;
-                canvas.height = height;
-            }
-            window.addEventListener('resize', resize);
-            resize();
-
-            class Factor {
-                constructor() {
-                    this.x = width / 2;
-                    this.y = height / 2;
-                    this.size = Math.random() * 2 + 1;
-                    const angle = Math.random() * Math.PI * 2;
-                    const speed = Math.random() * 2 + 1.5;
-                    this.vx = Math.cos(angle) * speed;
-                    this.vy = Math.sin(angle) * speed;
-                    this.color = Math.random() > 0.5 ? '#10b981' : '#3b82f6'; // Emerald or Blue
-                    this.life = 100;
-                }
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    this.life--;
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                }
-            }
-
-            class Pollutant {
-                constructor() {
-                    // Spawn from edges
-                    if (Math.random() > 0.5) {
-                        this.x = Math.random() > 0.5 ? 0 : width;
-                        this.y = Math.random() * height;
-                    } else {
-                        this.x = Math.random() * width;
-                        this.y = Math.random() > 0.5 ? 0 : height;
-                    }
-                    
-                    this.vx = (Math.random() - 0.5) * 1;
-                    this.vy = (Math.random() - 0.5) * 1;
-                    this.active = true;
-
-                    // Randomly assign type and Increase Sizes slightly for visibility
-                    const rand = Math.random();
-                    if (rand < 0.25) {
-                        this.type = 'virus';
-                        this.size = 6; 
-                        this.color = '#f87171'; // Red 400
-                    } else if (rand < 0.5) {
-                        this.type = 'bacteria';
-                        this.size = 7; 
-                        this.color = '#fb923c'; // Orange 400
-                    } else if (rand < 0.75) {
-                        this.type = 'mold';
-                        this.size = 6;
-                        this.color = '#a78bfa'; // Purple 400
-                    } else {
-                        this.type = 'chemical'; 
-                        this.size = 7;
-                        this.color = '#eab308'; // Yellow 500
-                    }
-                }
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    
-                    // Bounce off walls
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
-                }
-                draw() {
-                    ctx.fillStyle = this.color;
-                    
-                    if (this.type === 'virus') {
-                        // Spiky ball (Red)
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                        ctx.fill();
-                        // Draw Spikes using lines
-                        ctx.beginPath();
-                        for(let i=0; i<8; i++) {
-                            const angle = (i / 8) * Math.PI * 2;
-                            const r_out = this.size + 3;
-                            const x_out = this.x + Math.cos(angle) * r_out;
-                            const y_out = this.y + Math.sin(angle) * r_out;
-                            ctx.moveTo(this.x, this.y);
-                            ctx.lineTo(x_out, y_out);
-                        }
-                        ctx.strokeStyle = this.color;
-                        ctx.lineWidth = 2;
-                        ctx.stroke();
-
-                    } else if (this.type === 'bacteria') {
-                        // Capsule shape (Orange) - Manual drawing without roundRect
-                        const len = this.size * 1.2; // Half-length of rect part
-                        const r = this.size * 0.7;   // Radius of caps
-                        
-                        ctx.beginPath();
-                        // Left Cap
-                        ctx.arc(this.x - len, this.y, r, Math.PI * 0.5, Math.PI * 1.5);
-                        // Top Line
-                        ctx.lineTo(this.x + len, this.y - r);
-                        // Right Cap
-                        ctx.arc(this.x + len, this.y, r, Math.PI * 1.5, Math.PI * 0.5);
-                        // Bottom Line
-                        ctx.lineTo(this.x - len, this.y + r);
-                        ctx.closePath();
-                        ctx.fill();
-
-                    } else if (this.type === 'mold') {
-                        // Cluster of spheres (Purple)
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.size*0.8, 0, Math.PI * 2);
-                        ctx.arc(this.x + this.size, this.y + 2, this.size*0.6, 0, Math.PI * 2);
-                        ctx.arc(this.x - this.size*0.5, this.y + this.size*0.8, this.size*0.5, 0, Math.PI * 2);
-                        ctx.arc(this.x + this.size*0.5, this.y - this.size*0.6, this.size*0.5, 0, Math.PI * 2);
-                        ctx.fill();
-
-                    } else { // Chemical / VOC (Yellow)
-                        // Hexagon ring
-                        ctx.beginPath();
-                        for (let i = 0; i < 6; i++) {
-                            const angle = i * Math.PI / 3;
-                            const hx = this.x + Math.cos(angle) * this.size;
-                            const hy = this.y + Math.sin(angle) * this.size;
-                            if (i === 0) ctx.moveTo(hx, hy);
-                            else ctx.lineTo(hx, hy);
-                        }
-                        ctx.closePath();
-                        ctx.fill();
-                        
-                        // Inner hollow part
-                        ctx.globalCompositeOperation = 'destination-out';
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.size * 0.4, 0, Math.PI * 2);
-                        ctx.fill();
-                        ctx.globalCompositeOperation = 'source-over';
-                        ctx.fillStyle = this.color; // Reset for potential next use
-                    }
-                }
-            }
-
-            class Debris {
-                constructor(x, y, color) {
-                    this.x = x;
-                    this.y = y;
-                    this.vx = (Math.random() - 0.5) * 4;
-                    this.vy = (Math.random() - 0.5) * 4;
-                    this.size = Math.random() * 2 + 1;
-                    this.color = color;
-                    this.life = 30; // Frames to live
-                }
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    this.life--;
-                    this.size *= 0.9;
-                }
-                draw() {
-                    ctx.save();
-                    ctx.globalAlpha = this.life / 30;
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI*2);
-                    ctx.fillStyle = this.color;
-                    ctx.fill();
-                    ctx.restore();
-                }
-            }
-
-            function animate() {
-                // Clear with trail effect
-                ctx.fillStyle = 'rgba(15, 23, 42, 0.3)'; // Slate 900 with opacity
-                ctx.fillRect(0, 0, width, height);
-
-                // Spawn Factors (from center)
-                if (Math.random() < 0.3) factors.push(new Factor());
-
-                // Spawn Pollutants (rarely, keep population around 10-15)
-                if (Math.random() < 0.08 && pollutants.length < 15) pollutants.push(new Pollutant());
-
-                // Update Factors
-                for (let i = factors.length - 1; i >= 0; i--) {
-                    const p = factors[i];
-                    p.update();
-                    p.draw();
-                    if (p.life <= 0 || p.x < 0 || p.x > width || p.y < 0 || p.y > height) {
-                        factors.splice(i, 1);
-                    }
-                }
-
-                // Update Pollutants & Collision
-                for (let i = pollutants.length - 1; i >= 0; i--) {
-                    const pol = pollutants[i];
-                    pol.update();
-                    pol.draw();
-
-                    // Check collision with factors
-                    let hit = false;
-                    for (let j = factors.length - 1; j >= 0; j--) {
-                        const fac = factors[j];
-                        const dx = pol.x - fac.x;
-                        const dy = pol.y - fac.y;
-                        const dist = Math.sqrt(dx*dx + dy*dy);
-                        
-                        // Simple collision detection
-                        if (dist < pol.size + fac.size + 2) {
-                            // COLLISION!
-                            hit = true;
-                            // Create Debris (Explosion) matching pollutant color
-                            for(let k=0; k<8; k++) {
-                                debris.push(new Debris(pol.x, pol.y, pol.color)); 
-                            }
-                            // Remove factor
-                            factors.splice(j, 1);
-                            break; // One hit kills for this animation simplicity
-                        }
-                    }
-
-                    if (hit) {
-                        pollutants.splice(i, 1);
-                    }
-                }
-
-                // Update Debris
-                for (let i = debris.length - 1; i >= 0; i--) {
-                    const d = debris[i];
-                    d.update();
-                    d.draw();
-                    if (d.life <= 0) debris.splice(i, 1);
-                }
-
-                // Draw Central Unit (The Source)
-                ctx.beginPath();
-                ctx.arc(width/2, height/2, 20, 0, Math.PI*2);
-                ctx.fillStyle = '#10b981'; // Emerald 500
-                ctx.fill();
-                // Glow
-                ctx.beginPath();
-                ctx.arc(width/2, height/2, 25, 0, Math.PI*2);
-                ctx.strokeStyle = 'rgba(16, 185, 129, 0.5)';
-                ctx.lineWidth = 2;
-                ctx.stroke();
-
-                requestAnimationFrame(animate);
-            }
+            // Reset Game variables
+            score = 0;
+            scoreDisplay.innerText = '0';
+            difficultyMultiplier = 1;
+            enemies = [];
+            bullets = [];
+            particles = [];
+            
+            player.x = canvas.width / 2;
+            player.y = canvas.height - 100;
 
             animate();
         }
 
-        // --- RESTORED OZONE VS PHIT ANIMATION ---
-        function initOzoneComparison() {
-            const ozoneCanvas = document.getElementById('ozoneCanvas');
-            const phitCanvas = document.getElementById('phitCanvas');
-            const timeLabel = document.getElementById('comp-timer');
+        function resetGame() {
+            gameOverScreen.classList.add('hidden');
+            startGame();
+        }
 
-            if (!ozoneCanvas || !phitCanvas) return;
-
-            const ctxOzone = ozoneCanvas.getContext('2d');
-            const ctxPhit = phitCanvas.getContext('2d');
-
-            let width, height;
-
-            function resize() {
-                const rect = ozoneCanvas.parentElement.getBoundingClientRect();
-                width = rect.width;
-                height = rect.height;
-                ozoneCanvas.width = width;
-                ozoneCanvas.height = height;
-                phitCanvas.width = width;
-                phitCanvas.height = height;
+        class Bullet {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+                this.radius = 3;
+                this.speed = 10;
+                this.color = '#ffff00';
             }
-            window.addEventListener('resize', resize);
-            resize();
+            update() {
+                this.y -= this.speed;
+            }
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
 
-            // Simulation State
-            let simFrame = 0;
-            const cycleFrames = 900; // Increased to 15s for 24 hours
-            const maxOzone = 1200; // Max Ozone particles
-            
-            // Particle Arrays
-            let ozoneParticles = [];
-            let phitParticles = [];
-
-            class Particle {
-                constructor(type) {
-                    this.x = width / 2;
-                    this.y = height * 0.9; // Emerge from bottom/machine
-                    
-                    if (type === 'phit') {
-                         // PHIT: Slow, calm movement
-                        this.vx = (Math.random() - 0.5) * 1.0; 
-                        this.vy = (Math.random() - 1) * 1.5 - 0.5; 
-                    } else {
-                        // Ozone: More chaotic initially
-                        this.vx = (Math.random() - 0.5) * 4;
-                        this.vy = (Math.random() - 1) * 3 - 1; 
-                    }
-
-                    this.size = Math.random() * 3 + 2;
-                    this.type = type; // 'ozone' or 'phit'
-                    this.alpha = 1;
+        class Enemy {
+            constructor(type) {
+                this.x = Math.random() * (canvas.width - 40) + 20;
+                this.y = -50; // Start above screen
+                this.speed = Math.random() * 2 + 1 + difficultyMultiplier;
+                this.type = type;
+                
+                // Define types - BIGGER = HIGHER SCORE
+                // Virus (1pt, 1hp, Green) - Smallest
+                // Bacteria (3pt, 3hp, Orange) - Medium
+                // Mold (4pt, 4hp, Purple) - Large
+                // PM2.5 (5pt, 5hp, Grey) - Massive
+                
+                if (type === 'virus') {
+                    this.hp = 1;
+                    this.score = 1;
+                    this.radius = 15; // Small
+                    this.color = '#22c55e'; // Green 500
+                } else if (type === 'bacteria') {
+                    this.hp = 3;
+                    this.score = 3;
+                    this.radius = 25; // Medium
+                    this.color = '#f97316'; // Orange 500
+                } else if (type === 'mold') {
+                    this.hp = 4;
+                    this.score = 4;
+                    this.radius = 35; // Large
+                    this.color = '#a855f7'; // Purple 500
+                } else if (type === 'pm25') {
+                    this.hp = 5;
+                    this.score = 5;
+                    this.radius = 45; // Huge
+                    this.color = '#e5e7eb'; // Gray 200
                 }
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    
-                    // Bounce walls
-                    if(this.x < 0 || this.x > width) this.vx *= -1;
-                    if(this.y < 0 || this.y > height) this.vy *= -1;
+            }
 
-                    // Friction
-                    this.vx *= 0.98;
-                    this.vy *= 0.98;
+            update() {
+                this.y += this.speed;
+                // Add some wobble
+                this.x += Math.sin(this.y / 30) * 1;
+            }
 
-                    // Brownian Motion jitter
-                    if (this.type === 'phit') {
-                        // Very subtle jitter for PHIT
-                        this.vx += (Math.random()-0.5) * 0.05;
-                        this.vy += (Math.random()-0.5) * 0.05;
-                        this.alpha -= 0.005; // Fade out faster
-                    } else {
-                        // Ozone jitters more
-                        this.vx += (Math.random()-0.5) * 0.2;
-                        this.vy += (Math.random()-0.5) * 0.2;
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                
+                if (this.type === 'virus') {
+                    // Small Spiky circle
+                    for (let i = 0; i < 8; i++) {
+                        let angle = (i / 8) * Math.PI * 2;
+                        let r = this.radius + 5;
+                        ctx.lineTo(this.x + Math.cos(angle) * r, this.y + Math.sin(angle) * r);
+                        angle += Math.PI / 8;
+                        ctx.lineTo(this.x + Math.cos(angle) * this.radius, this.y + Math.sin(angle) * this.radius);
                     }
-                }
-                draw(ctx) {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    if(this.type === 'ozone') {
-                        ctx.fillStyle = `rgba(220, 38, 38, ${this.alpha})`; // Red
-                    } else {
-                        ctx.fillStyle = `rgba(16, 185, 129, ${this.alpha})`; // Green
-                    }
+                } else if (this.type === 'bacteria') {
+                    // Medium Capsule shape
+                    ctx.ellipse(this.x, this.y, this.radius, this.radius * 0.6, 0, 0, Math.PI * 2);
+                } else if (this.type === 'mold') {
+                    // Large Lumpy circle
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    // Add distinct dark spots
+                    ctx.fillStyle = this.color;
                     ctx.fill();
-                }
-            }
-
-            function animateComparison() {
-                // Clear Screens
-                ctxOzone.clearRect(0,0,width,height);
-                ctxPhit.clearRect(0,0,width,height);
-
-                simFrame++;
-                if(simFrame > cycleFrames) {
-                    simFrame = 0;
-                    ozoneParticles = []; // Reset Ozone
-                    phitParticles = []; // Reset PHIT
-                }
-
-                // Calculate Time (0 to 24 Hours)
-                const progress = simFrame / cycleFrames;
-                const totalMinutes = Math.floor(progress * 24 * 60); 
-                const hrs = Math.floor(totalMinutes / 60);
-                const mins = totalMinutes % 60;
-                timeLabel.innerText = `${hrs.toString().padStart(2, '0')}小時 ${mins.toString().padStart(2, '0')}分`;
-
-                // --- OZONE LOGIC (Massive Accumulation) ---
-                // Spawn rate dramatically increases to fill screen
-                // Always spawn at least 1, but up to 4 per frame as time goes on
-                if (ozoneParticles.length < maxOzone) {
-                    const spawnRate = Math.floor(progress * 3) + 1; 
-                    for(let k=0; k<spawnRate; k++) {
-                        ozoneParticles.push(new Particle('ozone'));
-                    }
+                    ctx.beginPath();
+                    ctx.fillStyle = '#7e22ce'; // Darker purple spots
+                    ctx.arc(this.x - 10, this.y - 10, 8, 0, Math.PI * 2);
+                    ctx.arc(this.x + 15, this.y + 5, 6, 0, Math.PI * 2);
+                    ctx.arc(this.x - 5, this.y + 15, 5, 0, Math.PI * 2);
+                    ctx.fill();
+                    return; // Custom fill done
+                } else if (this.type === 'pm25') {
+                    // Massive Smog Cloud (Overlapping circles)
+                    ctx.fillStyle = 'rgba(200, 200, 200, 0.8)';
+                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                    ctx.arc(this.x - 20, this.y - 10, this.radius * 0.7, 0, Math.PI * 2);
+                    ctx.arc(this.x + 20, this.y + 10, this.radius * 0.7, 0, Math.PI * 2);
+                    ctx.arc(this.x + 10, this.y - 20, this.radius * 0.6, 0, Math.PI * 2);
+                    ctx.fill();
+                    
+                    // Label text inside because it's so big
+                    ctx.fillStyle = 'black';
+                    ctx.font = 'bold 14px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText("PM2.5", this.x, this.y - 5);
                 }
                 
-                for(let i=0; i<ozoneParticles.length; i++) {
-                    ozoneParticles[i].update();
-                    ozoneParticles[i].draw(ctxOzone);
-                }
-
-                // --- PHIT LOGIC (Calm Equilibrium) ---
-                // Constant low spawn rate
-                if(simFrame % 4 === 0) { // Slightly more frequent but fading fast keeps balance
-                     phitParticles.push(new Particle('phit'));
-                }
-
-                for(let i=phitParticles.length - 1; i>=0; i--) {
-                    phitParticles[i].update();
-                    phitParticles[i].draw(ctxPhit);
-                    if(phitParticles[i].alpha <= 0) {
-                        phitParticles.splice(i, 1); // Remove dead particles
-                    }
-                }
-
-                // Danger Overlay on Left side based on time/density
-                // Becomes very dark red at 24 hours
-                const dangerOpacity = Math.min(progress * 0.8, 0.7); 
-                ctxOzone.fillStyle = `rgba(254, 202, 202, ${dangerOpacity})`; 
-                ctxOzone.fillRect(0,0,width,height);
-
-                requestAnimationFrame(animateComparison);
-            }
-
-            animateComparison();
-        }
-
-        // -- Chart 1: IAQ (Indoor vs Outdoor) --
-        function initIAQChart() {
-            const ctx = document.getElementById('iaqChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['室外空氣', '室內空氣 (一般)', '室內 (通風不良)'],
-                    datasets: [{
-                        label: '汙染濃度指數',
-                        data: [1, 5, 20], // Represents 1x, 5x, up to 20x (conservative avg of 100x max)
-                        backgroundColor: [
-                            'rgba(16, 185, 129, 0.6)', // Emerald (Good)
-                            'rgba(245, 158, 11, 0.6)', // Amber (Warning)
-                            'rgba(239, 68, 68, 0.6)'   // Red (Danger)
-                        ],
-                        borderColor: [
-                            'rgba(16, 185, 129, 1)',
-                            'rgba(245, 158, 11, 1)',
-                            'rgba(239, 68, 68, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: '汙染倍數 (以室外為基準)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return `汙染程度: 室外的 ${context.raw} 倍`;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // -- Chart 2: Comparison Radar --
-        function initComparisonChart() {
-            const ctx = document.getElementById('comparisonChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'radar',
-                data: {
-                    labels: ['安全性', '全域覆蓋率', '維護便利性 (無耗材)', '除化學毒氣能力', '物體表面殺菌', '節能省電'],
-                    datasets: [{
-                        label: 'EcoHeal 光合電子樹',
-                        data: [10, 10, 10, 9, 10, 10], // High scores across board based on white paper
-                        fill: true,
-                        backgroundColor: 'rgba(16, 185, 129, 0.2)',
-                        borderColor: 'rgb(16, 185, 129)',
-                        pointBackgroundColor: 'rgb(16, 185, 129)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(16, 185, 129)'
-                    }, {
-                        label: 'HEPA 濾網機',
-                        data: [9, 4, 2, 2, 0, 3], // Low coverage (dead zones), high maintenance cost, low gas removal, no surface cleaning
-                        fill: true,
-                        backgroundColor: 'rgba(148, 163, 184, 0.2)',
-                        borderColor: 'rgb(148, 163, 184)',
-                        pointBackgroundColor: 'rgb(148, 163, 184)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(148, 163, 184)'
-                    },
-                    {
-                        label: '臭氧機 (Ozone)',
-                        data: [2, 9, 8, 7, 8, 7], // Low safety (toxic), high coverage
-                        fill: true,
-                        backgroundColor: 'rgba(239, 68, 68, 0.2)',
-                        borderColor: 'rgb(239, 68, 68)',
-                        pointBackgroundColor: 'rgb(239, 68, 68)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(239, 68, 68)'
-                    },
-                    {
-                        label: '紫外線 (UV) 殺菌',
-                        data: [2, 2, 6, 2, 4, 5], // Low safety/coverage, decent surface but only line of sight
-                        fill: true,
-                        backgroundColor: 'rgba(245, 158, 11, 0.2)',
-                        borderColor: 'rgb(245, 158, 11)',
-                        pointBackgroundColor: 'rgb(245, 158, 11)',
-                        pointBorderColor: '#fff',
-                        pointHoverBackgroundColor: '#fff',
-                        pointHoverBorderColor: 'rgb(245, 158, 11)'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    elements: {
-                        line: { borderWidth: 3 }
-                    },
-                    scales: {
-                        r: {
-                            angleLines: { display: false },
-                            suggestedMin: 0,
-                            suggestedMax: 10,
-                            pointLabels: {
-                                font: { size: 11 }
-                            }
-                        }
-                    }
-                }
-            });
-        }
-
-        // -- Chart 3: ROI Calculator (Line Chart) --
-        let roiChartInstance = null;
-
-        function updateROICalculation() {
-            const years = parseInt(document.getElementById('yearInput').value);
-            const hepaAnnualCost = parseInt(document.getElementById('hepaCostInput').value) + 3000; // Filter + Electric
-            const ecoAnnualCost = 120; // Electric only
-            
-            // Generate data arrays
-            const labels = [];
-            const hepaData = [];
-            const ecoData = [];
-            
-            let hepaSum = 0;
-            let ecoSum = 0;
-
-            // Initial machine cost assumption (just for relative comparison slope)
-            // Let's assume baseline 0 for pure OPEX comparison as per white paper focus on "consumables"
-            
-            for (let i = 0; i <= years; i++) {
-                labels.push(`第 ${i} 年`);
-                hepaData.push(hepaSum);
-                ecoData.push(ecoSum);
+                if (this.type !== 'pm25') ctx.fill();
                 
-                hepaSum += hepaAnnualCost;
-                ecoSum += ecoAnnualCost;
-            }
-
-            // Update Label
-            document.getElementById('yearLabel').innerText = years;
-
-            // Update Chart
-            if (roiChartInstance) {
-                roiChartInstance.data.labels = labels;
-                roiChartInstance.data.datasets[0].data = ecoData;
-                roiChartInstance.data.datasets[1].data = hepaData;
-                roiChartInstance.update();
+                // Show HP if > 1
+                if (this.hp > 1) {
+                    ctx.fillStyle = 'black';
+                    ctx.font = '12px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(this.hp, this.x, this.y);
+                }
             }
         }
 
-        function initROIChart() {
-            const ctx = document.getElementById('roiChart').getContext('2d');
-            roiChartInstance = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: [], // Populated by update
-                    datasets: [{
-                        label: 'EcoHeal 累積持有成本',
-                        data: [],
-                        borderColor: 'rgb(16, 185, 129)',
-                        backgroundColor: 'rgba(16, 185, 129, 0.5)',
-                        tension: 0.1
-                    }, {
-                        label: '傳統 HEPA 累積持有成本',
-                        data: [],
-                        borderColor: 'rgb(148, 163, 184)',
-                        backgroundColor: 'rgba(148, 163, 184, 0.5)',
-                        tension: 0.1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            title: { display: true, text: '累積費用 (TWD)' },
-                            beginAtZero: true
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.vx = (Math.random() - 0.5) * 5;
+                this.vy = (Math.random() - 0.5) * 5;
+                this.life = 1.0;
+                this.color = color;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.life -= 0.05;
+            }
+            draw() {
+                ctx.globalAlpha = this.life;
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1.0;
+            }
+        }
+
+        function spawnEnemy() {
+            // Spawn rate based on difficulty
+            if (frameCount % Math.max(20, 60 - Math.floor(difficultyMultiplier * 5)) === 0) {
+                const rand = Math.random();
+                let type = 'virus';
+                
+                // Allow ANY type to spawn at start, but weighted probabilities
+                // 60% Virus, 20% Bacteria, 15% Mold, 5% PM2.5
+                if (rand < 0.6) {
+                    type = 'virus';
+                } else if (rand < 0.8) {
+                    type = 'bacteria';
+                } else if (rand < 0.95) {
+                    type = 'mold';
+                } else {
+                    type = 'pm25';
+                }
+                
+                enemies.push(new Enemy(type));
+            }
+        }
+
+        function checkCollisions() {
+            // Bullet vs Enemy
+            bullets.forEach((bullet, bIndex) => {
+                enemies.forEach((enemy, eIndex) => {
+                    const dist = Math.hypot(bullet.x - enemy.x, bullet.y - enemy.y);
+                    // Use actual enemy radius for collision
+                    if (dist < enemy.radius + bullet.radius) {
+                        // Hit
+                        enemy.hp--;
+                        bullets.splice(bIndex, 1);
+                        
+                        // Create sparks
+                        for(let i=0; i<3; i++) particles.push(new Particle(bullet.x, bullet.y, '#ffff00'));
+
+                        if (enemy.hp <= 0) {
+                            score += enemy.score;
+                            scoreDisplay.innerText = score;
+                            // Explosion
+                            for(let i=0; i<8; i++) particles.push(new Particle(enemy.x, enemy.y, enemy.color));
+                            enemies.splice(eIndex, 1);
                         }
-                    },
-                    plugins: {
-                        tooltip: {
-                            mode: 'index',
-                            intersect: false
-                        }
+                        return;
                     }
+                });
+            });
+
+            // Enemy vs Player (Game Over)
+            enemies.forEach(enemy => {
+                const dist = Math.hypot(player.x - enemy.x, player.y - enemy.y);
+                if (dist < enemy.radius + 20) { // Player rough radius 20
+                    endGame();
+                }
+                
+                // Enemy past screen
+                if (enemy.y > canvas.height + 50) {
+                    endGame(); // Let's make it strict - don't let pollution pass!
                 }
             });
-            updateROICalculation();
         }
 
-        // -- Event Listeners --
-        document.addEventListener('DOMContentLoaded', () => {
-            initIAQChart();
-            initComparisonChart();
-            initROIChart();
-            initPHITAnimation(); 
-            initOzoneComparison(); // Start the new Ozone vs PHIT comparison
+        function endGame() {
+            gameState = 'GAMEOVER';
+            cancelAnimationFrame(animationId);
+            finalScore.innerText = score;
+            hud.classList.add('hidden');
+            gameOverScreen.classList.remove('hidden');
+            // FIX: Do NOT remove game-active here. This keeps the hero content hidden/non-interactive
+            // so the game over screen is clearly visible and clickable.
+            // heroSection.classList.remove('game-active'); 
+        }
+
+        function animate() {
+            if (gameState !== 'PLAYING') return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            frameCount++;
             
-            // Inputs for ROI
-            document.getElementById('yearInput').addEventListener('input', updateROICalculation);
-            document.getElementById('hepaCostInput').addEventListener('input', updateROICalculation);
-        });
+            // Increase difficulty
+            if (frameCount % 600 === 0) difficultyMultiplier += 0.5;
+
+            // Player Draw (Triangle Ship)
+            ctx.fillStyle = player.color;
+            ctx.shadowBlur = 15;
+            ctx.shadowColor = '#0ea5e9';
+            ctx.beginPath();
+            ctx.moveTo(player.x, player.y - 20);
+            ctx.lineTo(player.x - 15, player.y + 15);
+            ctx.lineTo(player.x, player.y + 10);
+            ctx.lineTo(player.x + 15, player.y + 15);
+            ctx.closePath();
+            ctx.fill();
+            ctx.shadowBlur = 0;
+
+            // Engine Flame
+            ctx.fillStyle = '#f59e0b';
+            ctx.beginPath();
+            ctx.moveTo(player.x - 5, player.y + 15);
+            ctx.lineTo(player.x, player.y + 25 + Math.random()*10);
+            ctx.lineTo(player.x + 5, player.y + 15);
+            ctx.fill();
+
+            // Check Wall Collision
+            const wallMargin = 20;
+            if (player.x < wallMargin || player.x > canvas.width - wallMargin || player.y < wallMargin || player.y > canvas.height - wallMargin) {
+                // Crash!
+                for(let i=0; i<30; i++) particles.push(new Particle(player.x, player.y, '#ef4444'));
+                endGame();
+                return; // Stop processing this frame
+            }
+
+            // Auto Fire
+            if (frameCount % 10 === 0) {
+                bullets.push(new Bullet(player.x, player.y - 20));
+            }
+
+            // Updates
+            bullets.forEach((b, index) => {
+                b.update();
+                b.draw();
+                if (b.y < 0) bullets.splice(index, 1);
+            });
+
+            spawnEnemy();
+            
+            enemies.forEach((e, index) => {
+                e.update();
+                e.draw();
+                // Remove if far off screen (should be handled by Game Over logic mostly)
+            });
+
+            particles.forEach((p, index) => {
+                p.update();
+                p.draw();
+                if (p.life <= 0) particles.splice(index, 1);
+            });
+
+            checkCollisions();
+
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // Starfield Background Effect (Always running lightly)
+        let stars = [];
+        for(let i=0; i<100; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 2,
+                speed: Math.random() * 0.5 + 0.1
+            });
+        }
+
+        function drawBackground() {
+            if (gameState === 'PLAYING') return; // animate handle clears
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'white';
+            stars.forEach(star => {
+                star.y += star.speed;
+                if (star.y > canvas.height) star.y = 0;
+                ctx.globalAlpha = Math.random() * 0.5 + 0.3;
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI*2);
+                ctx.fill();
+            });
+            requestAnimationFrame(drawBackground);
+        }
+        
+        // Start background loop immediately
+        drawBackground();
 
     </script>
 </body>
