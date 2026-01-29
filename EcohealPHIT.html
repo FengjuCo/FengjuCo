@@ -3,6 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- --- Facebook Open Graph Settings (New) --- -->
+    <meta property="og:title" content="EcoHeal 光合電子樹 | 環境淨化系統技術中心" />
+    <meta property="og:description" content="環境自癒，回歸原生態。EcoHeal 透過仿生 PHIT 光合離子化技術，主動分解環境中的化學毒氣、病毒與細菌，建立 24 小時的安全防護網。" />
+    <meta property="og:image" content="16.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" /> 
+    <meta property="og:image:height" content="630" />
+    <meta property="og:type" content="website" />
+    <!-- ------------------------------------------ -->
+
     <title>EcoHeal 光合電子樹 | 環境淨化系統技術中心</title>
     
     <!-- Tailwind CSS -->
@@ -18,9 +29,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Application Structure Plan: 
-         Updated "Ozone vs PHIT" Animation Section to 24H simulation.
-         Added "Contact Us" Section.
-         Updated Footer.
+         1. Added Open Graph (OG) Meta tags for Facebook preview using "16.png".
+         2. Maintained all previous fixes (Ozone animation, Icon rendering, Contact section).
     -->
 
     <style>
@@ -1337,7 +1347,7 @@
             activeTab.classList.add('bg-white', 'shadow', 'text-emerald-700');
         }
 
-        // -- Animation Logic: PHIT Simulation (Original) --
+        // -- Animation Logic: PHIT Simulation --
         function initPHITAnimation() {
             const canvas = document.getElementById('phitSimulation');
             if(!canvas) return;
@@ -1386,6 +1396,7 @@
 
             class Pollutant {
                 constructor() {
+                    // Spawn from edges
                     if (Math.random() > 0.5) {
                         this.x = Math.random() > 0.5 ? 0 : width;
                         this.y = Math.random() * height;
@@ -1398,37 +1409,92 @@
                     this.vy = (Math.random() - 0.5) * 1;
                     this.active = true;
 
-                    // Randomly assign type
+                    // Randomly assign type and Increase Sizes slightly for visibility
                     const rand = Math.random();
                     if (rand < 0.25) {
                         this.type = 'virus';
                         this.size = 5;
-                        this.color = '#f87171'; 
+                        this.color = '#f87171'; // Red 400
                     } else if (rand < 0.5) {
                         this.type = 'bacteria';
                         this.size = 6;
-                        this.color = '#fb923c'; 
+                        this.color = '#fb923c'; // Orange 400
                     } else if (rand < 0.75) {
                         this.type = 'mold';
                         this.size = 4;
-                        this.color = '#a78bfa'; 
+                        this.color = '#a78bfa'; // Purple 400
                     } else {
-                        this.type = 'chemical'; 
+                        this.type = 'chemical'; // Formaldehyde/VOC
                         this.size = 5;
-                        this.color = '#eab308'; 
+                        this.color = '#eab308'; // Yellow 500
                     }
                 }
                 update() {
                     this.x += this.vx;
                     this.y += this.vy;
+                    
+                    // Bounce off walls
                     if (this.x < 0 || this.x > width) this.vx *= -1;
                     if (this.y < 0 || this.y > height) this.vy *= -1;
                 }
                 draw() {
                     ctx.fillStyle = this.color;
                     ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                    ctx.fill();
+
+                    if (this.type === 'virus') {
+                        // Spiky ball
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.fill();
+                        for(let i=0; i<6; i++) {
+                            const angle = (i / 6) * Math.PI * 2;
+                            const sx = this.x + Math.cos(angle) * (this.size + 2);
+                            const sy = this.y + Math.sin(angle) * (this.size + 2);
+                            ctx.beginPath();
+                            ctx.arc(sx, sy, 1.5, 0, Math.PI*2);
+                            ctx.fill();
+                        }
+                    } else if (this.type === 'bacteria') {
+                        // Rod/Pill shape (Capsule)
+                        const w = this.size * 2;
+                        const h = this.size;
+                        // Draw a pill shape
+                        ctx.beginPath();
+                        ctx.roundRect(this.x - w/2, this.y - h/2, w, h, h/2);
+                        ctx.fill();
+                        // Add little flagella
+                        ctx.strokeStyle = this.color;
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(this.x + w/2, this.y);
+                        ctx.lineTo(this.x + w/2 + 3, this.y + (Math.random()-0.5)*3);
+                        ctx.stroke();
+                    } else if (this.type === 'mold') {
+                        // Cluster of spheres
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                        ctx.arc(this.x + 3, this.y + 3, this.size*0.8, 0, Math.PI * 2);
+                        ctx.arc(this.x - 2, this.y + 2, this.size*0.8, 0, Math.PI * 2);
+                        ctx.fill();
+                    } else { // Chemical / VOC
+                        // Hexagon ring
+                        ctx.beginPath();
+                        for (let i = 0; i < 6; i++) {
+                            const angle = (i / 6) * Math.PI * 2;
+                            const hx = this.x + Math.cos(angle) * this.size;
+                            const hy = this.y + Math.sin(angle) * this.size;
+                            if (i === 0) ctx.moveTo(hx, hy);
+                            else ctx.lineTo(hx, hy);
+                        }
+                        ctx.closePath();
+                        ctx.fill();
+                        // Inner hole to look like benzene ring
+                        ctx.globalCompositeOperation = 'destination-out';
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size/2, 0, Math.PI*2);
+                        ctx.fill();
+                        ctx.globalCompositeOperation = 'source-over';
+                        ctx.fillStyle = this.color; // Reset for next draw
+                    }
                 }
             }
 
@@ -1440,7 +1506,7 @@
                     this.vy = (Math.random() - 0.5) * 4;
                     this.size = Math.random() * 2 + 1;
                     this.color = color;
-                    this.life = 30; 
+                    this.life = 30; // Frames to live
                 }
                 update() {
                     this.x += this.vx;
@@ -1460,12 +1526,17 @@
             }
 
             function animate() {
-                ctx.fillStyle = 'rgba(15, 23, 42, 0.3)'; 
+                // Clear with trail effect
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.3)'; // Slate 900 with opacity
                 ctx.fillRect(0, 0, width, height);
 
+                // Spawn Factors (from center)
                 if (Math.random() < 0.3) factors.push(new Factor());
+
+                // Spawn Pollutants (rarely, keep population around 10-15)
                 if (Math.random() < 0.08 && pollutants.length < 15) pollutants.push(new Pollutant());
 
+                // Update Factors
                 for (let i = factors.length - 1; i >= 0; i--) {
                     const p = factors[i];
                     p.update();
@@ -1475,30 +1546,40 @@
                     }
                 }
 
+                // Update Pollutants & Collision
                 for (let i = pollutants.length - 1; i >= 0; i--) {
                     const pol = pollutants[i];
                     pol.update();
                     pol.draw();
+
+                    // Check collision with factors
                     let hit = false;
                     for (let j = factors.length - 1; j >= 0; j--) {
                         const fac = factors[j];
                         const dx = pol.x - fac.x;
                         const dy = pol.y - fac.y;
                         const dist = Math.sqrt(dx*dx + dy*dy);
+                        
+                        // Simple collision detection
                         if (dist < pol.size + fac.size + 2) {
+                            // COLLISION!
                             hit = true;
+                            // Create Debris (Explosion) matching pollutant color
                             for(let k=0; k<8; k++) {
                                 debris.push(new Debris(pol.x, pol.y, pol.color)); 
                             }
+                            // Remove factor
                             factors.splice(j, 1);
-                            break; 
+                            break; // One hit kills for this animation simplicity
                         }
                     }
+
                     if (hit) {
                         pollutants.splice(i, 1);
                     }
                 }
 
+                // Update Debris
                 for (let i = debris.length - 1; i >= 0; i--) {
                     const d = debris[i];
                     d.update();
@@ -1506,10 +1587,12 @@
                     if (d.life <= 0) debris.splice(i, 1);
                 }
 
+                // Draw Central Unit (The Source)
                 ctx.beginPath();
                 ctx.arc(width/2, height/2, 20, 0, Math.PI*2);
-                ctx.fillStyle = '#10b981'; 
+                ctx.fillStyle = '#10b981'; // Emerald 500
                 ctx.fill();
+                // Glow
                 ctx.beginPath();
                 ctx.arc(width/2, height/2, 25, 0, Math.PI*2);
                 ctx.strokeStyle = 'rgba(16, 185, 129, 0.5)';
@@ -1518,10 +1601,11 @@
 
                 requestAnimationFrame(animate);
             }
+
             animate();
         }
 
-        // --- NEW OZONE VS PHIT ANIMATION ---
+        // --- RESTORED OZONE VS PHIT ANIMATION ---
         function initOzoneComparison() {
             const ozoneCanvas = document.getElementById('ozoneCanvas');
             const phitCanvas = document.getElementById('phitCanvas');
@@ -1669,7 +1753,6 @@
 
             animateComparison();
         }
-
 
         // -- Chart 1: IAQ (Indoor vs Outdoor) --
         function initIAQChart() {
