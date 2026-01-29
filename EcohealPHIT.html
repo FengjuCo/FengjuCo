@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- --- Facebook Open Graph Settings (New) --- -->
+    <!-- --- Facebook Open Graph Settings --- -->
     <meta property="og:title" content="EcoHeal 光合電子樹 | 環境淨化系統技術中心" />
     <meta property="og:description" content="環境自癒，回歸原生態。EcoHeal 透過仿生 PHIT 光合離子化技術，主動分解環境中的化學毒氣、病毒與細菌，建立 24 小時的安全防護網。" />
     <meta property="og:image" content="16.png" />
@@ -28,11 +28,6 @@
     <!-- Google Fonts: Noto Sans TC -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 
-    <!-- Application Structure Plan: 
-         1. Added Open Graph (OG) Meta tags for Facebook preview using "16.png".
-         2. Maintained all previous fixes (Ozone animation, Icon rendering, Contact section).
-    -->
-
     <style>
         body {
             font-family: 'Noto Sans TC', sans-serif;
@@ -40,14 +35,14 @@
             color: #1e293b; /* Slate 800 */
         }
 
-        /* Chart Container Styling - MANDATORY ADHERENCE */
+        /* Chart Container Styling */
         .chart-container {
             position: relative;
             width: 100%;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
-            height: 300px; /* Base height */
+            height: 300px;
             max-height: 400px;
         }
 
@@ -78,14 +73,14 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- PHIT Animation CSS (New) --- */
+        /* --- PHIT Animation CSS --- */
         .phit-anim-box {
             background: radial-gradient(circle at center top, #1e293b, #0f172a);
             position: relative;
             overflow: hidden;
             border-radius: 1rem;
             box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
-            height: 320px; /* Slightly taller for better arrow travel */
+            height: 320px;
             margin-bottom: 3rem;
             border: 1px solid #334155;
         }
@@ -111,17 +106,16 @@
         /* Purple Downward Arrows (Beam) */
         .uv-arrow {
             position: absolute;
-            top: 60px; /* Start below lamp */
+            top: 60px;
             left: 50%;
             transform: translateX(-50%);
-            color: #a78bfa; /* Light Purple */
+            color: #a78bfa;
             font-size: 24px;
             opacity: 0;
             z-index: 9;
             text-shadow: 0 0 10px #8b5cf6;
         }
 
-        /* Animation for arrows dropping */
         .beam-arrow-1 { animation: arrow-drop 1.2s infinite; animation-delay: 0s; left: 45%; font-size: 20px;}
         .beam-arrow-2 { animation: arrow-drop 1.2s infinite; animation-delay: 0.4s; left: 50%; font-size: 28px; color: #c4b5fd;}
         .beam-arrow-3 { animation: arrow-drop 1.2s infinite; animation-delay: 0.2s; left: 55%; font-size: 20px;}
@@ -142,19 +136,19 @@
             height: 140px;
             background: linear-gradient(135deg, #cbd5e1 0%, #f1f5f9 50%, #94a3b8 100%);
             border: 1px solid #64748b;
-            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3); /* Purple glow on impact */
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.3);
             z-index: 5;
             border-radius: 6px;
         }
 
-        /* Particles (Purification Factors) - Stronger Diffusion */
+        /* Particles (Purification Factors) */
         .particle {
             position: absolute;
-            top: 210px; /* Start at plate */
+            top: 210px;
             left: 50%;
             width: 8px;
             height: 8px;
-            background: radial-gradient(circle, #fff 20%, #34d399 100%); /* Emerald/White glow */
+            background: radial-gradient(circle, #fff 20%, #34d399 100%);
             border-radius: 50%;
             opacity: 0;
             z-index: 12;
@@ -162,7 +156,6 @@
             pointer-events: none;
         }
 
-        /* More Particles with Wider Spread */
         .p1 { animation: float-out-strong 2.5s infinite linear; animation-delay: 0s; --tx: -80px; }
         .p2 { animation: float-out-strong 2.8s infinite linear; animation-delay: 0.2s; --tx: 80px; }
         .p3 { animation: float-out-strong 2.2s infinite linear; animation-delay: 0.5s; --tx: -120px; }
@@ -200,9 +193,7 @@
             }
         }
 
-        /* ----------------------------------------------------------- */
-        /* SPACE STATION CSS ART (IMPROVED) */
-        /* ----------------------------------------------------------- */
+        /* --- Space Station CSS --- */
         .space-container {
             width: 100%;
             height: 400px;
@@ -214,7 +205,6 @@
             box-shadow: inset 0 0 60px rgba(0,0,0,0.8);
         }
 
-        /* Window to Space */
         .space-window {
             position: absolute;
             top: 20px;
@@ -226,10 +216,9 @@
             border: 8px solid #475569;
             box-shadow: inset 0 0 20px #000;
             overflow: hidden;
-            z-index: 1; /* Behind astronaut */
+            z-index: 1;
         }
         
-        /* Twinkling Stars in Window */
         .window-stars {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
@@ -250,7 +239,6 @@
             100% { opacity: 1; transform: scale(1.05); }
         }
 
-        /* Background texture of cabin (Subtle) */
         .stars-bg {
             position: absolute;
             width: 100%;
@@ -261,7 +249,6 @@
             z-index: 0;
         }
 
-        /* Astronaut CSS Art */
         .astronaut {
             position: absolute;
             top: 50%;
@@ -362,11 +349,10 @@
             transform: rotate(-10deg);
         }
 
-        /* PHIT Space Device */
         .phit-device-space {
             position: absolute;
             top: 40%;
-            left: 80%; /* Moved slightly right */
+            left: 80%;
             width: 80px;
             height: 120px;
             background: #334155;
@@ -388,7 +374,6 @@
             animation: bulb-pulse 2s infinite alternate;
         }
         
-        /* Clean Particles (Increased amount) */
         .clean-ion {
             position: absolute;
             width: 6px;
@@ -400,7 +385,6 @@
             z-index: 4;
         }
         
-        /* Ion Flow Logic: Move Left and Disperse */
         .ion-1 { top: 45%; left: 81%; animation: ion-flow 3.0s infinite linear; }
         .ion-2 { top: 48%; left: 81%; animation: ion-flow 3.5s infinite linear; animation-delay: 0.5s; }
         .ion-3 { top: 52%; left: 81%; animation: ion-flow 2.8s infinite linear; animation-delay: 1.0s; }
@@ -420,7 +404,6 @@
             100% { transform: translateX(-400px) translateY(calc(sin(var(--i, 1) * 100deg) * 60px)) scale(1.2); opacity: 0; }
         }
 
-        /* Pollutants (Virus, Bacteria, Odor) */
         .pollutant {
             position: absolute;
             opacity: 0;
@@ -428,10 +411,9 @@
             animation: disperse-fade 5s infinite;
         }
 
-        /* Styles for specific pollutants */
         .pol-virus {
             width: 12px; height: 12px;
-            background: #ef4444; /* Red */
+            background: #ef4444;
             border-radius: 50%;
             box-shadow: 0 0 5px #f87171;
         }
@@ -442,19 +424,17 @@
 
         .pol-bact {
             width: 14px; height: 8px;
-            background: #f97316; /* Orange */
+            background: #f97316;
             border-radius: 4px;
         }
 
         .pol-odor {
             width: 16px; height: 16px;
-            background: radial-gradient(circle, #a3e635, transparent); /* Lime Green Gas */
+            background: radial-gradient(circle, #a3e635, transparent);
             border-radius: 50%;
             filter: blur(2px);
         }
 
-        /* Initial Position: Near Astronaut Center (Left: 40%, Top: 50%) */
-        /* Animation: Disperse outwards and fade */
         .pol-1 { top: 48%; left: 40%; --tx: 80px; --ty: -30px; animation-delay: 0s; }
         .pol-2 { top: 52%; left: 42%; --tx: 90px; --ty: 20px; animation-delay: 1.5s; }
         .pol-3 { top: 45%; left: 38%; --tx: 60px; --ty: -50px; animation-delay: 0.5s; }
@@ -484,7 +464,7 @@
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
-        /* --- OZONE VS PHIT Animation Styles --- */
+        /* --- OZONE VS PHIT Animation Styles (Modified for Alignment) --- */
         .comparison-wrapper {
             position: relative;
             width: 100%;
@@ -503,7 +483,10 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-end;
+            /* UPDATED: Align to top */
+            justify-content: flex-start; 
+            /* UPDATED: Padding to clear timer */
+            padding-top: 70px;
             padding-bottom: 20px;
         }
 
@@ -552,7 +535,8 @@
 
         .machine-icon {
             position: absolute;
-            bottom: 60%;
+            /* UPDATED: Move to bottom to match particle source and clear top area */
+            bottom: 20px;
             font-size: 3rem;
             z-index: 5;
         }
@@ -1413,19 +1397,19 @@
                     const rand = Math.random();
                     if (rand < 0.25) {
                         this.type = 'virus';
-                        this.size = 5;
+                        this.size = 6; 
                         this.color = '#f87171'; // Red 400
                     } else if (rand < 0.5) {
                         this.type = 'bacteria';
-                        this.size = 6;
+                        this.size = 7; 
                         this.color = '#fb923c'; // Orange 400
                     } else if (rand < 0.75) {
                         this.type = 'mold';
-                        this.size = 4;
+                        this.size = 6;
                         this.color = '#a78bfa'; // Purple 400
                     } else {
-                        this.type = 'chemical'; // Formaldehyde/VOC
-                        this.size = 5;
+                        this.type = 'chemical'; 
+                        this.size = 7;
                         this.color = '#eab308'; // Yellow 500
                     }
                 }
@@ -1439,47 +1423,57 @@
                 }
                 draw() {
                     ctx.fillStyle = this.color;
-                    ctx.beginPath();
-
+                    
                     if (this.type === 'virus') {
-                        // Spiky ball
+                        // Spiky ball (Red)
+                        ctx.beginPath();
                         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                         ctx.fill();
-                        for(let i=0; i<6; i++) {
-                            const angle = (i / 6) * Math.PI * 2;
-                            const sx = this.x + Math.cos(angle) * (this.size + 2);
-                            const sy = this.y + Math.sin(angle) * (this.size + 2);
-                            ctx.beginPath();
-                            ctx.arc(sx, sy, 1.5, 0, Math.PI*2);
-                            ctx.fill();
+                        // Draw Spikes using lines
+                        ctx.beginPath();
+                        for(let i=0; i<8; i++) {
+                            const angle = (i / 8) * Math.PI * 2;
+                            const r_out = this.size + 3;
+                            const x_out = this.x + Math.cos(angle) * r_out;
+                            const y_out = this.y + Math.sin(angle) * r_out;
+                            ctx.moveTo(this.x, this.y);
+                            ctx.lineTo(x_out, y_out);
                         }
-                    } else if (this.type === 'bacteria') {
-                        // Rod/Pill shape (Capsule)
-                        const w = this.size * 2;
-                        const h = this.size;
-                        // Draw a pill shape
-                        ctx.beginPath();
-                        ctx.roundRect(this.x - w/2, this.y - h/2, w, h, h/2);
-                        ctx.fill();
-                        // Add little flagella
                         ctx.strokeStyle = this.color;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(this.x + w/2, this.y);
-                        ctx.lineTo(this.x + w/2 + 3, this.y + (Math.random()-0.5)*3);
+                        ctx.lineWidth = 2;
                         ctx.stroke();
-                    } else if (this.type === 'mold') {
-                        // Cluster of spheres
+
+                    } else if (this.type === 'bacteria') {
+                        // Capsule shape (Orange) - Manual drawing without roundRect
+                        const len = this.size * 1.2; // Half-length of rect part
+                        const r = this.size * 0.7;   // Radius of caps
+                        
                         ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                        ctx.arc(this.x + 3, this.y + 3, this.size*0.8, 0, Math.PI * 2);
-                        ctx.arc(this.x - 2, this.y + 2, this.size*0.8, 0, Math.PI * 2);
+                        // Left Cap
+                        ctx.arc(this.x - len, this.y, r, Math.PI * 0.5, Math.PI * 1.5);
+                        // Top Line
+                        ctx.lineTo(this.x + len, this.y - r);
+                        // Right Cap
+                        ctx.arc(this.x + len, this.y, r, Math.PI * 1.5, Math.PI * 0.5);
+                        // Bottom Line
+                        ctx.lineTo(this.x - len, this.y + r);
+                        ctx.closePath();
                         ctx.fill();
-                    } else { // Chemical / VOC
+
+                    } else if (this.type === 'mold') {
+                        // Cluster of spheres (Purple)
+                        ctx.beginPath();
+                        ctx.arc(this.x, this.y, this.size*0.8, 0, Math.PI * 2);
+                        ctx.arc(this.x + this.size, this.y + 2, this.size*0.6, 0, Math.PI * 2);
+                        ctx.arc(this.x - this.size*0.5, this.y + this.size*0.8, this.size*0.5, 0, Math.PI * 2);
+                        ctx.arc(this.x + this.size*0.5, this.y - this.size*0.6, this.size*0.5, 0, Math.PI * 2);
+                        ctx.fill();
+
+                    } else { // Chemical / VOC (Yellow)
                         // Hexagon ring
                         ctx.beginPath();
                         for (let i = 0; i < 6; i++) {
-                            const angle = (i / 6) * Math.PI * 2;
+                            const angle = i * Math.PI / 3;
                             const hx = this.x + Math.cos(angle) * this.size;
                             const hy = this.y + Math.sin(angle) * this.size;
                             if (i === 0) ctx.moveTo(hx, hy);
@@ -1487,13 +1481,14 @@
                         }
                         ctx.closePath();
                         ctx.fill();
-                        // Inner hole to look like benzene ring
+                        
+                        // Inner hollow part
                         ctx.globalCompositeOperation = 'destination-out';
                         ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.size/2, 0, Math.PI*2);
+                        ctx.arc(this.x, this.y, this.size * 0.4, 0, Math.PI * 2);
                         ctx.fill();
                         ctx.globalCompositeOperation = 'source-over';
-                        ctx.fillStyle = this.color; // Reset for next draw
+                        ctx.fillStyle = this.color; // Reset for potential next use
                     }
                 }
             }
@@ -1970,7 +1965,3 @@
     </script>
 </body>
 </html>
-
-
-
-
