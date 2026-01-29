@@ -18,9 +18,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
 
     <!-- Application Structure Plan: 
-         Updated "History of PHIT" section:
-         1. Pollutants now originate from the astronaut and slowly disperse/fade out.
-         2. Increased quantity of all particle types.
+         Updated "Ozone vs PHIT" Animation Section to 24H simulation.
+         Increased Ozone density and slowed down PHIT movement.
     -->
 
     <style>
@@ -473,6 +472,89 @@
             to { box-shadow: 0 0 25px #10b981; opacity: 1; }
         }
         @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* --- OZONE VS PHIT Animation Styles --- */
+        .comparison-wrapper {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .comp-half {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 20px;
+        }
+
+        .comp-left {
+            background: linear-gradient(to bottom, #fff7ed, #ffedd5);
+            border-right: 2px dashed #94a3b8;
+        }
+
+        .comp-right {
+            background: linear-gradient(to bottom, #ecfdf5, #d1fae5);
+        }
+
+        .comp-label {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            z-index: 10;
+        }
+
+        .comp-desc {
+            font-size: 0.8rem;
+            text-align: center;
+            padding: 0 1rem;
+            color: #64748b;
+            z-index: 10;
+            margin-bottom: 20px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 4px;
+        }
+
+        .time-badge {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0f172a;
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 99px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            z-index: 20;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            border: 2px solid #fff;
+        }
+
+        .machine-icon {
+            position: absolute;
+            bottom: 60%;
+            font-size: 3rem;
+            z-index: 5;
+        }
+
+        #ozoneCanvas, #phitCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
     </style>
 </head>
 <body class="bg-stone-50 text-slate-800 antialiased selection:bg-emerald-200 selection:text-emerald-900">
@@ -506,6 +588,7 @@
                         <button onclick="scrollToSection('hero')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">首頁</button>
                         <button onclick="scrollToSection('iaq')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">室內汙染危機</button>
                         <button onclick="scrollToSection('tech')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">核心技術</button>
+                        <button onclick="scrollToSection('ozone-vs-phit')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition text-red-600 font-bold">安全性對決</button>
                         <button onclick="scrollToSection('compare')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">技術比較</button>
                         <button onclick="scrollToSection('roi')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">效益分析</button>
                         <button onclick="scrollToSection('cases')" class="nav-item px-3 py-2 text-sm font-medium hover:text-emerald-600 transition">實績認證</button>
@@ -525,6 +608,7 @@
             <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
                 <button onclick="scrollToSection('iaq'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">危機分析</button>
                 <button onclick="scrollToSection('tech'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">PHIT 技術</button>
+                <button onclick="scrollToSection('ozone-vs-phit'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-bold text-red-600 hover:bg-red-50">安全性對決</button>
                 <button onclick="scrollToSection('compare'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">競品比較</button>
                 <button onclick="scrollToSection('roi'); toggleMobileMenu()" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-emerald-50">效益計算</button>
                 <!-- Mobile Corporate Link -->
@@ -835,6 +919,52 @@
             </div>
         </section>
 
+        <!-- Section: Ozone VS PHIT (New Requested Section) -->
+        <section id="ozone-vs-phit" class="py-16 bg-red-50/50">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="max-w-3xl mx-auto text-center mb-8">
+                    <span class="text-red-600 font-bold tracking-wider text-sm uppercase">Safety Analysis</span>
+                    <h2 class="text-3xl font-bold text-slate-900 mt-2 mb-4">臭氧 VS PHIT 技術：累積性毒害 vs 動態平衡</h2>
+                    <p class="text-slate-600">
+                        為什麼傳統臭氧機必須「人機分離」且不能長時間開啟？<br>
+                        下圖展示了在密閉空間中，開啟機器 <strong>24 小時</strong> 的濃度變化模擬。
+                    </p>
+                </div>
+
+                <!-- Split Screen Animation Container -->
+                <div class="comparison-wrapper">
+                    <!-- Timer Overlay -->
+                    <div id="comp-timer" class="time-badge">00:00:00</div>
+
+                    <!-- Left: Ozone -->
+                    <div class="comp-half comp-left">
+                        <canvas id="ozoneCanvas"></canvas>
+                        <div class="machine-icon text-red-500">
+                            <i class="fa-solid fa-industry"></i>
+                        </div>
+                        <h3 class="comp-label text-red-700">傳統臭氧機 (Ozone)</h3>
+                        <p class="comp-desc">
+                            只產出不分解。隨著時間推移，臭氧分子不斷堆疊。
+                            <br><strong>結果：濃度超標，傷害肺部 (黑牆效應)</strong>
+                        </p>
+                    </div>
+
+                    <!-- Right: PHIT -->
+                    <div class="comp-half comp-right">
+                        <canvas id="phitCanvas"></canvas>
+                        <div class="machine-icon text-emerald-500">
+                            <i class="fa-solid fa-tree"></i>
+                        </div>
+                        <h3 class="comp-label text-emerald-700">PHIT 技術</h3>
+                        <p class="comp-desc">
+                            產出即反應。淨化因子擊中汙染物後還原為氧氣。
+                            <br><strong>結果：維持 0.01ppm 安全恆定，人機共存</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Section 3: Comparative Analysis -->
         <section id="compare" class="py-16 bg-white">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -1097,19 +1227,19 @@
             activeTab.classList.add('bg-white', 'shadow', 'text-emerald-700');
         }
 
-        // -- Animation Logic: PHIT Simulation --
+        // -- Animation Logic: PHIT Simulation (Original) --
         function initPHITAnimation() {
             const canvas = document.getElementById('phitSimulation');
+            if(!canvas) return;
             const ctx = canvas.getContext('2d');
             let width, height;
             
             // Entities
             const factors = [];
             const pollutants = [];
-            const debris = []; // For explosion effects
+            const debris = []; 
 
             function resize() {
-                // Get parent container dimensions
                 const rect = canvas.parentElement.getBoundingClientRect();
                 width = rect.width;
                 height = rect.height;
@@ -1146,7 +1276,6 @@
 
             class Pollutant {
                 constructor() {
-                    // Spawn from edges
                     if (Math.random() > 0.5) {
                         this.x = Math.random() > 0.5 ? 0 : width;
                         this.y = Math.random() * height;
@@ -1164,87 +1293,32 @@
                     if (rand < 0.25) {
                         this.type = 'virus';
                         this.size = 5;
-                        this.color = '#f87171'; // Red 400
+                        this.color = '#f87171'; 
                     } else if (rand < 0.5) {
                         this.type = 'bacteria';
                         this.size = 6;
-                        this.color = '#fb923c'; // Orange 400
+                        this.color = '#fb923c'; 
                     } else if (rand < 0.75) {
                         this.type = 'mold';
                         this.size = 4;
-                        this.color = '#a78bfa'; // Purple 400
+                        this.color = '#a78bfa'; 
                     } else {
-                        this.type = 'chemical'; // Formaldehyde/VOC
+                        this.type = 'chemical'; 
                         this.size = 5;
-                        this.color = '#eab308'; // Yellow 500
+                        this.color = '#eab308'; 
                     }
                 }
                 update() {
                     this.x += this.vx;
                     this.y += this.vy;
-                    
-                    // Bounce off walls
                     if (this.x < 0 || this.x > width) this.vx *= -1;
                     if (this.y < 0 || this.y > height) this.vy *= -1;
                 }
                 draw() {
                     ctx.fillStyle = this.color;
                     ctx.beginPath();
-
-                    if (this.type === 'virus') {
-                        // Spiky ball
-                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                        ctx.fill();
-                        for(let i=0; i<6; i++) {
-                            const angle = (i / 6) * Math.PI * 2;
-                            const sx = this.x + Math.cos(angle) * (this.size + 2);
-                            const sy = this.y + Math.sin(angle) * (this.size + 2);
-                            ctx.beginPath();
-                            ctx.arc(sx, sy, 1.5, 0, Math.PI*2);
-                            ctx.fill();
-                        }
-                    } else if (this.type === 'bacteria') {
-                        // Rod/Pill shape (Capsule)
-                        const w = this.size * 2;
-                        const h = this.size;
-                        // Draw a pill shape
-                        ctx.beginPath();
-                        ctx.roundRect(this.x - w/2, this.y - h/2, w, h, h/2);
-                        ctx.fill();
-                        // Add little flagella
-                        ctx.strokeStyle = this.color;
-                        ctx.lineWidth = 1;
-                        ctx.beginPath();
-                        ctx.moveTo(this.x + w/2, this.y);
-                        ctx.lineTo(this.x + w/2 + 3, this.y + (Math.random()-0.5)*3);
-                        ctx.stroke();
-                    } else if (this.type === 'mold') {
-                        // Cluster of spheres
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                        ctx.arc(this.x + 3, this.y + 3, this.size*0.8, 0, Math.PI * 2);
-                        ctx.arc(this.x - 2, this.y + 2, this.size*0.8, 0, Math.PI * 2);
-                        ctx.fill();
-                    } else { // Chemical / VOC
-                        // Hexagon ring
-                        ctx.beginPath();
-                        for (let i = 0; i < 6; i++) {
-                            const angle = (i / 6) * Math.PI * 2;
-                            const hx = this.x + Math.cos(angle) * this.size;
-                            const hy = this.y + Math.sin(angle) * this.size;
-                            if (i === 0) ctx.moveTo(hx, hy);
-                            else ctx.lineTo(hx, hy);
-                        }
-                        ctx.closePath();
-                        ctx.fill();
-                        // Inner hole to look like benzene ring
-                        ctx.globalCompositeOperation = 'destination-out';
-                        ctx.beginPath();
-                        ctx.arc(this.x, this.y, this.size/2, 0, Math.PI*2);
-                        ctx.fill();
-                        ctx.globalCompositeOperation = 'source-over';
-                        ctx.fillStyle = this.color; // Reset for next draw
-                    }
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fill();
                 }
             }
 
@@ -1256,7 +1330,7 @@
                     this.vy = (Math.random() - 0.5) * 4;
                     this.size = Math.random() * 2 + 1;
                     this.color = color;
-                    this.life = 30; // Frames to live
+                    this.life = 30; 
                 }
                 update() {
                     this.x += this.vx;
@@ -1276,17 +1350,12 @@
             }
 
             function animate() {
-                // Clear with trail effect
-                ctx.fillStyle = 'rgba(15, 23, 42, 0.3)'; // Slate 900 with opacity
+                ctx.fillStyle = 'rgba(15, 23, 42, 0.3)'; 
                 ctx.fillRect(0, 0, width, height);
 
-                // Spawn Factors (from center)
                 if (Math.random() < 0.3) factors.push(new Factor());
-
-                // Spawn Pollutants (rarely, keep population around 10-15)
                 if (Math.random() < 0.08 && pollutants.length < 15) pollutants.push(new Pollutant());
 
-                // Update Factors
                 for (let i = factors.length - 1; i >= 0; i--) {
                     const p = factors[i];
                     p.update();
@@ -1296,40 +1365,30 @@
                     }
                 }
 
-                // Update Pollutants & Collision
                 for (let i = pollutants.length - 1; i >= 0; i--) {
                     const pol = pollutants[i];
                     pol.update();
                     pol.draw();
-
-                    // Check collision with factors
                     let hit = false;
                     for (let j = factors.length - 1; j >= 0; j--) {
                         const fac = factors[j];
                         const dx = pol.x - fac.x;
                         const dy = pol.y - fac.y;
                         const dist = Math.sqrt(dx*dx + dy*dy);
-                        
-                        // Simple collision detection
                         if (dist < pol.size + fac.size + 2) {
-                            // COLLISION!
                             hit = true;
-                            // Create Debris (Explosion) matching pollutant color
                             for(let k=0; k<8; k++) {
                                 debris.push(new Debris(pol.x, pol.y, pol.color)); 
                             }
-                            // Remove factor
                             factors.splice(j, 1);
-                            break; // One hit kills for this animation simplicity
+                            break; 
                         }
                     }
-
                     if (hit) {
                         pollutants.splice(i, 1);
                     }
                 }
 
-                // Update Debris
                 for (let i = debris.length - 1; i >= 0; i--) {
                     const d = debris[i];
                     d.update();
@@ -1337,12 +1396,10 @@
                     if (d.life <= 0) debris.splice(i, 1);
                 }
 
-                // Draw Central Unit (The Source)
                 ctx.beginPath();
                 ctx.arc(width/2, height/2, 20, 0, Math.PI*2);
-                ctx.fillStyle = '#10b981'; // Emerald 500
+                ctx.fillStyle = '#10b981'; 
                 ctx.fill();
-                // Glow
                 ctx.beginPath();
                 ctx.arc(width/2, height/2, 25, 0, Math.PI*2);
                 ctx.strokeStyle = 'rgba(16, 185, 129, 0.5)';
@@ -1351,9 +1408,158 @@
 
                 requestAnimationFrame(animate);
             }
-
             animate();
         }
+
+        // --- NEW OZONE VS PHIT ANIMATION ---
+        function initOzoneComparison() {
+            const ozoneCanvas = document.getElementById('ozoneCanvas');
+            const phitCanvas = document.getElementById('phitCanvas');
+            const timeLabel = document.getElementById('comp-timer');
+
+            if (!ozoneCanvas || !phitCanvas) return;
+
+            const ctxOzone = ozoneCanvas.getContext('2d');
+            const ctxPhit = phitCanvas.getContext('2d');
+
+            let width, height;
+
+            function resize() {
+                const rect = ozoneCanvas.parentElement.getBoundingClientRect();
+                width = rect.width;
+                height = rect.height;
+                ozoneCanvas.width = width;
+                ozoneCanvas.height = height;
+                phitCanvas.width = width;
+                phitCanvas.height = height;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            // Simulation State
+            let simFrame = 0;
+            const cycleFrames = 900; // Increased to 15s for 24 hours
+            const maxOzone = 1200; // Max Ozone particles
+            
+            // Particle Arrays
+            let ozoneParticles = [];
+            let phitParticles = [];
+
+            class Particle {
+                constructor(type) {
+                    this.x = width / 2;
+                    this.y = height * 0.9; // Emerge from bottom/machine
+                    
+                    if (type === 'phit') {
+                         // PHIT: Slow, calm movement
+                        this.vx = (Math.random() - 0.5) * 1.0; 
+                        this.vy = (Math.random() - 1) * 1.5 - 0.5; 
+                    } else {
+                        // Ozone: More chaotic initially
+                        this.vx = (Math.random() - 0.5) * 4;
+                        this.vy = (Math.random() - 1) * 3 - 1; 
+                    }
+
+                    this.size = Math.random() * 3 + 2;
+                    this.type = type; // 'ozone' or 'phit'
+                    this.alpha = 1;
+                }
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    
+                    // Bounce walls
+                    if(this.x < 0 || this.x > width) this.vx *= -1;
+                    if(this.y < 0 || this.y > height) this.vy *= -1;
+
+                    // Friction
+                    this.vx *= 0.98;
+                    this.vy *= 0.98;
+
+                    // Brownian Motion jitter
+                    if (this.type === 'phit') {
+                        // Very subtle jitter for PHIT
+                        this.vx += (Math.random()-0.5) * 0.05;
+                        this.vy += (Math.random()-0.5) * 0.05;
+                        this.alpha -= 0.005; // Fade out faster
+                    } else {
+                        // Ozone jitters more
+                        this.vx += (Math.random()-0.5) * 0.2;
+                        this.vy += (Math.random()-0.5) * 0.2;
+                    }
+                }
+                draw(ctx) {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    if(this.type === 'ozone') {
+                        ctx.fillStyle = `rgba(220, 38, 38, ${this.alpha})`; // Red
+                    } else {
+                        ctx.fillStyle = `rgba(16, 185, 129, ${this.alpha})`; // Green
+                    }
+                    ctx.fill();
+                }
+            }
+
+            function animateComparison() {
+                // Clear Screens
+                ctxOzone.clearRect(0,0,width,height);
+                ctxPhit.clearRect(0,0,width,height);
+
+                simFrame++;
+                if(simFrame > cycleFrames) {
+                    simFrame = 0;
+                    ozoneParticles = []; // Reset Ozone
+                    phitParticles = []; // Reset PHIT
+                }
+
+                // Calculate Time (0 to 24 Hours)
+                const progress = simFrame / cycleFrames;
+                const totalMinutes = Math.floor(progress * 24 * 60); 
+                const hrs = Math.floor(totalMinutes / 60);
+                const mins = totalMinutes % 60;
+                timeLabel.innerText = `${hrs.toString().padStart(2, '0')}小時 ${mins.toString().padStart(2, '0')}分`;
+
+                // --- OZONE LOGIC (Massive Accumulation) ---
+                // Spawn rate dramatically increases to fill screen
+                // Always spawn at least 1, but up to 4 per frame as time goes on
+                if (ozoneParticles.length < maxOzone) {
+                    const spawnRate = Math.floor(progress * 3) + 1; 
+                    for(let k=0; k<spawnRate; k++) {
+                        ozoneParticles.push(new Particle('ozone'));
+                    }
+                }
+                
+                for(let i=0; i<ozoneParticles.length; i++) {
+                    ozoneParticles[i].update();
+                    ozoneParticles[i].draw(ctxOzone);
+                }
+
+                // --- PHIT LOGIC (Calm Equilibrium) ---
+                // Constant low spawn rate
+                if(simFrame % 4 === 0) { // Slightly more frequent but fading fast keeps balance
+                     phitParticles.push(new Particle('phit'));
+                }
+
+                for(let i=phitParticles.length - 1; i>=0; i--) {
+                    phitParticles[i].update();
+                    phitParticles[i].draw(ctxPhit);
+                    if(phitParticles[i].alpha <= 0) {
+                        phitParticles.splice(i, 1); // Remove dead particles
+                    }
+                }
+
+                // Danger Overlay on Left side based on time/density
+                // Becomes very dark red at 24 hours
+                const dangerOpacity = Math.min(progress * 0.8, 0.7); 
+                ctxOzone.fillStyle = `rgba(254, 202, 202, ${dangerOpacity})`; 
+                ctxOzone.fillRect(0,0,width,height);
+
+                requestAnimationFrame(animateComparison);
+            }
+
+            animateComparison();
+        }
+
 
         // -- Chart 1: IAQ (Indoor vs Outdoor) --
         function initIAQChart() {
@@ -1560,7 +1766,8 @@
             initIAQChart();
             initComparisonChart();
             initROIChart();
-            initPHITAnimation(); // Start the new particle animation
+            initPHITAnimation(); 
+            initOzoneComparison(); // Start the new Ozone vs PHIT comparison
             
             // Inputs for ROI
             document.getElementById('yearInput').addEventListener('input', updateROICalculation);
@@ -1570,4 +1777,3 @@
     </script>
 </body>
 </html>
-
